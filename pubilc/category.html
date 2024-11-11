@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>카테고리 상품 목록</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function goToMain() {
+            window.location.href = 'index.html'; // 메인 페이지로 이동 
+        }
+        function showMyPage() {
+            window.location.href = 'mypage.html'; // 마이 페이지로 이동 
+        }
+    </script>
 </head>
 <body>
     <div class="header">
         <!-- 로고 이미지 -->
-        <img src="auction_forest_logo.png" alt="경매의 숲" class="logo" onclick="goToMain()">
+        <img src="auction_forest_logo.png" alt="거래해요 경매의 숲" class="logo" onclick="goToMain()">
         
         <!-- 가운데 검색창 -->
         <div class="search-container">

@@ -137,21 +137,22 @@ body {
 }
 
 .container {
-  display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  align-items: flex-start;
-  gap: 20px;
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto; /* 페이지 가운데 정렬 */
+    gap: 20px;
+    align-items: flex-start;
+
 }
 
 /* 필터 영역 스타일 */
 .filter {
-  width: 200px;
-  margin: 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 15px;
+    width: 200px;
+    margin: 65px 0 0 0; /* 위쪽에 20px 간격 추가 */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+
 }
 
 .category-button {
@@ -216,4 +217,49 @@ body {
 .product-item .location {
   font-size: 14px;
   color: #666;
+}
+
+.mypage-menu, .filter {
+    width: 200px;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+}
+
+.mypage-menu h3, .filter h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.mypage-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mypage-menu li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.mypage-menu li:hover {
+    background-color: #f0f0f0;
+}
+
+/* 내용 표시 영역 스타일 */
+.content-area, .product-container {
+    flex: 1; /* 나머지 공간을 차지하도록 설정 */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.content-area h2, .product-container h1 {
+    font-size: 22px;
+    margin-bottom: 15px;
 }
