@@ -1,0 +1,184 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 상단 헤더 */
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+.logo {
+    cursor: pointer;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    justify-content: center;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+.search-icon {
+    margin-left: -30px;
+    cursor: pointer;
+}
+
+.my-page {
+    background-color: #555;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* 메인 박스 스타일 */
+.main-content {
+    display: flex;
+    width: 80%;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.instructions {
+    width: 75%;
+    padding-right: 20px;
+}
+
+.ranking {
+    width: 25%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.ranking h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.ranking-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+/* 카테고리 버튼들 */
+.categories {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    width: 80%;
+}
+
+.link-button {
+    background: none;            /* 버튼 배경 제거 */
+    border: none;                /* 버튼 테두리 제거 */               
+    text-decoration: underline;  /* 밑줄 추가 */
+    cursor: pointer;             /* 클릭할 수 있는 모양으로 변경 */
+    padding: 0;                  /* 기본 padding 제거 */
+    font-size: inherit;          /* 버튼의 글자 크기를 주변 글자 크기에 맞춤 */
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* 필터 영역 스타일 */
+.filter {
+    width: 200px;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+}
+
+.category-button {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: calc(33.33% - 20px);
+    text-align: center;
+}
+
+.product-container {
+    flex: 1;
+}
+
+.product-container h1 {
+    margin-top: 0;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 가로로 4개 */
+    gap: 20px;
+}
+
+.product-item {
+    width: 200px;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.product-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+/* 제목 스타일: 길면 잘리도록 설정 */
+.product-item h3 {
+    font-size: 14px;
+    white-space: nowrap;         /* 한 줄로 표시 */
+    overflow: hidden;            /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis;     /* 잘린 부분에 '...' 표시 */
+    margin: 5px 0;
+}
+
+/* 가격 스타일: 굵게 표시 */
+.product-item .price {
+    font-weight: bold;           /* 글씨 굵게 */
+    font-size: 18px;             /* 약간 큰 글씨 */
+    color: #333;
+    margin: 5px 0;
+}
+
+/* 위치 스타일 */
+.product-item .location {
+    font-size: 14px;
+    color: #666;
+}
