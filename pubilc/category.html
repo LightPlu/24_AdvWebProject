@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카테고리 상품 목록</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <!-- 로고 이미지 -->
+        <img src="auction_forest_logo.png" alt="경매의 숲" class="logo" onclick="goToMain()">
+        
+        <!-- 가운데 검색창 -->
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="검색어를 입력하세요">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <!-- 마이페이지 버튼 -->
+        <button class="my-page" onclick="showMyPage()">마이페이지</button>
+    </div>
+
+    <div class="container">
+        <!-- 왼쪽 필터 영역 -->
+        <div class="filter">
+            <h3>가격 필터</h3>
+            <form id="price-filter-form">
+                <p>
+                <label><input type="checkbox" name="price-range" value="0-1000"> 0 - 1,000원</label><br>
+                <label><input type="checkbox" name="price-range" value="1000-5000"> 1,000 - 5,000원</label><br>
+                <label><input type="checkbox" name="price-range" value="5000-10000"> 5,000 - 10,000원</label><br>
+                <label><input type="checkbox" name="price-range" value="10000-100000"> 10,000 - 100,000원</label><br>
+                <label><input type="checkbox" name="price-range" value="100000-300000"> 100,000 - 300,000원</label><br>
+                <button type="button" onclick="applyFilter()" class="link-button">적용하기</button>
+                </p>
+            </form>
+            <div class="manual-price-filter">
+                <label>직접 입력:</label><br>
+                <input type="number" id="min-price" placeholder="최소 가격 (만원)" style="width: 80px;">
+                ~
+                <input type="number" id="max-price" placeholder="최대 가격 (만원)" style="width: 80px;"><br>
+            </div>
+        </div>
+
+        <!-- 오른쪽 상품 리스트 -->
+        <div class="product-container">
+            <h1 id="category-title">카테고리 상품 목록</h1>
+            <div class="product-list" id="product-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // URL 파라미터에서 카테고리 이름을 가져옴
+        function getCategoryFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('category');
+        }
+
+        // 카테고리별 상품 데이터를 설정
+        const productData = {
+            "원피스": [
+                { name: "플로럴 원피스", price: 15000, location: "정자동", img: "dress1.jpg" },
+                { name: "프랑스 골프디피메로", price: 30000, location: "한남동", img: "dress2.jpg" },
+                { name: "니트 가디건1", price: 9000, location: "후암동", img: "dress3.jpg" },
+                { name: "니트 가디건2", price: 9000, location: "후암동", img: "dress3.jpg" },
+                { name: "니트 가디건3", price: 9000, location: "후암동", img: "dress3.jpg" },
+                { name: "니트 가디건4", price: 9000, location: "후암동", img: "dress3.jpg" },
+                { name: "니트 가디건5", price: 9000, location: "후암동", img: "dress3.jpg" },
+
+                // 더 많은 상품 추가 가능
+            ],
+            "전기자전거": [
+                { name: "전기자전거 mate x", price: 3300000, location: "용산구", img: "bike1.jpg" },
+                { name: "전기자전거 바이아조", price: 1000000, location: "한남동", img: "bike2.jpg" },
+                { name: "에코라이브 타이탄", price: 1120000, location: "용문동", img: "bike3.jpg" }
+            ]
+            // 다른 카테고리 데이터도 추가 가능
+        };
+
+        // 선택된 카테고리에 따라 상품을 동적으로 표시
+        function displayProducts(categoryName, selectedRanges = [], minPrice = null, maxPrice = null) {
+    const productList = document.getElementById('product-list');
+    const categoryTitle = document.getElementById('category-title');
+
+    // 타이틀 설정
+    categoryTitle.textContent = `${categoryName} 검색 결과`;
+
+    // 선택된 카테고리의 상품 목록 가져오기
+    let products = productData[categoryName] || [];
+
+    // 체크박스 가격 필터 적용
+    if (selectedRanges.length > 0) {
+        products = products.filter(product => {
+            return selectedRanges.some(range => {
+                const [minRange, maxRange] = range.split('-').map(Number);
+                return product.price >= minRange && product.price <= maxRange;
+            });
+        });
+    }
+
+    // 직접 입력된 최소 및 최대 가격 필터 적용
+    if (minPrice !== null && maxPrice !== null) {
+        products = products.filter(product => product.price >= minPrice&& product.price <= maxPrice);
+    }
+
+    // 상품 목록 초기화
+    productList.innerHTML = '';
+
+    // 상품 목록 생성
+    products.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.className = 'product-item';
+
+        productItem.innerHTML = `
+            <img src="images/${product.img}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p class="price">${product.price.toLocaleString()}원</p>
+            <p class="location">${product.location}</p>
+        `;
+
+        productList.appendChild(productItem);
+    });
+}
+
+        // 필터 적용 함수
+        function applyFilter() {
+            const checkboxes = document.querySelectorAll('input[name="price-range"]:checked');
+            const selectedRanges = Array.from(checkboxes).map(checkbox => checkbox.value);
+            
+            const minPrice = document.getElementById('min-price').value;
+            const maxPrice = document.getElementById('max-price').value;
+
+            const categoryName = getCategoryFromURL();
+            displayProducts(categoryName, selectedRanges, minPrice ? Number(minPrice) : 0, maxPrice ? Number(maxPrice) : 10000000000);
+        }
+
+        // 페이지 로드 시 카테고리 설정
+        document.addEventListener('DOMContentLoaded', () => {
+            const categoryName = getCategoryFromURL();
+            displayProducts(categoryName);
+        });
+    </script>
+</body>
+</html>
