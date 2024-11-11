@@ -10,7 +10,7 @@
     <!-- 상단 헤더 -->
     <div class="header">
         <!-- 로고 이미지 -->
-        <img src="auction_forest_logo.png" alt="경매의 숲" class="logo" onclick="goToMain()">
+        <img src="auction_forest_logo.png" alt="거래해요 경매의 숲" class="logo" onclick="goToMain()">
         
         <!-- 가운데 검색창 -->
         <div class="search-container">
@@ -54,12 +54,12 @@
     <script>
         // 메인 화면으로 돌아가는 함수
         function goToMain() {
-            window.location.href = 'index.html'; // 메인 페이지로 이동 (파일명에 맞게 조정)
+            window.location.href = 'index.html'; // 메인 페이지로 이동 
         }
 
         // 마이페이지 버튼 클릭 시 리스트 표시
         function showMyPage() {
-            alert("마이페이지:\n- 내 정보\n- 입찰 내역\n- 관심 상품\n- 설정");
+            window.location.href = 'mypage.html'; // 마이 페이지로 이동 
         }
 
         // 카테고리 버튼 클릭 시 창 열기
