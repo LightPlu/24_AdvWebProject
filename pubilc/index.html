@@ -1,72 +1,101 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>경매 사이트</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- 상단 헤더 -->
     <div class="header">
-        <!-- 로고 이미지 -->
-        <img src="auction_forest_logo.png" alt="경매의 숲" class="logo" onclick="goToMain()">
-        
-        <!-- 가운데 검색창 -->
-        <div class="search-container">
-            <input type="text" class="search-bar" placeholder="검색어를 입력하세요">
-            <span class="search-icon">🔍</span>
-        </div>
+      <!-- 로고 이미지 -->
+      <img
+        src="auction_forest_logo.png"
+        alt="경매의 숲"
+        class="logo"
+        onclick="goToMain()"
+      />
 
-        <!-- 마이페이지 버튼 -->
-        <button class="my-page" onclick="showMyPage()">마이페이지</button>
+      <!-- 가운데 검색창 -->
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="검색어를 입력하세요"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- 마이페이지 버튼 -->
+      <button class="my-page" onclick="showMyPage()">마이페이지</button>
     </div>
-    
+
     <!-- 메인 콘텐츠 -->
-    <div class="main-content">
-        <!-- 경매 사용 방법 설명 -->
-        <div class="instructions">
-            <h2>경매 사이트 사용 방법</h2>
-            <p>여기에 경매 사이트 사용 방법에 대한 자세한 설명이 표시됩니다. 사용자는 경매 절차, 등록 방법, 입찰 방법 등을 확인할 수 있습니다.</p>
-        </div>
-        
-        <!-- 실시간 랭킹 -->
-        <div class="ranking">
-            <h3>실시간 랭킹</h3>
-            <div class="ranking-item">1. 경매 물품 A</div>
-            <div class="ranking-item">2. 경매 물품 B</div>
-            <div class="ranking-item">3. 경매 물품 C</div>
-            <div class="ranking-item">4. 경매 물품 D</div>
-            <div class="ranking-item">5. 경매 물품 E</div>
-        </div>
+    <div class="main-container">
+      <!-- 메인 이미지 -->
+      <img src="main_homepage.jpg" alt="메인 이미지" class="main-image" />
+
+      <!-- 경매 사용 방법 설명 -->
+      <div class="overlay-content">
+        <h2>거래해요 경매의 숲💸</h2>
+        <p>
+          경매의 숲에서는 다양한 상품을 손쉽게 경매로 만나볼 수 있습니다.
+          관심있는 상품에 입찰하고, 빠르고 안전하게 결제와 배송을 진행하세요.
+          자동 입찰 기능을 통해 더 편리하게 경매에 참여해 보세요!
+        </p>
+      </div>
+    </div>
+
+    <!-- 실시간 랭킹 -->
+    <div class="ranking">
+      <h3>실시간 랭킹</h3>
+      <div class="ranking-item">1. 경매 물품 A</div>
+      <div class="ranking-item">2. 경매 물품 B</div>
+      <div class="ranking-item">3. 경매 물품 C</div>
+      <div class="ranking-item">4. 경매 물품 D</div>
+      <div class="ranking-item">5. 경매 물품 E</div>
     </div>
 
     <!-- 카테고리 버튼들 -->
     <div class="categories">
-        <button class="category-button" onclick="openCategory('원피스')">원피스</button>
-        <button class="category-button" onclick="openCategory('전기자전거')">전기자전거</button>
-        <button class="category-button" onclick="openCategory('카테고리 3')">카테고리 3</button>
-        <button class="category-button" onclick="openCategory('카테고리 4')">카테고리 4</button>
-        <button class="category-button" onclick="openCategory('카테고리 5')">카테고리 5</button>
-        <button class="category-button" onclick="openCategory('카테고리 6')">카테고리 6</button>
+      <button class="category-button" onclick="openCategory('원피스')">
+        원피스
+      </button>
+      <button class="category-button" onclick="openCategory('전기자전거')">
+        전기자전거
+      </button>
+      <button class="category-button" onclick="openCategory('카테고리 3')">
+        카테고리 3
+      </button>
+      <button class="category-button" onclick="openCategory('카테고리 4')">
+        카테고리 4
+      </button>
+      <button class="category-button" onclick="openCategory('카테고리 5')">
+        카테고리 5
+      </button>
+      <button class="category-button" onclick="openCategory('카테고리 6')">
+        카테고리 6
+      </button>
     </div>
 
     <script>
-        // 메인 화면으로 돌아가는 함수
-        function goToMain() {
-            window.location.href = 'index.html'; // 메인 페이지로 이동 (파일명에 맞게 조정)
-        }
+      // 메인 화면으로 돌아가는 함수
+      function goToMain() {
+        window.location.href = "index.html";
+      }
 
-        // 마이페이지 버튼 클릭 시 리스트 표시
-        function showMyPage() {
-            alert("마이페이지:\n- 내 정보\n- 입찰 내역\n- 관심 상품\n- 설정");
-        }
+      // 마이페이지 버튼 클릭 시 리스트 표시
+      function showMyPage() {
+        alert("마이페이지:\n- 내 정보\n- 입찰 내역\n- 관심 상품\n- 설정");
+      }
 
-        // 카테고리 버튼 클릭 시 창 열기
-        function openCategory(categoryName) {
-            // 선택한 카테고리 이름을 URL 파라미터로 전달하여 이동
-            window.location.href = `category.html?category=${encodeURIComponent(categoryName)}`;
-        }
+      // 카테고리 버튼 클릭 시 창 열기
+      function openCategory(categoryName) {
+        window.location.href = `category.html?category=${encodeURIComponent(
+          categoryName
+        )}`;
+      }
     </script>
-</body>
+  </body>
 </html>
