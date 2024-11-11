@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./public/styles.css" />
     <title>경매 사이트</title>
   </head>
   <body>
@@ -34,7 +34,7 @@
     <!-- 메인 콘텐츠 -->
     <div class="main-container">
       <!-- 메인 이미지 -->
-      <img src="main_homepage.jpg" alt="메인 이미지" class="main-image" />
+      <img src="./public/images/main_homepage.jpg" alt="메인 이미지" class="main-image" />
 
       <!-- 경매 사용 방법 설명 -->
       <div class="overlay-content">
@@ -87,13 +87,13 @@
 
         // 마이페이지 버튼 클릭 시 리스트 표시
         function showMyPage() {
-            window.location.href = 'mypage.html'; // 마이 페이지로 이동 
+            window.location.href = './public/mypage.html'; // 마이 페이지로 이동 
         }
 
 
       // 카테고리 버튼 클릭 시 창 열기
       function openCategory(categoryName) {
-        window.location.href = `category.html?category=${encodeURIComponent(
+        window.location.href = `./public/category.html?category=${encodeURIComponent(
           categoryName
         )}`;
       }
