@@ -27,14 +27,20 @@
         <span class="search-icon">🔍</span>
       </div>
 
-      <!-- 마이페이지 버튼 -->
+      <!-- 마이페이지,로그인,상품등록 버튼 -->
+      <button class="register" onclick="goToRegister()">상품 등록</button>
+      <button class="login-button" onclick="goToLogin()">로그인</button>
       <button class="my-page" onclick="showMyPage()">마이페이지</button>
     </div>
 
     <!-- 메인 콘텐츠 -->
     <div class="main-container">
       <!-- 메인 이미지 -->
-      <img src="./public/images/main_homepage.jpg" alt="메인 이미지" class="main-image" />
+      <img
+        src="./public/images/main_homepage.jpg"
+        alt="메인 이미지"
+        class="main-image"
+      />
 
       <!-- 경매 사용 방법 설명 -->
       <div class="overlay-content">
@@ -59,37 +65,40 @@
 
     <!-- 카테고리 버튼들 -->
     <div class="categories">
-      <button class="category-button" onclick="openCategory('원피스')">
-        원피스
+      <button class="category-button" onclick="openCategory('의류')">
+        의류
       </button>
       <button class="category-button" onclick="openCategory('전기자전거')">
         전기자전거
       </button>
-      <button class="category-button" onclick="openCategory('카테고리 3')">
-        카테고리 3
+      <button class="category-button" onclick="openCategory('식품')">
+        식품
       </button>
-      <button class="category-button" onclick="openCategory('카테고리 4')">
-        카테고리 4
+      <button class="category-button" onclick="openCategory('가전제품')">
+        가전제품
       </button>
-      <button class="category-button" onclick="openCategory('카테고리 5')">
-        카테고리 5
+      <button class="category-button" onclick="openCategory('뷰티/미용')">
+        뷰티/미용
       </button>
-      <button class="category-button" onclick="openCategory('카테고리 6')">
-        카테고리 6
+      <button class="category-button" onclick="openCategory('도서')">
+        도서
       </button>
     </div>
 
     <script>
-        // 메인 화면으로 돌아가는 함수
-        function goToMain() {
-            window.location.href = 'index.html'; // 메인 페이지로 이동 
-        }
+      // 메인 화면으로 돌아가는 함수
+      function goToMain() {
+        window.location.href = "index.html"; // 메인 페이지로 이동
+      }
 
-        // 마이페이지 버튼 클릭 시 리스트 표시
-        function showMyPage() {
-            window.location.href = './public/mypage.html'; // 마이 페이지로 이동 
-        }
-
+      // 마이페이지 버튼 클릭 시 리스트 표시
+      function showMyPage() {
+        window.location.href = "./public/mypage.html"; // 마이 페이지로 이동
+      }
+      // 상품 등록 페이지 이동
+      function goToRegister() {
+        window.location.href = "./public/registration.html";
+      }
 
       // 카테고리 버튼 클릭 시 창 열기
       function openCategory(categoryName) {

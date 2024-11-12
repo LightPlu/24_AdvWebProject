@@ -10,11 +10,12 @@ body {
 /* 상단 헤더 */
 .header {
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #333;
+  background-color: #f99b21;
   color: white;
 }
 
@@ -41,8 +42,11 @@ body {
   cursor: pointer;
 }
 
-.my-page {
-  background-color: #555;
+/*마이페이지 버튼*/
+.my-page,
+.login-button,
+.register {
+  background-color: #454f50ce;
   color: white;
   padding: 8px 16px;
   border: none;
@@ -70,8 +74,9 @@ body {
   margin-top: 20px;
 }
 
+/* 메인 이미지 스타일 */
 .main-image {
-  width: 100%;
+  width: 80%; /* 이미지의 가로폭을 줄임 */
   height: 400px;
   object-fit: cover;
   border-radius: 10px;
@@ -95,15 +100,13 @@ body {
 /* 실시간 랭킹 영역 */
 .ranking {
   position: absolute;
-  top: 170px; /* 경매 사이트 사용 방법 아래로 이동 */
-  left: 200px; /* 이미지 왼쪽에서 20px 떨어짐 */
-  margin-top: 100px; /* "경매 사이트 사용 방법" 아래로 위치시킴 */
-  width: 60%; /* 경매 사이트 사용 방법과 같은 너비 */
-  color: black; /* 텍스트 색상 */
+  top: 100px; /* 이미지의 위쪽에 맞추어 위치 */
+  right: -200px; /* 이미지의 오른쪽에 맞추어 위치 */
+  width: 35%; /* 랭킹의 가로폭 설정 */
+  color: black;
   padding: 10px;
   font-size: 1em;
-  background-color: transparent; /* 배경을 완전히 투명하게 설정 */
-  box-shadow: none; /* 그림자 제거 */
+  background-color: transparent;
 }
 
 .ranking h3 {
@@ -137,27 +140,25 @@ body {
 }
 
 .container {
-    display: flex;
-    max-width: 1200px;
-    margin: 20px auto; /* 페이지 가운데 정렬 */
-    gap: 20px;
-    align-items: flex-start;
-
+  display: flex;
+  max-width: 1200px;
+  margin: 20px auto; /* 페이지 가운데 정렬 */
+  gap: 20px;
+  align-items: flex-start;
 }
 
 /* 필터 영역 스타일 */
 .filter {
-    width: 200px;
-    margin: 65px 0 0 0; /* 위쪽에 20px 간격 추가 */
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-
+  width: 200px;
+  margin: 65px 0 0 0; /* 위쪽에 20px 간격 추가 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
 }
 
 .category-button {
   padding: 20px;
-  background-color: #ffbd73;
+  background-color: #fab98d;
   color: black;
   border: none;
   cursor: pointer;
@@ -219,47 +220,51 @@ body {
   color: #666;
 }
 
-.mypage-menu, .filter {
-    width: 200px;
-    margin: 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    background-color: #f9f9f9;
+.mypage-menu,
+.filter {
+  width: 200px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  background-color: #f9f9f9;
 }
 
-.mypage-menu h3, .filter h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
+.mypage-menu h3,
+.filter h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .mypage-menu ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .mypage-menu li {
-    padding: 8px;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
 }
 
 .mypage-menu li:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 /* 내용 표시 영역 스타일 */
-.content-area, .product-container {
-    flex: 1; /* 나머지 공간을 차지하도록 설정 */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #fff;
+.content-area,
+.product-container {
+  flex: 1; /* 나머지 공간을 차지하도록 설정 */
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
 }
 
-.content-area h2, .product-container h1 {
-    font-size: 22px;
-    margin-bottom: 15px;
+.content-area h2,
+.product-container h1 {
+  font-size: 22px;
+  margin-bottom: 15px;
 }

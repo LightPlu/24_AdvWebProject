@@ -1,69 +1,82 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>마이페이지</title>
-        <link rel="stylesheet" href="styles.css">
-        <script>
-            function goToMain() {
-                window.location.href = '../index.html'; // 메인 페이지로 이동 
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      function goToMain() {
+        window.location.href = "../index.html"; // 메인 페이지로 이동
+      }
 
-            // 각 항목에 대한 내용을 저장하는 객체
-            const contentData = {
-            "interest": "<h2>관심있는 경매 상품</h2><p>여기에서 관심 목록에 등록한 경매 상품을 확인할 수 있습니다.</p>",
-            "participating": "<h2>참여중인 경매 상품</h2><p>현재 참여 중인 경매 상품의 목록을 확인할 수 있습니다.</p>",
-            "inquiry": "<h2>문의하기</h2><p>경매 관련 문의를 작성하여 제출할 수 있는 페이지입니다.</p>",
-            "inquiry-history": "<h2>문의내역 확인</h2><p>기존에 문의한 내역을 확인할 수 있습니다.</p>",
-            "personal-info": "<h2>개인정보확인/수정</h2><p>회원님의 개인정보를 확인하고 수정할 수 있습니다.</p>",
-            "address-management": "<h2>배송지관리</h2><p>등록된 배송지를 관리할 수 있습니다.</p>"
-            };
+      // 각 항목에 대한 내용을 저장하는 객체
+      const contentData = {
+        interest:
+          "<h2>관심있는 경매 상품</h2><p>여기에서 관심 목록에 등록한 경매 상품을 확인할 수 있습니다.</p>",
+        participating:
+          "<h2>참여중인 경매 상품</h2><p>현재 참여 중인 경매 상품의 목록을 확인할 수 있습니다.</p>",
+        inquiry:
+          "<h2>문의하기</h2><p>경매 관련 문의를 작성하여 제출할 수 있는 페이지입니다.</p>",
+        "inquiry-history":
+          "<h2>문의내역 확인</h2><p>기존에 문의한 내역을 확인할 수 있습니다.</p>",
+        "personal-info":
+          "<h2>개인정보확인/수정</h2><p>회원님의 개인정보를 확인하고 수정할 수 있습니다.</p>",
+        "address-management":
+          "<h2>배송지관리</h2><p>등록된 배송지를 관리할 수 있습니다.</p>",
+      };
 
-        // 선택된 항목의 내용을 표시하는 함수
-            function showContent(contentKey) {
-            const contentArea = document.getElementById('content-area');
-            contentArea.innerHTML = contentData[contentKey];
-            }
-        </script>
-    </head>
-    <body>
-        <div class="header">
-            <!-- 로고 이미지 -->
-            <img src="auction_forest_logo.png" alt="거래해요 경매의 숲" class="logo" onclick="goToMain()">
-            
-            <!-- 가운데 검색창 -->
-            <div class="search-container">
-                <input type="text" class="search-bar" placeholder="검색어를 입력하세요">
-                <span class="search-icon">🔍</span>
-            </div>
-    
-            <!-- 마이페이지 버튼 -->
-            <button class="my-page" onclick="showMyPage()">마이페이지</button>
-        </div>
+      // 선택된 항목의 내용을 표시하는 함수
+      function showContent(contentKey) {
+        const contentArea = document.getElementById("content-area");
+        contentArea.innerHTML = contentData[contentKey];
+      }
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <!-- 로고 이미지 -->
+      <img
+        src="auction_forest_logo.png"
+        alt="거래해요 경매의 숲"
+        class="logo"
+        onclick="goToMain()"
+      />
 
-        <div class="container">
-            <!-- 왼쪽 마이페이지 메뉴 -->
-            <div class="mypage-menu">
-                <h3>MY 메뉴</h3>
-                <ul>
-                    <li onclick="showContent('interest')">관심있는 경매 상품</li>
-                    <li onclick="showContent('participating')">참여중인 경매 상품</li>
-                    <li onclick="showContent('inquiry')">문의하기</li>
-                    <li onclick="showContent('inquiry-history')">문의내역 확인</li>
-                    <li onclick="showContent('personal-info')">개인정보확인/수정</li>
-                    <li onclick="showContent('address-management')">배송지관리</li>
-                </ul>
-            </div>
-            
-            <!-- 오른쪽 내용 표시 영역 -->
-            <div class="content-area" id="content-area">
-                <h2>마이페이지</h2>
-                <p>왼쪽 메뉴에서 항목을 선택하면 관련 정보가 여기에 표시됩니다.</p>
-            </div>
-        </div>
-    
-        
-        
-    </body>
+      <!-- 가운데 검색창 -->
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="검색어를 입력하세요"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <button class="register" onclick="goToRegister()">상품 등록</button>
+      <button class="login-button" onclick="goToLogin()">로그인</button>
+      <button class="my-page" onclick="showMyPage()">마이페이지</button>
+    </div>
+
+    <div class="container">
+      <!-- 왼쪽 마이페이지 메뉴 -->
+      <div class="mypage-menu">
+        <h3>MY 메뉴</h3>
+        <ul>
+          <li onclick="showContent('interest')">관심있는 경매 상품</li>
+          <li onclick="showContent('participating')">참여중인 경매 상품</li>
+          <li onclick="showContent('inquiry')">문의하기</li>
+          <li onclick="showContent('inquiry-history')">문의내역 확인</li>
+          <li onclick="showContent('personal-info')">개인정보확인/수정</li>
+          <li onclick="showContent('address-management')">배송지관리</li>
+        </ul>
+      </div>
+
+      <!-- 오른쪽 내용 표시 영역 -->
+      <div class="content-area" id="content-area">
+        <h2>마이페이지</h2>
+        <p>왼쪽 메뉴에서 항목을 선택하면 관련 정보가 여기에 표시됩니다.</p>
+      </div>
+    </div>
+  </body>
 </html>
