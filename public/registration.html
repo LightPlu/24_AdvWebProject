@@ -14,24 +14,20 @@
         border-radius: 10px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       }
-
-      /* 제목 중앙 정렬 */
       header h1 {
         text-align: center;
         margin-bottom: 20px;
         font-size: 24px;
       }
-
-      /* 라벨과 입력 필드를 세로로 정렬하고 간격을 조정 */
       label {
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
         color: #333;
       }
-
-      input[type="text"],
-      textarea {
+      input,
+      textarea,
+      select {
         width: 100%;
         padding: 10px;
         margin-bottom: 15px;
@@ -39,22 +35,15 @@
         border-radius: 5px;
         font-size: 16px;
       }
-
-      /* 텍스트 영역 크기 조절 */
       textarea {
         resize: vertical;
         min-height: 80px;
       }
-
-      /* 라디오 버튼을 가로로 정렬 */
       .radio-group {
         display: flex;
         gap: 15px;
-        align-items: center;
         margin-bottom: 20px;
       }
-
-      /* 등록 버튼 스타일 */
       .register-button {
         width: 100%;
         background-color: #007bff;
@@ -66,75 +55,27 @@
         cursor: pointer;
         transition: background-color 0.3s;
       }
-
       .register-button:hover {
         background-color: #0056b3;
       }
     </style>
-    <script>
-      function goToMain() {
-        window.location.href = "../index.html"; // 메인 페이지로 이동
-      }
-
-      // 페이지 로드 시 경매 종료 시간의 min과 max 값을 설정
-      window.onload = function () {
-        const endTimeInput = document.getElementById("endTime");
-
-        // 오늘 날짜 계산
-        const today = new Date();
-        const todayISO = today.toISOString().slice(0, 16); // 'YYYY-MM-DDTHH:MM' 형식으로 변환
-
-        // 한 달 뒤 날짜 계산
-        const nextMonth = new Date();
-        nextMonth.setMonth(today.getMonth() + 1);
-        const nextMonthISO = nextMonth.toISOString().slice(0, 16);
-
-        // min과 max 속성 설정
-        endTimeInput.min = todayISO;
-        endTimeInput.max = nextMonthISO;
-      };
-    </script>
   </head>
   <body>
-    <div class="header">
-      <!-- 로고 이미지 -->
-      <img
-        src="auction_forest_logo.png"
-        alt="거래해요 경매의 숲"
-        class="logo"
-        onclick="goToMain()"
-      />
-
-      <!-- 가운데 검색창 -->
-      <div class="search-container">
-        <input
-          type="text"
-          class="search-bar"
-          placeholder="검색어를 입력하세요"
-        />
-        <span class="search-icon">🔍</span>
-      </div>
-
-      <button class="register" onclick="goToRegister()">상품 등록</button>
-      <button class="login-button" onclick="goToLogin()">로그인</button>
-      <button class="my-page" onclick="showMyPage()">마이페이지</button>
-    </div>
-
     <div class="form-container">
       <header>
-        <h1>상품 등록🛍️</h1>
+        <h1>상품 등록</h1>
       </header>
-      <form action="#" method="post">
-        <label for="productName">✔️상품명</label>
+      <form id="productForm" enctype="multipart/form-data">
+        <label for="name">✔️ 상품명</label>
         <input
           type="text"
-          id="productName"
-          name="productName"
+          id="name"
+          name="name"
           placeholder="상품명을 입력하세요"
           required
         />
 
-        <label for="productImage">✔️상품 이미지</label>
+        <label for="productImage">✔️ 상품 이미지</label>
         <input
           type="file"
           id="productImage"
@@ -142,24 +83,24 @@
           accept="image/*"
         />
 
-        <label for="price">✔️경매 시작 가격</label>
+        <label for="startPrice">✔️ 경매 시작 가격</label>
         <input
-          type="text"
-          id="price"
-          name="price"
+          type="number"
+          id="startPrice"
+          name="startPrice"
+          placeholder="경매 시작 가격을 입력하세요"
           required
-          placeholder="경매 시작 가격을 입력하세요."
         />
 
-        <label for="details">✔️상품 설명</label>
+        <label for="description">✔️ 상품 설명</label>
         <textarea
-          id="details"
-          name="details"
-          placeholder="상품에 대한 설명을 입력하세요."
+          id="description"
+          name="description"
+          placeholder="상품에 대한 설명을 입력하세요"
         ></textarea>
-        <label for="category">✔️카테고리</label>
-        <select id="category" name="category">
-          <option value="">카테고리를 선택하세요</option>
+
+        <label for="category">✔️ 카테고리</label>
+        <select id="category" name="category" required>
           <option value="의류">의류</option>
           <option value="가전제품">가전제품</option>
           <option value="생필품">생필품</option>
@@ -171,19 +112,53 @@
           <option value="기타">기타</option>
         </select>
 
-        <label>✔️상태</label>
+        <label>✔️ 상태</label>
         <div class="radio-group">
-          <input type="radio" id="new" name="condition" value="new" />
-          <label for="new">신규 제품</label>
-          <input type="radio" id="used" name="condition" value="used" />
-          <label for="used">중고 제품</label>
+          <label
+            ><input type="radio" name="status" value="new" required /> 신규
+            제품</label
+          >
+          <label
+            ><input type="radio" name="status" value="used" required /> 중고
+            제품</label
+          >
         </div>
 
-        <label for="endTime">✔️경매 종료 시간</label>
+        <label for="endTime">✔️ 경매 종료 시간</label>
         <input type="datetime-local" id="endTime" name="endTime" required />
 
         <button type="submit" class="register-button">등록</button>
       </form>
     </div>
+
+    <script>
+      document
+        .getElementById("productForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(document.getElementById("productForm"));
+
+          try {
+            const response = await fetch(
+              "http://localhost:3000/api/products/add",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            const result = await response.json();
+            if (response.ok) {
+              alert(result.message); // 성공 메시지 출력
+            } else {
+              alert(`오류: ${result.message}`); // 실패 메시지 출력
+            }
+          } catch (error) {
+            console.error(error);
+            alert("상품 등록 중 오류가 발생했습니다.");
+          }
+        });
+    </script>
   </body>
 </html>
