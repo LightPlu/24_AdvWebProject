@@ -19,6 +19,22 @@ body {
   color: white;
 }
 
+.header .button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.header button {
+  background-color: #8b6d3b; /* 버튼 배경색 */
+  color: white; /* 버튼 글자색 */
+  border: none;
+  padding: 10px 15px; /* 버튼 내부 여백 */
+  border-radius: 5px; /* 버튼 모서리 둥글게 */
+  cursor: pointer; /* 클릭 가능한 포인터 설정 */
+  font-size: 14px; /* 버튼 글자 크기 */
+  margin: 0; /* 버튼 간의 좌우 간격 */
+}
+
 .logo {
   cursor: pointer;
 }
@@ -92,7 +108,7 @@ body {
   font-size: 1.2em;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   border-radius: 10px;
-  width: 50%;
+  width: 39%;
   background-color: transparent; /* 배경을 완전히 투명하게 설정 */
   box-shadow: none; /* 그림자 제거 */
 }
@@ -267,4 +283,105 @@ body {
 .product-container h1 {
   font-size: 22px;
   margin-bottom: 15px;
+}
+
+/* 팝업 전체 화면 */
+.popup {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 최상위로 표시 */
+}
+
+/* 팝업 내용 */
+.popup-content {
+  background: white;
+  padding: 30px; /* 패딩을 늘려 내부 여유 공간 확보 */
+  border-radius: 10px;
+  width: 350px; /* 폭을 넓혀서 충분한 공간 제공 */
+  text-align: center;
+  position: relative;
+  box-sizing: border-box; /* 패딩과 폭을 포함하여 계산 */
+}
+
+/* 닫기 버튼 */
+.close-btn {
+  position: absolute;
+  top: 15px; /* 상단에서 15px 떨어짐 */
+  right: 15px; /* 오른쪽에서 15px 떨어짐 */
+  cursor: pointer;
+  font-size: 20px;
+  color: #333; /* 닫기 버튼 색상 */
+}
+
+/* 입력 필드 스타일 */
+.form-group {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* 비밀번호 토글 버튼 */
+.password-group {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.password-toggle:hover {
+  color: #333;
+}
+
+/* 로그인 버튼 */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #00c853;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #00a746;
+}
+
+/* 하단 링크 섹션 */
+.links {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #555;
+}
+
+.links a {
+  text-decoration: none;
+  color: #00a6f3;
+  margin: 0 5px;
+}
+
+.links a:hover {
+  text-decoration: underline;
 }

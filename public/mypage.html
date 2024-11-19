@@ -9,6 +9,9 @@
       function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
       }
+      function goToRegister() {
+        window.location.href = "../public/registration.html";
+      }
 
       // 각 항목에 대한 내용을 저장하는 객체
       const contentData = {
@@ -53,9 +56,11 @@
         <span class="search-icon">🔍</span>
       </div>
 
-      <button class="register" onclick="goToRegister()">상품 등록</button>
-      <button class="login-button" onclick="goToLogin()">로그인</button>
-      <button class="my-page" onclick="showMyPage()">마이페이지</button>
+      <div class="button-group">
+        <button class="register" onclick="goToRegister()">상품 등록</button>
+        <button class="login-button" onclick="goToLogin()">로그인</button>
+        <button class="my-page" onclick="showMyPage()">마이페이지</button>
+      </div>
     </div>
 
     <div class="container">

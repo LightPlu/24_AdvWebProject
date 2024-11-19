@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="signup-form-container">
+    <h2>회원가입</h2>
+    <form id="signupForm">
+      <!-- 이름 -->
+      <div class="form-group">
+        <label for="membername">이름</label>
+        <input
+          type="text"
+          id="membername"
+          name="membername"
+          placeholder="이름을 입력하세요"
+          required
+        />
+      </div>
+
+      <!-- 이메일 -->
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="example@domain.com"
+          required
+        />
+      </div>
+
+      <!-- 휴대폰번호 -->
+      <div class="form-group">
+        <label for="mobile_number">휴대폰번호</label>
+        <input
+          type="text"
+          id="mobile_number"
+          name="mobile_number"
+          placeholder="010-1234-5678"
+          required
+        />
+      </div>
+
+      <!-- 비밀번호 -->
+      <div class="form-group password-group">
+        <label for="password">비밀번호</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="비밀번호 입력"
+          required
+        />
+        <span class="password-toggle" onclick="togglePassword('password')">👁️</span>
+        <small class="password-hint">
+          영문/숫자/특수문자 중 2가지 이상 포함, 8자 이상
+        </small>
+      </div>
+
+      <!-- 비밀번호 확인 -->
+      <div class="form-group password-group">
+        <label for="confirm_password">비밀번호 확인</label>
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          placeholder="비밀번호 확인"
+          required
+        />
+        <span class="password-toggle" onclick="togglePassword('confirm_password')">👁️</span>
+      </div>
+
+      <!-- 거래장소 -->
+      <div class="form-group">
+        <label for="place">거래장소</label>
+        <input
+          type="text"
+          id="place"
+          name="place"
+          placeholder="거래장소를 입력하세요"
+          required
+        />
+      </div>
+
+      <!-- 가입하기 버튼 -->
+      <button type="submit" class="signup-btn">가입하기</button>
+    </form>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
