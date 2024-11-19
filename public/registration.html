@@ -59,8 +59,44 @@
         background-color: #0056b3;
       }
     </style>
+    <script>
+      function goToMain() {
+        window.location.href = "../index.html"; // 메인 페이지로 이동
+      }
+      function showMyPage() {
+        window.location.href = "mypage.html"; // 마이 페이지로 이동
+      }
+    </script>
   </head>
   <body>
+    <!-- 상단 헤더 -->
+    <div class="header">
+      <!-- 로고 이미지 -->
+      <img
+        src="auction_forest_logo.png"
+        alt="거래해요 경매의 숲"
+        class="logo"
+        onclick="goToMain()"
+      />
+
+      <!-- 가운데 검색창 -->
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="검색어를 입력하세요"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- 마이페이지,로그인,상품등록 버튼 -->
+      <div class="button-group">
+        <button class="register" onclick="goToRegister()">상품 등록</button>
+        <button class="login-button" onclick="goToLogin()">로그인</button>
+        <button class="my-page" onclick="showMyPage()">마이페이지</button>
+      </div>
+    </div>
+
     <div class="form-container">
       <header>
         <h1>상품 등록</h1>
