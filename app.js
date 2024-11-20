@@ -8,6 +8,11 @@ const app = express();
 
 dbConnect();
 
+// MongoDB 연결
+mongoose
+  .connect("mongodb+srv://lange50300:dlsans1378**@cluster0.bmpv5.mongodb.net/")
+  .then(() => console.log("MongoDB Atlas Connected"))
+  .catch((err) => console.error("MongoDB Connection Error:", err));
 
 // 미들웨어 설정
 app.use(express.json());
@@ -23,8 +28,8 @@ app.use("/api/products", productRoutes);
 const signupRoutes = require("./routes/signup");
 app.use("/", signupRoutes);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // 서버 실행
