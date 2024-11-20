@@ -4,61 +4,6 @@
     <meta charset="UTF-8" />
     <title>상품 등록</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      /* 전체 폼을 중앙 정렬하고, 배경과 그림자를 추가 */
-      .form-container {
-        width: 600px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      }
-      header h1 {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 24px;
-      }
-      label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #333;
-      }
-      input,
-      textarea,
-      select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-      textarea {
-        resize: vertical;
-        min-height: 80px;
-      }
-      .radio-group {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-      }
-      .register-button {
-        width: 100%;
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-      .register-button:hover {
-        background-color: #0056b3;
-      }
-    </style>
     <script>
       function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
@@ -71,13 +16,14 @@
   <body>
     <!-- 상단 헤더 -->
     <div class="header">
-      <!-- 로고 이미지 -->
-      <img
-        src="auction_forest_logo.png"
-        alt="거래해요 경매의 숲"
-        class="logo"
-        onclick="goToMain()"
-      />
+      <div class="logo-container" onclick="goToMain()">
+        <img
+          src="./images/free-icon-auction-3211435.png"
+          alt="Bid Icon"
+          class="icon-small"
+        />
+        <span class="site-title">거래해요 경매의 숲</span>
+      </div>
 
       <!-- 가운데 검색창 -->
       <div class="search-container">
