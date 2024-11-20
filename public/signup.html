@@ -1,18 +1,81 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원가입</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="signup-form-container">
-    <h2>회원가입</h2>
-    <form id="signupForm">
-      <!-- 이름 -->
-      <div class="form-group">
-        <label for="membername">이름</label>
+  <head>
+    <meta charset="UTF-8" />
+    <title>회원가입</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* 전체 폼을 중앙 정렬하고, 배경과 그림자를 추가 */
+      .form-container {
+        width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      header h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+      .radio-group {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      .register-button {
+        width: 100%;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .register-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+    <script>
+      function goToMain() {
+        window.location.href = "../index.html"; // 메인 페이지로 이동
+      }
+      function showMyPage() {
+        window.location.href = "mypage.html"; // 마이 페이지로 이동
+      }
+    </script>
+  </head>
+  <body>
+
+    <div class="form-container">
+      <header>
+        <h1>회원가입</h1>
+      </header>
+      <form id="memberForm" enctype="multipart/form-data">
+        <label for="membername">✔️ 이름</label>
         <input
           type="text"
           id="membername"
@@ -20,78 +83,85 @@
           placeholder="이름을 입력하세요"
           required
         />
-      </div>
 
-      <!-- 이메일 -->
-      <div class="form-group">
-        <label for="email">이메일</label>
+
+        <label for="email">✔️ 이메일</label>
         <input
-          type="email"
+          type="text"
           id="email"
           name="email"
-          placeholder="example@domain.com"
+          placeholder="이메일을 입력하세요"
           required
         />
-      </div>
 
-      <!-- 휴대폰번호 -->
-      <div class="form-group">
-        <label for="mobile_number">휴대폰번호</label>
+        <label for="mobile_number">✔️ 전화번호</label>
         <input
           type="text"
           id="mobile_number"
           name="mobile_number"
-          placeholder="010-1234-5678"
+          placeholder="전화번호를 입력하세요"
           required
         />
-      </div>
 
-      <!-- 비밀번호 -->
-      <div class="form-group password-group">
-        <label for="password">비밀번호</label>
+        <label for="password">✔️ 비밀번호</label>
         <input
-          type="password"
+          type="text"
           id="password"
           name="password"
-          placeholder="비밀번호 입력"
+          placeholder="비밀번호를 입력하세요"
           required
         />
-        <span class="password-toggle" onclick="togglePassword('password')">👁️</span>
-        <small class="password-hint">
-          영문/숫자/특수문자 중 2가지 이상 포함, 8자 이상
-        </small>
-      </div>
 
-      <!-- 비밀번호 확인 -->
-      <div class="form-group password-group">
-        <label for="confirm_password">비밀번호 확인</label>
+        <label for="confirm_password">✔️ 비밀번호 확인</label>
         <input
-          type="password"
+          type="text"
           id="confirm_password"
           name="confirm_password"
-          placeholder="비밀번호 확인"
+          placeholder="비밀번호를 다시 입력하세요"
           required
         />
-        <span class="password-toggle" onclick="togglePassword('confirm_password')">👁️</span>
-      </div>
 
-      <!-- 거래장소 -->
-      <div class="form-group">
-        <label for="place">거래장소</label>
+        <label for="place">✔️ 장소</label>
         <input
           type="text"
           id="place"
           name="place"
-          placeholder="거래장소를 입력하세요"
+          placeholder="장소를 입력하세요"
           required
         />
-      </div>
+        
+        <button type="submit" class="register-button">등록</button>
+      </form>
+    </div>
 
-      <!-- 가입하기 버튼 -->
-      <button type="submit" class="signup-btn">가입하기</button>
-    </form>
-  </div>
+    <script>
+      document
+        .getElementById("memberForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
 
-  <script src="scripts.js"></script>
-</body>
+          const formData = new FormData(document.getElementById("memberForm"));
+
+          try {
+            const response = await fetch(
+              "http://localhost:3000/api/members/add",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            const result = await response.json();
+            if (response.ok) {
+              alert(result.message); // 성공 메시지 출력
+            } else {
+              alert(`오류: ${result.message}`); // 실패 메시지 출력
+            }
+          } catch (error) {
+            console.error(error);
+            alert("회원 등록 중 오류가 발생했습니다.");
+          }
+        });
+    </script>
+  </body>
 </html>
