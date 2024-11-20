@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname))); // 정적 파일 폴더 설정
 const productRoutes = require("./routes/product");
 app.use("/api/products", productRoutes);
 const signupRoutes = require("./routes/signup");
-app.use("/", signupRoutes);
+app.use("/api/members", signupRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
