@@ -4,61 +4,12 @@
     <meta charset="UTF-8" />
     <title>회원가입</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      /* 전체 폼을 중앙 정렬하고, 배경과 그림자를 추가 */
-      .form-container {
-        width: 600px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      }
-      header h1 {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 24px;
-      }
-      label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #333;
-      }
-      input,
-      textarea,
-      select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-      textarea {
-        resize: vertical;
-        min-height: 80px;
-      }
-      .radio-group {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-      }
-      .register-button {
-        width: 100%;
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-      .register-button:hover {
-        background-color: #0056b3;
-      }
-    </style>
+
+    <!-- Daum Postcode API 로드 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <!-- JavaScript 파일 로드 -->
+    <script src="address.js" defer></script>
     <script>
       function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
@@ -69,6 +20,34 @@
     </script>
   </head>
   <body>
+    <!-- 상단 헤더 -->
+    <div class="header">
+      <div class="logo-container" onclick="goToMain()">
+        <img
+          src="./images/free-icon-auction-3211435.png"
+          alt="Bid Icon"
+          class="icon-small"
+        />
+        <span class="site-title">거래해요 경매의 숲</span>
+      </div>
+
+      <!-- 가운데 검색창 -->
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="검색어를 입력하세요"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- 마이페이지,로그인,상품등록 버튼 -->
+      <div class="button-group">
+        <button class="register" onclick="goToRegister()">상품 등록</button>
+        <button class="login-button" onclick="goToLogin()">로그인</button>
+        <button class="my-page" onclick="showMyPage()">마이페이지</button>
+      </div>
+    </div>
 
     <div class="form-container">
       <header>
@@ -83,7 +62,6 @@
           placeholder="이름을 입력하세요"
           required
         />
-
 
         <label for="email">✔️ 이메일</label>
         <input
@@ -121,15 +99,30 @@
           required
         />
 
-        <label for="place">✔️ 장소</label>
+        <label for="address">✔️ 주소</label>
+        <div>
+          <button type="button" onclick="sample6_execDaumPostcode()">
+            주소찾기
+          </button>
+          <input
+            type="text"
+            id="sample6_postcode"
+            placeholder="우편번호"
+            readonly
+          />
+        </div>
         <input
           type="text"
-          id="place"
-          name="place"
-          placeholder="장소를 입력하세요"
-          required
+          id="sample6_address"
+          placeholder="기본주소"
+          readonly
         />
-        
+        <input
+          type="text"
+          id="sample6_detailAddress"
+          placeholder="나머지 주소"
+        />
+
         <button type="submit" class="register-button">등록</button>
       </form>
     </div>
