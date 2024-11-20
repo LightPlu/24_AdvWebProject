@@ -21,6 +21,8 @@ const productRoutes = require("./routes/product");
 app.use("/api/products", productRoutes);
 const signupRoutes = require("./routes/signup");
 app.use("/api/members", signupRoutes);
+const loginRoutes = require("./routes/login");
+app.use("/api", loginRoutes);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
