@@ -16,11 +16,13 @@ router.post("/add", async (req, res) => {
 
     // 비밀번호와 비밀번호 확인 비교
     if (password !== confirm_password) {
-      return res.status(400).json({ message: "비밀번호와 비밀번호 확인이 일치하지 않습니다." });
+      return res
+        .status(400)
+        .json({ message: "비밀번호와 비밀번호 확인이 일치하지 않습니다." });
     }
 
-     // 비밀번호 암호화
-     const hashedPassword = await bcrypt.hash(password, 10); // 10은 saltRounds (암호화 강도)
+    // 비밀번호 암호화
+    const hashedPassword = await bcrypt.hash(password, 10); // 10은 saltRounds (암호화 강도)
 
     // 새로운 회원 생성
     const newMember = new Member({
