@@ -6,24 +6,11 @@ const Member = require("../models/members"); // Member 모델 가져오기
 // 1. 회원 등록 (POST /api/members/add)
 router.post("/add", async (req, res) => {
   try {
-    const {
-      membername,
-      email,
-      mobile_number,
-      password,
-      confirm_password,
-      address,
-    } = req.body;
+    const { membername, email, mobile_number, password, confirm_password, sample6_postcode, sample6_address, sample6_detailAddress } =
+      req.body;
 
     // 필수 필드 확인
-    if (
-      !membername ||
-      !email ||
-      !mobile_number ||
-      !password ||
-      !confirm_password ||
-      !address
-    ) {
+    if (!membername || !email || !mobile_number || !password || !confirm_password || !sample6_postcode || !sample6_address || !sample6_detailAddress) {
       return res.status(400).json({ message: "모든 필드를 입력해야 합니다." });
     }
 
@@ -43,7 +30,9 @@ router.post("/add", async (req, res) => {
       email,
       mobile_number,
       password: hashedPassword,
-      address,
+      sample6_postcode,
+      sample6_address,
+      sample6_detailAddress
     });
 
     // MongoDB에 저장
