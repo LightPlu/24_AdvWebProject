@@ -22,9 +22,20 @@ const memberSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    place: {
+    sample6_postcode: {
       type: String,
-      maxlength: 255,
+      maxlength: 20, // 우편번호는 짧으므로 길이를 제한
+      required: true, // 필수 항목으로 지정
+    },
+    sample6_address: {
+      type: String,
+      maxlength: 255, // 기본 주소의 최대 길이 제한
+      required: true, // 필수 항목으로 지정
+    },
+    sample6_detailAddress: {
+      type: String,
+      maxlength: 255, // 나머지 주소의 최대 길이 제한
+      required: false, // 필수 항목 아님
     },
     is_admin: {
       type: Boolean,
