@@ -2,10 +2,16 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
+const checkLogin = require("../middlewares/checkLogin");
 const Product = require("../models/Products"); // Product 모델 가져오기
+const cookieParser = require("cookie-parser");
+
+router.use(cookieParser());
 
 // 1. 상품 등록 (POST /api/products/add)
-router.post("/add", async (req, res) => {
+router
+  .route("/add")
+  .post(checkLogin, async (req, res) => {
   try {
     const { name, startPrice, description, category, status, endTime } =
       req.body;
@@ -58,6 +64,16 @@ router.post("/add", async (req, res) => {
     });
   }
 });
+
+router.route("/add").get(checkLogin, async (req, res) => {
+   // 로그인 상태 검증 후 처리
+   if (req.user) {
+    res.status(200).json({ message: "상품 등록 페이지 접근 허용" });
+  } else {
+    res.status(401).json({ message: "로그인이 필요합니다." });
+  }
+});
+
 
 // 2. 모든 상품 조회 (GET /api/products)
 router.get("/", async (req, res) => {
