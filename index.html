@@ -216,14 +216,10 @@
         document.getElementById("loginPopup").style.display = "none";
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        updateAuthButton();
-      });
-
       function updateAuthButton() {
-        const authButton = document.querySelector(".login-button");
         const token = document.cookie.includes("token");
-
+        const authButton = document.querySelector(".login-button");
+        
         if (token) {
           authButton.textContent = "로그아웃";
           authButton.onclick = logout;
