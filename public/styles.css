@@ -45,7 +45,7 @@
 
 /* 본문 스타일 */
 body {
-  font-family: "SUITE-Regular";
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
   display: flex;
@@ -69,17 +69,6 @@ body {
   display: flex;
   gap: 10px;
 }
-
-/* 버튼 스타일
-.header button {
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  margin: 0;
-} */
 
 /* 검색 바 */
 .search-container {
@@ -111,6 +100,7 @@ body {
   padding: 8px 16px;
   border: none;
   cursor: pointer;
+  font-family: "SUITE-Regular";
 }
 
 /* 폼 컨테이너 */
@@ -200,79 +190,41 @@ textarea {
   object-fit: cover;
 }
 
-/* 경매 사이트 사용 방법 영역
-.overlay-content {
-  position: absolute;
-  top: 5px;
-  left: 10px;
-  color: rgb(195, 62, 13);
-  padding: 20px;
-  font-size: 1.5em;
-  font-family: "SUITE-Regular";
-  border-radius: 10px;
-  width: 39%;
-  background-color: transparent; 
-  box-shadow: none; 
-} */
-
-.overlay-content p {
-  font-family: "SUITE-Regular"; /* p에 적용할 폰트 */
-  font-size: 1.2em; /* 원하는 크기 */
-  color: #555555; /* 원하는 색상 */
-  line-height: 1.6; /* 가독성을 위해 줄 간격 조정 */
-}
-
-/* 랭킹 컨테이너 스타일 */
+/* 랭킹 전체 컨테이너 */
 .ranking {
   position: absolute;
-  top: 50px; /* 원하는 위치로 조정 */
   right: 30px; /* 오른쪽 여백 */
-  width: 300px;
-  text-align: center;
-  background-color: transparent;
+  top: 150px; /* 상단에서 떨어진 위치 */
+  width: 300px; /* 컨테이너 너비 */
+  text-align: center; /* 중앙 정렬 */
+  background-color: #e9f7df; /* 연한 초록색 파스텔톤 배경 */
+  border-radius: 20px; /* 둥근 모서리 */
+  padding: 20px; /* 내부 여백 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 랭킹 헤더 */
-.ranking-header {
-  position: relative;
-  width: 100%;
-  height: 150px; /* 이미지 높이 */
-  overflow: hidden; /* 불필요한 영역 숨김 */
-}
-
-/* 랭킹 이미지 */
-.ranking-image {
-  width: 300px;
-  height: 300px;
-  object-fit: contain; /* 이미지가 잘리지 않도록 조정 */
-  border-radius: 20px;
-}
-
-/* 랭킹 제목 (이미지 위에 위치) */
+/* 실시간 랭킹 제목 */
 .ranking-title {
-  position: absolute;
-  top: 50%; /* 이미지 중앙에 배치 */
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #626262;
-  font-size: 20px;
-  font-weight: bold;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  pointer-events: none; /* 텍스트가 클릭을 방해하지 않도록 설정 */
+  font-family: "SUITE-Regular";
+  font-size: 28px; /* 텍스트 크기 */
+  font-weight: bold; /* 텍스트 굵기 */
+  color: #4caf50; /* 초록색 텍스트 */
+  margin-bottom: 20px; /* 제목과 목록 간 간격 */
 }
 
-/* 랭킹 항목 컨테이너 */
+/* 경매 물품 목록 */
 .ranking-items {
-  margin-top: 10px; /* 이미지와 간격 추가 */
-  text-align: left; /* 항목을 왼쪽 정렬 */
+  font-family: "SUITE-Regular";
+  text-align: left; /* 목록을 왼쪽 정렬 */
+  font-size: 18px; /* 텍스트 크기 */
+  font-weight: bold;
+  color: #333; /* 검정색 텍스트 */
+  line-height: 1.8; /* 줄 간격 */
 }
 
-/* 랭킹 항목 */
+/* 각 경매 물품 항목 */
 .ranking-item {
-  padding: 5px 0;
-  font-size: 16px;
-  color: #333;
-  border-bottom: 1px solid #ddd; /* 항목 간 경계선 */
+  margin-bottom: 5px; /* 항목 간 간격 */
 }
 
 /* 카테고리 버튼들 */
@@ -328,27 +280,14 @@ textarea {
 
 .container {
   display: flex;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 20px auto; /* 페이지 가운데 정렬 */
   gap: 20px;
   align-items: flex-start;
 }
 
-/* 필터 영역 스타일 */
-.filter {
-  width: 200px;
-  margin: 65px 0 0 0; /* 위쪽에 20px 간격 추가 */
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-}
-
 .product-container {
   flex: 1;
-}
-
-.product-container h1 {
-  margin-top: 0;
 }
 
 .product-list {
@@ -359,7 +298,7 @@ textarea {
 
 .product-item {
   width: 200px;
-  height: 150px;
+  height: 250px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 15px;
@@ -398,7 +337,7 @@ textarea {
 
 .mypage-menu,
 .filter {
-  width: 200px;
+  width: 280px;
   margin: 0;
   padding: 10px;
   border: 1px solid #ddd;
@@ -408,9 +347,20 @@ textarea {
 
 .mypage-menu h3,
 .filter h3 {
+  text-align: center;
   font-size: 18px;
   margin-bottom: 10px;
   color: #333;
+}
+
+label {
+  display: flex;
+  justify-content: space-between; /* 텍스트와 체크박스를 양쪽으로 정렬 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+input[type="checkbox"] {
+  margin-left: 10px; /* 체크박스 위치 간격 */
 }
 
 .mypage-menu ul {

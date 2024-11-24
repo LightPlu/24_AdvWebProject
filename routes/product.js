@@ -78,7 +78,10 @@ router.route("/add").get(checkLogin, async (req, res) => {
 // 2. 모든 상품 조회 (GET /api/products)
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.find();
+    /*  const products = await Product.find(); */
+    const { category } = req.query;
+    const query = category ? { category } : {}; // 카테고리 필터링
+    const products = await Product.find(query);
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({
