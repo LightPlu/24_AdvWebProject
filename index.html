@@ -229,6 +229,23 @@
         }
       }
 
+      document.addEventListener("DOMContentLoaded", () => {
+        updateAuthButton();
+      });
+
+      function updateAuthButton() {
+        const token = document.cookie.includes("token");
+        const authButton = document.querySelector(".login-button");
+        
+        if (token) {
+          authButton.textContent = "로그아웃";
+          authButton.onclick = logout;
+        } else {
+          authButton.textContent = "로그인";
+          authButton.onclick = goToLogin;
+        }
+      }
+
       function logout() {
         fetch("/api/logout", { method: "POST" })
           .then((response) => {

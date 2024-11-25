@@ -26,7 +26,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
     res.clearCookie("token"); // 쿠키 삭제
-  res.status(200).json({ message: "로그아웃 성공" });
+    res.status(200).json({ message: "로그아웃 성공" });
 });
     
 module.exports = {loginUser, logoutUser};
