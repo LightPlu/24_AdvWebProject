@@ -20,13 +20,13 @@ const loginUser = asyncHandler(async (req, res) => {
         }
 
     const token = jwt.sign({ id: member._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token);
     res.redirect("/");
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
     res.clearCookie("token"); // 쿠키 삭제
-  res.status(200).json({ message: "로그아웃 성공" });
+    res.status(200).json({ message: "로그아웃 성공" });
 });
     
 module.exports = {loginUser, logoutUser};

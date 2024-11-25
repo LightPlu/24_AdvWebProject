@@ -33,11 +33,13 @@ router
         fs.mkdirSync(uploadDir, { recursive: true });
       }
 
-      const filePath = path.join(uploadDir, Date.now() + "-" + image.name);
+      const timestamp = Date.now(); // 한 번만 호출
+      const fileName = `${timestamp}-${image.name}`; // 고유 파일명 생성
+      const filePath = path.join(uploadDir, fileName); // 실제 저장 경로
 
       // 파일 저장
       await image.mv(filePath);
-      imagePath = `/uploads/${Date.now()}-${image.name}`;
+      imagePath = `/uploads/${fileName}`;
     }
 
     // 새로운 상품 생성
