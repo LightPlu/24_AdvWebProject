@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상품 상세 정보</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      #product-details {
+        text-align: center;
+      }
+      img {
+        max-width: 300px;
+        height: auto;
+        margin-bottom: 20px;
+      }
+      .like-button {
+        color: red;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      a {
+        display: block;
+        margin-top: 20px;
+        color: blue;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="product-details">
+      <h1>상품 상세 정보</h1>
+      <div id="product-info"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const productId = new URLSearchParams(window.location.search).get("id");
+        if (!productId) {
+          document.getElementById("product-info").innerHTML =
+            "<p>상품 정보를 찾을 수 없습니다.</p>";
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/Products/${productId}`);
+          if (!response.ok)
+            throw new Error("상품 정보를 가져오는 데 실패했습니다.");
+
+          const product = await response.json();
+
+          document.getElementById("product-info").innerHTML = `
+            <img src="${product.image}" alt="${product.name}" />
+            <h1>${product.name}</h1>
+            <p>가격: ${product.startPrice.toLocaleString()}원</p>
+            <p>설명: ${product.description}</p>
+            <p>카테고리: ${product.category}</p>
+            <p>상태: ${product.status === "new" ? "새상품" : "중고"}</p>
+            <p>경매 종료 시간: ${new Date(product.endTime).toLocaleString()}</p>
+            <p><span class="like-button" id="like-button">★</span> <span id="like-count">${
+              product.likes
+            }</span></p>
+            <a href="/category.html?category=${product.category}">뒤로가기</a>
+          `;
+
+          // 찜 버튼 클릭 이벤트 추가
+          document
+            .getElementById("like-button")
+            .addEventListener("click", async () => {
+              try {
+                const likeResponse = await fetch(
+                  `/api/Products/${productId}/like`,
+                  {
+                    method: "POST",
+                  }
+                );
+                if (!likeResponse.ok)
+                  throw new Error("찜 기능 처리 중 오류가 발생했습니다.");
+
+                const likeData = await likeResponse.json();
+                document.getElementById("like-count").textContent =
+                  likeData.likes; // 찜 수 업데이트
+              } catch (error) {
+                console.error("찜 기능 처리 오류:", error);
+              }
+            });
+        } catch (error) {
+          document.getElementById("product-info").innerHTML =
+            "상품 정보를 불러오지 못했습니다.";
+        }
+      });
+    </script>
+  </body>
+</html>

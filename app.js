@@ -15,10 +15,11 @@ app.use(cors()); // CORS 설정
 app.use(fileUpload()); // 파일 업로드 미들웨어 추가
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // 업로드 폴더 정적 제공
 app.use(express.static(path.join(__dirname))); // 정적 파일 폴더 설정
+app.use(express.static(path.join(__dirname, "public")));
 
 // 라우트 연결
 const productRoutes = require("./routes/product");
-app.use("/api/products", productRoutes);
+app.use("/api/Products", productRoutes);
 const signupRoutes = require("./routes/signup");
 app.use("/api/members", signupRoutes);
 const loginRoutes = require("./routes/login");
