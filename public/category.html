@@ -37,14 +37,59 @@
           const productItem = document.createElement("div");
           productItem.className = "product-item";
 
+          // 상품 HTML 구조
           productItem.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" />
-            <h3>${product.name}</h3>
-            <p class="price">${product.startPrice.toLocaleString()}원</p>
-            <p>${product.description}</p>
+            <a href="/productDetails.html?id=${product._id}">
+              <img src="${product.image}" alt="${product.name}" />
+              <h3>
+                ${product.name}
+                <span class="like-button" data-product-id="${
+                  product._id
+                }" style="cursor: pointer; font-size: 24px; color: red;">★</span>
+                <span class="like-count" id="like-count-${product._id}">${
+            product.likes
+          }</span>
+              </h3>
+              <p class="price">${product.startPrice.toLocaleString()}원</p>
+              <p>${product.description}</p>
+            </a>
           `;
 
           productList.appendChild(productItem);
+        });
+
+        // 찜 버튼 클릭 이벤트 추가
+        document.querySelectorAll(".like-button").forEach((button) => {
+          button.addEventListener("click", async (event) => {
+            event.preventDefault(); // 기본 링크 동작 방지
+            const productId = button.dataset.productId;
+            const userId = "로그인된사용자ID"; // 여기에 실제 로그인 사용자 ID를 추가
+
+            try {
+              const response = await fetch(`/api/products/${productId}/like`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId }),
+              });
+
+              if (!response.ok) {
+                const errorData = await response.json();
+                alert(errorData.error); // 에러 메시지 출력
+                return;
+              }
+
+              const likeData = await response.json();
+              // 찜 갯수 업데이트
+              const likeCountElement = document.getElementById(
+                `like-count-${productId}`
+              );
+              likeCountElement.textContent = likeData.likes;
+            } catch (error) {
+              console.error("찜 기능 처리 오류:", error);
+            }
+          });
         });
       }
 
@@ -69,6 +114,7 @@
         }
       });
     </script>
+
     <script>
       function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
@@ -88,7 +134,7 @@
       function updateAuthButton() {
         const token = document.cookie.includes("token");
         const authButton = document.querySelector(".login-button");
-        
+
         if (token) {
           authButton.textContent = "로그아웃";
           authButton.onclick = logout;
