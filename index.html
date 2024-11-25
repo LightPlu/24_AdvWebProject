@@ -9,6 +9,7 @@
     <title>경매 사이트</title>
   </head>
   <body>
+    
     <!-- 로그인 팝업 -->
     <div id="loginPopup" class="popup">
       <div class="popup-content">
@@ -66,7 +67,7 @@
 
       <!-- 마이페이지,로그인,상품등록 버튼 -->
       <div class="button-group">
-        <button class="register" onclick="goToRegister()">상품 등록</button>
+        <button id="register" class="register" onclick="goToRegister()">상품 등록</button>
         <button class="login-button" onclick="goToLogin()">로그인</button>
         <button class="my-page" onclick="showMyPage()">마이페이지</button>
       </div>
@@ -95,39 +96,26 @@
     <!-- 실시간 랭킹 -->
     <div class="ranking">
       <div class="ranking-header">
-        <img
-          src="./public/images/나뭇잎2.png"
-          alt="실시간 랭킹"
-          class="ranking-image"
-        />
         <h3 class="ranking-title">실시간 랭킹</h3>
-      </div>
-      <div class="ranking-items">
-        <div class="ranking-item">1. 경매 물품 A</div>
-        <div class="ranking-item">2. 경매 물품 B</div>
-        <div class="ranking-item">3. 경매 물품 C</div>
-        <div class="ranking-item">4. 경매 물품 D</div>
-        <div class="ranking-item">5. 경매 물품 E</div>
+        <div class="ranking-items">
+          <div class="ranking-item">1. 경매 물품 A</div>
+          <div class="ranking-item">2. 경매 물품 B</div>
+          <div class="ranking-item">3. 경매 물품 C</div>
+          <div class="ranking-item">4. 경매 물품 D</div>
+          <div class="ranking-item">5. 경매 물품 E</div>
+        </div>
       </div>
     </div>
 
     <!-- 카테고리 버튼들 -->
     <div class="categories">
-      <button class="category-button" onclick="openCategory('원피스')">
-        <img
-          src="./public/images/의류.jpeg"
-          alt="원피스"
-          class="button-image"
-        />
-        <span class="button-text">원피스</span>
+      <button class="category-button" onclick="openCategory('의류')">
+        <img src="./public/images/의류.jpeg" alt="의류" class="button-image" />
+        <span class="button-text">의류</span>
       </button>
-      <button class="category-button" onclick="openCategory('전기자전거')">
-        <img
-          src="./public/images/가구.jpeg"
-          alt="전기자전거"
-          class="button-image"
-        />
-        <span class="button-text">전기자전거</span>
+      <button class="category-button" onclick="openCategory('가구')">
+        <img src="./public/images/가구.jpeg" alt="가구" class="button-image" />
+        <span class="button-text">가구</span>
       </button>
       <button class="category-button" onclick="openCategory('식품')">
         <img src="./public/images/식품.jpeg" alt="식품" class="button-image" />
@@ -183,11 +171,23 @@
 
       // 마이페이지 버튼 클릭 시 리스트 표시
       function showMyPage() {
-        window.location.href = "./public/mypage.html"; // 마이 페이지로 이동
-      }
-      // 상품 등록 페이지 이동
-      function goToRegister() {
-        window.location.href = "./public/registration.html";
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/mypage", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/mypage.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert("마이 페이지로 이동할 수 없습니다. 로그인이 필요합니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
       }
 
       // 카테고리 버튼 클릭 시 창 열기
@@ -233,17 +233,25 @@
         updateAuthButton();
       });
 
-      function updateAuthButton() {
-        const token = document.cookie.includes("token");
-        const authButton = document.querySelector(".login-button");
-        
-        if (token) {
-          authButton.textContent = "로그아웃";
-          authButton.onclick = logout;
-        } else {
-          authButton.textContent = "로그인";
-          authButton.onclick = goToLogin;
-        }
+      function goToRegister() {
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/products/add", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/registration.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert("상품 등록 페이지로 이동할 수 없습니다. 로그인이 필요합니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
+
       }
 
       function logout() {
@@ -285,6 +293,7 @@
             })
             .catch((error) => console.error("로그인 중 오류 발생:", error));
         });
+
     </script>
   </body>
 </html>
