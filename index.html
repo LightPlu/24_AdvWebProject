@@ -59,10 +59,11 @@
       <div class="search-container">
         <input
           type="text"
+          id="search-bar"
           class="search-bar"
           placeholder="검색어를 입력하세요"
         />
-        <span class="search-icon">🔍</span>
+        <span class="search-icon" onclick="searchProducts()">🔍</span>
       </div>
 
       <!-- 마이페이지,로그인,상품등록 버튼 -->
@@ -195,6 +196,16 @@
         window.location.href = `./public/category.html?category=${encodeURIComponent(
           categoryName
         )}`;
+      }
+
+      function searchProducts() {
+        const query = document.getElementById("search-bar").value.trim();
+
+        if (query) {
+          window.location.href = `./public/category.html?search=${encodeURIComponent(query)}`;
+        } else {
+          alert("검색어를 입력하세요.");
+        }
       }
 
       function togglePassword() {

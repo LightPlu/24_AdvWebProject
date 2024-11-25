@@ -7,16 +7,27 @@
     <link rel="stylesheet" href="styles.css" />
     <script>
       // 상품 목록을 동적으로 표시
-      async function displayProducts(categoryName) {
+      async function displayProducts(categoryName, searchQuery) {
         const productList = document.getElementById("product-list");
         const categoryTitle = document.getElementById("category-title");
 
-        // MongoDB에서 상품 데이터를 가져오기
-        const response = await fetch(`/api/products?category=${categoryName}`);
+        let url = "/api/products"; // 기본 URL
+
+        // 카테고리나 검색어가 있으면 URL에 파라미터 추가
+        if (categoryName) {
+          url += `?category=${encodeURIComponent(categoryName)}`;
+        } else if (searchQuery) {
+          url += `?search=${encodeURIComponent(searchQuery)}`;
+        }
+
+        // 서버에서 상품 데이터 가져오기
+        const response = await fetch(url);
         const products = await response.json();
 
         // 타이틀 설정
-        categoryTitle.textContent = `${categoryName} 검색 결과`;
+        categoryTitle.textContent = categoryName
+          ? `${categoryName} 검색 결과`
+          : `${searchQuery} 검색 결과`;
 
         // 기존 상품 목록 초기화
         productList.innerHTML = "";
@@ -82,16 +93,25 @@
         });
       }
 
+
       // URL에서 카테고리 가져오기
       function getCategoryFromURL() {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get("category");
+        return {
+          category: urlParams.get("category"),
+          search: urlParams.get("search"),
+        };
       }
 
       // 페이지 로드 시 상품 표시
       document.addEventListener("DOMContentLoaded", () => {
-        const categoryName = getCategoryFromURL();
-        displayProducts(categoryName || "전체");
+        const { category, search } = getCategoryFromURL();
+
+        if (search) {
+          displayProducts(null, search); // 검색어만 있는 경우
+        } else {
+          displayProducts(category || "전체", null); // 카테고리만 있는 경우
+        }
       });
     </script>
 

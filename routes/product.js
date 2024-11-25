@@ -78,11 +78,19 @@ router.route("/add").get(checkLogin, async (req, res) => {
 
 // 2. 모든 상품 조회 (GET /api/products)
 router.get("/", async (req, res) => {
+  const { category, search } = req.query;
+
   try {
-    /*  const products = await Product.find(); */
-    const { category } = req.query;
-    const query = category ? { category } : {}; // 카테고리 필터링
-    const products = await Product.find(query);
+    const query = {};
+    // 카테고리가 있을 경우
+    if (category) {
+      query.category = category;
+    }
+    // 검색어가 있을 경우
+    if (search) {
+      query.name = { $regex: search, $options: "i" }; // 상품 이름에서 검색
+    }
+    const products = await Product.find(query); // MongoDB에서 검색
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({
