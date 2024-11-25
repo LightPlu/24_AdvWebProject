@@ -216,6 +216,23 @@
         document.getElementById("loginPopup").style.display = "none";
       }
 
+      function updateAuthButton() {
+        const token = document.cookie.includes("token");
+        const authButton = document.querySelector(".login-button");
+        
+        if (token) {
+          authButton.textContent = "로그아웃";
+          authButton.onclick = logout;
+        } else {
+          authButton.textContent = "로그인";
+          authButton.onclick = goToLogin;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateAuthButton();
+      });
+
       function goToRegister() {
         // /api/products/add 경로로 GET 요청
         fetch("/api/products/add", {
@@ -234,6 +251,7 @@
             console.error("요청 중 오류 발생:", error);
             alert("요청 중 오류가 발생했습니다.");
           });
+
       }
 
       function logout() {
