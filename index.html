@@ -9,7 +9,6 @@
     <title>경매 사이트</title>
   </head>
   <body>
-    
     <!-- 로그인 팝업 -->
     <div id="loginPopup" class="popup">
       <div class="popup-content">
@@ -52,7 +51,11 @@
           alt="Bid Icon"
           class="icon-small"
         />
-        <span class="site-title">거래해요 경매의 숲</span>
+        <span class="site-title">
+          <span>거</span><span>래</span><span>해</span><span>요</span>
+          <span>&nbsp;</span>
+          <span>경</span><span>매</span><span>의</span><span>숲</span>
+        </span>
       </div>
 
       <!-- 가운데 검색창 -->
@@ -68,7 +71,9 @@
 
       <!-- 마이페이지,로그인,상품등록 버튼 -->
       <div class="button-group">
-        <button id="register" class="register" onclick="goToRegister()">상품 등록</button>
+        <button id="register" class="register" onclick="goToRegister()">
+          상품 등록
+        </button>
         <button class="login-button" onclick="goToLogin()">로그인</button>
         <button class="my-page" onclick="showMyPage()">마이페이지</button>
       </div>
@@ -202,7 +207,9 @@
         const query = document.getElementById("search-bar").value.trim();
 
         if (query) {
-          window.location.href = `./public/category.html?search=${encodeURIComponent(query)}`;
+          window.location.href = `./public/category.html?search=${encodeURIComponent(
+            query
+          )}`;
         } else {
           alert("검색어를 입력하세요.");
         }
@@ -230,7 +237,7 @@
       function updateAuthButton() {
         const token = document.cookie.includes("token");
         const authButton = document.querySelector(".login-button");
-        
+
         if (token) {
           authButton.textContent = "로그아웃";
           authButton.onclick = logout;
@@ -255,14 +262,15 @@
               window.location.href = "./public/registration.html";
             } else {
               // 요청 실패 시 에러 메시지 처리
-              alert("상품 등록 페이지로 이동할 수 없습니다. 로그인이 필요합니다.");
+              alert(
+                "상품 등록 페이지로 이동할 수 없습니다. 로그인이 필요합니다."
+              );
             }
           })
           .catch((error) => {
             console.error("요청 중 오류 발생:", error);
             alert("요청 중 오류가 발생했습니다.");
           });
-
       }
 
       function logout() {
@@ -304,7 +312,6 @@
             })
             .catch((error) => console.error("로그인 중 오류 발생:", error));
         });
-
     </script>
   </body>
 </html>
