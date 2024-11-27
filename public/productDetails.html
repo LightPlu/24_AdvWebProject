@@ -18,9 +18,12 @@
         margin-bottom: 20px;
       }
       .like-button {
-        color: red;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         cursor: pointer;
+        color: gray; /* 기본 색상은 회색 */
+      }
+      .like-button.active {
+        color: red; /* 찜한 상태에서 빨간색 */
       }
       a {
         display: block;
@@ -62,33 +65,46 @@
             <p>카테고리: ${product.category}</p>
             <p>상태: ${product.status === "new" ? "새상품" : "중고"}</p>
             <p>경매 종료 시간: ${new Date(product.endTime).toLocaleString()}</p>
-            <p><span class="like-button" id="like-button">★</span> <span id="like-count">${
-              product.likes
-            }</span></p>
+            <p>
+              <span class="like-button" id="like-button">★</span>
+              <span id="like-count">${product.likes}</span>
+            </p>
             <a href="/category.html?category=${product.category}">뒤로가기</a>
           `;
 
-          // 찜 버튼 클릭 이벤트 추가
-          document
-            .getElementById("like-button")
-            .addEventListener("click", async () => {
-              try {
-                const likeResponse = await fetch(
-                  `/api/Products/${productId}/like`,
-                  {
-                    method: "POST",
-                  }
-                );
-                if (!likeResponse.ok)
-                  throw new Error("찜 기능 처리 중 오류가 발생했습니다.");
+          const likeButton = document.getElementById("like-button");
+          const likeCount = document.getElementById("like-count");
 
-                const likeData = await likeResponse.json();
-                document.getElementById("like-count").textContent =
-                  likeData.likes; // 찜 수 업데이트
-              } catch (error) {
-                console.error("찜 기능 처리 오류:", error);
-              }
-            });
+          // 초기 버튼 상태 설정
+          const userId = "현재_사용자_ID"; // 실제 사용자 ID로 변경 필요
+          const isLiked = product.likedBy && product.likedBy.includes(userId);
+          if (isLiked) {
+            likeButton.classList.add("active");
+          }
+
+          // 찜 버튼 클릭 이벤트 추가
+          likeButton.addEventListener("click", async () => {
+            try {
+              const likeResponse = await fetch(
+                `/api/Products/${productId}/like`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ userId }),
+                }
+              );
+              if (!likeResponse.ok)
+                throw new Error("찜 기능 처리 중 오류가 발생했습니다.");
+
+              const likeData = await likeResponse.json();
+              likeCount.textContent = likeData.likes; // 찜 수 업데이트
+
+              // 버튼 상태 토글
+              likeButton.classList.toggle("active");
+            } catch (error) {
+              console.error("찜 기능 처리 오류:", error);
+            }
+          });
         } catch (error) {
           document.getElementById("product-info").innerHTML =
             "상품 정보를 불러오지 못했습니다.";

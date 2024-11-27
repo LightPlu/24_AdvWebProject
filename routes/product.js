@@ -111,11 +111,14 @@ router.post("/:id/like", async (req, res) => {
 
     // 이미 찜한 사용자 확인
     if (product.likedBy.includes(userId)) {
-      return res.status(400).json({ error: "Already liked by this user" });
+      // 이미 찜한 경우: 찜 해제
+      product.likes -= 1; // 찜 수 감소
+      product.likedBy = product.likedBy.filter((id) => id !== userId); // 사용자 ID 제거
+    } else {
+      // 찜하지 않은 경우: 찜 추가
+      product.likes += 1; // 찜 수 증가
+      product.likedBy.push(userId); // 사용자 ID 추가
     }
-
-    product.likes += 1; // 찜 수 증가
-    product.likedBy.push(userId); // 사용자 ID 추가
     await product.save(); // 데이터베이스에 저장
 
     res.json({ likes: product.likes }); // 변경된 찜 수 반환
