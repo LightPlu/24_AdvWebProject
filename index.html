@@ -103,13 +103,7 @@
     <div class="ranking">
       <div class="ranking-header">
         <h3 class="ranking-title">실시간 랭킹</h3>
-        <div class="ranking-items">
-          <div class="ranking-item">1. 경매 물품 A</div>
-          <div class="ranking-item">2. 경매 물품 B</div>
-          <div class="ranking-item">3. 경매 물품 C</div>
-          <div class="ranking-item">4. 경매 물품 D</div>
-          <div class="ranking-item">5. 경매 물품 E</div>
-        </div>
+        <ul id="ranking-list"></ul>
       </div>
     </div>
 
@@ -170,6 +164,39 @@
     </div>
 
     <script>
+      async function loadRealTimeRanking() {
+        try {
+          const response = await fetch("/api/products/top-likes");
+          const products = await response.json();
+
+          const rankingList = document.getElementById("ranking-list");
+          rankingList.innerHTML = "";
+
+          products.forEach((product, index) => {
+            const listItem = document.createElement("li");
+            listItem.className = "ranking-item"; // CSS 클래스 추가
+            listItem.innerHTML = `
+  <div class="item-content">
+    <span>${index + 1}. </span>
+    <a href="/productDetails.html?id=${product._id}">${product.name}</a>
+  </div>
+  <div class="like-container">
+    <span class="like-icon">★</span>
+    <span class="like-count">${product.likes}</span>
+  </div>
+`;
+
+            rankingList.appendChild(listItem);
+          });
+        } catch (error) {
+          console.error("실시간 랭킹 데이터를 불러오는 중 오류 발생:", error);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadRealTimeRanking();
+        updateAuthButton();
+      });
       // 메인 화면으로 돌아가는 함수
       function goToMain() {
         window.location.href = "index.html"; // 메인 페이지로 이동

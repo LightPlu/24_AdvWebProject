@@ -39,6 +39,7 @@
 
           // 상품 HTML 구조
           productItem.innerHTML = `
+
             <a href="/productDetails.html?id=${product._id}">
               <img src="${product.image}" alt="${product.name}" />
               <h3>
@@ -92,7 +93,6 @@
           });
         });
       }
-
 
       // URL에서 카테고리 가져오기
       function getCategoryFromURL() {
@@ -168,7 +168,11 @@
           alt="Bid Icon"
           class="icon-small"
         />
-        <span class="site-title">거래해요 경매의 숲</span>
+        <span class="site-title">
+          <span>거</span><span>래</span><span>해</span><span>요</span>
+          <span>&nbsp;</span>
+          <span>경</span><span>매</span><span>의</span><span>숲</span>
+        </span>
       </div>
 
       <!-- 가운데 검색창 -->

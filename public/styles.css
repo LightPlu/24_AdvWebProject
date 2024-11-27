@@ -256,30 +256,70 @@ textarea {
   border-radius: 20px; /* 둥근 모서리 */
   padding: 20px; /* 내부 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 500px; /* 최대 높이 */
+  font-family: "SUITE-Regular", Arial, sans-serif; /* 폰트 설정 */
 }
 
 /* 실시간 랭킹 제목 */
 .ranking-title {
-  font-family: "SUITE-Regular";
-  font-size: 28px; /* 텍스트 크기 */
+  font-size: 32px; /* 텍스트 크기 */
   font-weight: bold; /* 텍스트 굵기 */
   color: #4caf50; /* 초록색 텍스트 */
   margin-bottom: 20px; /* 제목과 목록 간 간격 */
 }
 
 /* 경매 물품 목록 */
-.ranking-items {
-  font-family: "SUITE-Regular";
+#ranking-list {
+  padding: 0; /* 기본 목록 스타일 제거 */
+  margin: 0;
+  list-style: none; /* 불릿 제거 */
   text-align: left; /* 목록을 왼쪽 정렬 */
-  font-size: 18px; /* 텍스트 크기 */
-  font-weight: bold;
-  color: #333; /* 검정색 텍스트 */
-  line-height: 1.8; /* 줄 간격 */
 }
 
-/* 각 경매 물품 항목 */
+/* 각 랭킹 물품 항목 */
 .ranking-item {
-  margin-bottom: 5px; /* 항목 간 간격 */
+  display: flex; /* 랭킹 번호와 텍스트 정렬 */
+  justify-content: space-between; /* 텍스트와 별+숫자를 양쪽 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  background-color: #ffffff; /* 흰색 배경 */
+  padding: 15px 20px; /* 내부 여백 */
+  border-radius: 10px; /* 둥근 모서리 */
+  margin-bottom: 15px; /* 항목 간 간격 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 효과 */
+  font-size: 18px; /* 기존 16px에서 증가 */
+  font-weight: bold;
+}
+/* 빨간색 별 아이콘 */
+.like-icon {
+  color: red !important;
+  font-size: 20px; /* 별 크기 */
+  margin-left: 5px; /* 텍스트와 간격 */
+  vertical-align: middle; /* 텍스트와 수평 정렬 */
+}
+
+/* 랭킹 항목 텍스트 */
+.ranking-item span {
+  font-weight: bold;
+  font-size: 20px;
+  color: #4caf50; /* 초록색 */
+  margin-right: 16px; /* 번호와 텍스트 간 간격 */
+}
+
+.ranking-item a {
+  text-decoration: none;
+  color: #333; /* 기본 텍스트 색상 */
+  font-size: 18px; /* 텍스트 크기 */
+}
+
+.ranking-item:hover {
+  background-color: #f1f8e9; /* 연한 초록색 배경 */
+  transform: translateY(-3px); /* 살짝 떠오르는 효과 */
+}
+
+/* 마지막 항목 구분선 제거 */
+.ranking-item:not(:last-child) {
+  margin-bottom: 10px;
 }
 
 /* 카테고리 버튼들 */
@@ -448,6 +488,35 @@ input[type="checkbox"] {
 .product-container h1 {
   font-size: 22px;
   margin-bottom: 15px;
+}
+#liked-products {
+  list-style: none;
+  padding: 0;
+}
+
+#liked-products li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+#liked-products li img {
+  border-radius: 5px;
+}
+
+#liked-products li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+}
+
+#liked-products li span {
+  font-size: 14px;
+  color: #777;
 }
 
 /* 팝업 전체 화면 */

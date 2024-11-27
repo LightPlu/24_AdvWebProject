@@ -23,7 +23,7 @@
       function updateAuthButton() {
         const token = document.cookie.includes("token");
         const authButton = document.querySelector(".login-button");
-        
+
         if (token) {
           authButton.textContent = "로그아웃";
           authButton.onclick = logout;
@@ -57,7 +57,11 @@
           alt="Bid Icon"
           class="icon-small"
         />
-        <span class="site-title">거래해요 경매의 숲</span>
+        <span class="site-title">
+          <span>거</span><span>래</span><span>해</span><span>요</span>
+          <span>&nbsp;</span>
+          <span>경</span><span>매</span><span>의</span><span>숲</span>
+        </span>
       </div>
 
       <!-- 가운데 검색창 -->
@@ -202,7 +206,6 @@
             alert("상품 등록 중 오류가 발생했습니다.");
           }
         });
-        
     </script>
   </body>
 </html>
