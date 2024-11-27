@@ -39,21 +39,22 @@
 
           // 상품 HTML 구조
           productItem.innerHTML = `
-      <a href="/productDetails.html?id=${product._id}">
-        <img src="${product.image}" alt="${product.name}" />
-        <h3>
-          ${product.name}
-   <span 
-            class="like-button"
-            style="font-size: 24px; color: red; pointer-events: none;">★</span>
-          <span class="like-count" id="like-count-${product._id}">
-            ${product.likes}
-          </span>
-        </h3>
-        <p class="price">${product.startPrice.toLocaleString()}원</p>
-        <p>${product.description}</p>
-      </a>
-    `;
+
+            <a href="/productDetails.html?id=${product._id}">
+              <img src="${product.image}" alt="${product.name}" />
+              <h3>
+                ${product.name}
+                <span class="like-button" data-product-id="${
+                  product._id
+                }" style="cursor: pointer; font-size: 24px; color: red;">★</span>
+                <span class="like-count" id="like-count-${product._id}">${
+            product.likes
+          }</span>
+              </h3>
+              <p class="price">${product.currentPrice.toLocaleString()}원</p>
+              <p>${product.description}</p>
+            </a>
+          `;
 
           productList.appendChild(productItem);
         });
