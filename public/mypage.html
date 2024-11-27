@@ -32,7 +32,13 @@
       // 선택된 항목의 내용을 표시하는 함수
       function showContent(contentKey) {
         const contentArea = document.getElementById("content-area");
-        contentArea.innerHTML = contentData[contentKey];
+        if (contentKey === "interest") {
+          loadLikedProducts();
+        } else if (contentKey === "participating") {
+          loadMyProducts();
+        } else {
+          contentArea.innerHTML = contentData[contentKey];
+        }
       }
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -42,7 +48,7 @@
       function updateAuthButton() {
         const token = document.cookie.includes("token");
         const authButton = document.querySelector(".login-button");
-        
+
         if (token) {
           authButton.textContent = "로그아웃";
           authButton.onclick = logout;
@@ -65,6 +71,46 @@
           })
           .catch((error) => console.error("로그아웃 중 오류 발생:", error));
       }
+
+      async function loadLikedProducts() {
+        const userId = "현재_사용자_ID"; // 실제 사용자 ID로 변경 필요
+        try {
+          const response = await fetch(`/api/products/liked?userId=${userId}`);
+          if (!response.ok)
+            throw new Error("찜한 상품 데이터를 가져오는 데 실패했습니다.");
+          const likedProducts = await response.json();
+
+          const contentArea = document.getElementById("content-area");
+          if (likedProducts.length === 0) {
+            contentArea.innerHTML = "<p>찜한 상품이 없습니다.</p>";
+            return;
+          }
+
+          contentArea.innerHTML =
+            '<div class="product-list" id="liked-products"></div>';
+          const productList = document.getElementById("liked-products");
+
+          likedProducts.forEach((product) => {
+            const productItem = document.createElement("div");
+            productItem.className = "product-item";
+
+            productItem.innerHTML = `
+              <img src="${product.image}" alt="${product.name}" />
+              <h3>${product.name} <span class="like-icon">★</span> ${
+              product.likes
+            }</h3>
+              <p class="price">${product.startPrice.toLocaleString()}원</p>
+              <p>${product.description}</p>
+            `;
+
+            productList.appendChild(productItem);
+          });
+        } catch (error) {
+          console.error("찜한 상품 목록 로드 중 오류:", error);
+          document.getElementById("content-area").innerHTML =
+            "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
+        }
+      }
     </script>
   </head>
   <body>
@@ -75,7 +121,11 @@
           alt="Bid Icon"
           class="icon-small"
         />
-        <span class="site-title">거래해요 경매의 숲</span>
+        <span class="site-title">
+          <span>거</span><span>래</span><span>해</span><span>요</span>
+          <span>&nbsp;</span>
+          <span>경</span><span>매</span><span>의</span><span>숲</span>
+        </span>
       </div>
 
       <!-- 가운데 검색창 -->

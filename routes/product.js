@@ -99,6 +99,33 @@ router.get("/", async (req, res) => {
     });
   }
 });
+// 찜한 상품 목록 조회 API
+router.get("/liked", async (req, res) => {
+  const userId = req.query.userId; // 사용자 ID를 쿼리에서 받음
+  try {
+    const likedProducts = await Product.find({ likedBy: userId }); // likedBy 필드에 사용자 ID가 포함된 상품만 검색
+    res.status(200).json(likedProducts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "찜한 상품 데이터를 가져오는 중 오류가 발생했습니다." });
+  }
+});
+
+// 찜 수 기준 상위 5개 상품 API
+router.get("/top-likes", async (req, res) => {
+  try {
+    const topProducts = await Product.find({})
+      .sort({ likes: -1 }) // 찜 수 내림차순 정렬
+      .limit(5); // 상위 5개만 가져오기
+
+    res.status(200).json(topProducts);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "상품 데이터를 가져오는 중 오류가 발생했습니다." });
+  }
+});
 
 // 찜 수 증가 API
 router.post("/:id/like", async (req, res) => {
