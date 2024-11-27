@@ -7,6 +7,8 @@ const checkLogin = require("../middlewares/checkLogin");
 const Product = require("../models/Products"); // Product 모델 가져오기
 const cookieParser = require("cookie-parser");
 const productController = require("../controllers/productController");
+const scheduleAuctionEnd = require("../middlewares/auctionScheduler");
+
 
 router.use(cookieParser());
 
@@ -47,6 +49,7 @@ router.route("/add").post(checkLogin, async (req, res) => {
       name,
       image: imagePath, // 저장된 이미지 경로
       startPrice,
+      currentPrice: startPrice,
       description,
       category,
       status,
@@ -55,6 +58,8 @@ router.route("/add").post(checkLogin, async (req, res) => {
 
     // MongoDB에 저장
     const savedProduct = await newProduct.save();
+
+    scheduleAuctionEnd(product._id, new Date(endTime));
     res.status(201).json({
       message: "상품이 성공적으로 등록되었습니다.",
       product: savedProduct,
