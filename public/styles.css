@@ -12,15 +12,7 @@
   font-weight: normal;
   font-style: normal;
 }
-@font-face {
-  font-family: "Godo";
-  font-style: normal;
-  font-weight: 400;
-  src: url("//fastly.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff2")
-      format("woff2"),
-    url("//fastly.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff")
-      format("woff");
-}
+
 @font-face {
   font-family: "SUITE-Regular";
   src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2")
@@ -160,8 +152,8 @@ body {
 
 /* 폼 컨테이너 */
 .form-container {
-  width: 600px;
-  margin: 20px auto;
+  width: 1000px;
+  margin: 20px 0;
   padding: 20px;
   background-color: #f8f9fa;
   border-radius: 10px;
@@ -222,7 +214,7 @@ textarea {
 /* 메인 박스 스타일 */
 .main-content {
   display: flex;
-  width: 80%;
+  width: 60%;
   margin-top: 20px;
   background-color: #f9f9f9;
   padding: 20px;
@@ -233,16 +225,60 @@ textarea {
   width: 75%;
   padding-right: 20px;
 }
-.main-container {
-  position: relative;
-  width: 70%;
+
+.horizontal-container {
+  width: 100%;
+  display: flex; /* 플렉스박스 적용 */
+  justify-content: flex-start; /* 자식 요소 간 간격을 균일하게 배치 */
+  align-items: flex-start; /* 수직 방향으로 위쪽 정렬 */
+  gap: 10px; /* 요소 간 간격 */
+  padding: 20px 0; /* 전체 여백 추가 */
 }
 
 /* 메인 이미지 스타일 */
 .main-image {
-  width: auto;
+  width: 800px;
   height: auto;
   object-fit: cover;
+  margin-left: 0;
+}
+/* 왼쪽 섹션 스타일 */
+.left-section {
+  position: relative; /* 텍스트와 이미지를 겹치기 위해 relative 설정 */
+  max-width: 700px;
+  margin-left: 0;
+}
+
+/* 이미지 컨테이너 스타일 */
+.image-container {
+  position: relative; /* 텍스트와 이미지 간 포지션 관계 설정 */
+  width: 100%;
+  max-width: 700px; /* 이미지 최대 너비 설정 */
+}
+
+/* 이미지 스타일 */
+.left-image {
+  width: 600px; /* 이미지 크기를 컨테이너에 맞춤 */
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin-left: 0;
+}
+
+/* 텍스트 오버레이 스타일 */
+.overlay-text {
+  position: absolute; /* 이미지를 기준으로 텍스트 위치 고정 */
+  top: 55%; /* 이미지의 세로 중앙 */
+  left: 40%; /* 이미지의 가로 중앙 */
+  transform: translate(-50%, -50%); /* 중앙 정렬 */
+  color: black; /* 텍스트 색상 */
+  font-family: "SUITE-Regular";
+  font-size: 22px; /* 텍스트 크기 */
+  font-weight: bold; /* 텍스트 굵기 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+
+  padding: 10px 20px; /* 텍스트 패딩 */
+  border-radius: 10px; /* 둥근 모서리 */
 }
 
 /* 랭킹 전체 컨테이너 */
