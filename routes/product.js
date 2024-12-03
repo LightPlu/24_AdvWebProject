@@ -59,7 +59,6 @@ router.route("/add").post(checkLogin, async (req, res) => {
     // MongoDB에 저장
     const savedProduct = await newProduct.save();
 
-    scheduleAuctionEnd(product._id, new Date(endTime));
     res.status(201).json({
       message: "상품이 성공적으로 등록되었습니다.",
       product: savedProduct,
