@@ -165,5 +165,62 @@
         <p>왼쪽 메뉴에서 항목을 선택하면 관련 정보가 여기에 표시됩니다.</p>
       </div>
     </div>
+
+    <!-- 왼쪽 여백에 물음표 버튼 추가 -->
+    <div class="left-sidebar">
+      <img
+        src="./images/물음표.png"
+        alt="Icon 1"
+        onclick="showPopup('🌳마이페이지🌳')"
+      />
+      <div class="text-box">
+        <span class="blink-text">물음표를 클릭해보세요!</span>
+      </div>
+    </div>
+
+    <!-- 팝업창 -->
+    <div class="overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popupContent">
+      <h2 id="popupText"></h2>
+      <p>
+        "마이페이지"는 회원님의 경매 활동과 개인 정보를 한눈에 확인하고 관리할
+        수 있는 공간입니다. <br />
+        경매 참여와 관련된 모든 정보를 확인해보세요!
+      </p>
+      <p><strong>💡 주요 기능</strong></p>
+      <ul>
+        <li>
+          ❤️ <strong>관심 상품 관리:</strong> 관심 있는 경매 상품을 저장하고
+          한곳에서 확인
+        </li>
+        <li>
+          📦 <strong>등록 상품 확인:</strong> 내가 등록한 상품의 상태와 상세
+          정보 확인
+        </li>
+        <li>
+          📄 <strong>문의 및 내역 관리:</strong> 상품 관련 문의 확인 및 답변
+          관리
+        </li>
+        <li>🔒 <strong>개인정보 수정:</strong> 회원 정보 및 비밀번호 변경</li>
+        <li>🚚 <strong>배송지 관리:</strong> 배송 정보를 추가하거나 수정</li>
+      </ul>
+
+      <button onclick="hidePopup()">닫기</button>
+    </div>
+
+    <script>
+      // 팝업 열기
+      function showPopup(content) {
+        document.getElementById("popupText").innerText = content;
+        document.getElementById("popupOverlay").style.display = "block";
+        document.getElementById("popupContent").style.display = "block";
+      }
+
+      // 팝업 닫기
+      function hidePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+        document.getElementById("popupContent").style.display = "none";
+      }
+    </script>
   </body>
 </html>

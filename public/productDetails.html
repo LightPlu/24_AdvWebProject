@@ -3,55 +3,122 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>상품 상세 정보</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      #product-details {
-        text-align: center;
-      }
-      img {
-        max-width: 300px;
-        height: auto;
-        margin-bottom: 20px;
-      }
-      .like-button {
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: gray; /* 기본 색상은 회색 */
-      }
-      .like-button.active {
-        color: red; /* 찜한 상태에서 빨간색 */
-      }
-      a {
-        display: block;
-        margin-top: 20px;
-        color: blue;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    
   </head>
   <body>
-    <div id="product-details">
-      <h1>상품 상세 정보</h1>
+    <div id="product-details" class="product-details-container">
       <div id="product-info"></div>
-      <div class="bid-section">
-        <input
-          type="number"
-          id="bid-amount"
-          class="bid-input"
-          placeholder="입찰 금액 입력"
+    </div>
+    <div class="header">
+      <div class="logo-container" onclick="goToMain()">
+        <img
+          src="./images/free-icon-auction-3211435.png"
+          alt="Bid Icon"
+          class="icon-small"
         />
-        <button id="bid-button" class="bid-button">입찰하기</button>
+        <span class="site-title">
+          <span>거</span><span>래</span><span>해</span><span>요</span>
+          <span>&nbsp;</span>
+          <span>경</span><span>매</span><span>의</span><span>숲</span>
+        </span>
+      </div>
+
+      <!-- 가운데 검색창 -->
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="검색어를 입력하세요"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- 마이페이지,로그인,상품등록 버튼 -->
+      <div class="button-group">
+        <button class="register" onclick="goToRegister()">상품 등록</button>
+        <button class="login-button" onclick="goToLogin()">로그인</button>
+        <button class="my-page" onclick="showMyPage()">마이페이지</button>
       </div>
     </div>
+
+
+
+
+    <!-- Left Sidebar -->
+    <div class="left-sidebar">
+      <img
+        src="./images/물음표.png"
+        alt="Icon 1"
+        onclick="showPopup('🌳상세페이지🌳')"
+      />
+      <div class="text-box">
+        <span class="blink-text">물음표를 클릭해보세요!</span>
+      </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popupContent">
+      <h2 id="popupText"></h2>
+      <p>
+        상품의 이미지, 설명, 가격, 상태, 카테고리 등 구매를 결정하기 위한 모든
+        정보를 제공합니다. </br>
+        원하는 상품을 찜하고 마이페이지에서 확인해보세요!💡
+      </p>
+      <p><strong>❓ 이용방법</strong></p>
+      <ul>
+        <li>
+          ⭐
+          <strong
+            >원하는 금액을 입찰 (단, 입찰 금액은 현재 가격보다 높아야
+            합니다.)</strong
+          >
+        </li>
+        <li>
+          ⭐ <strong>경매 종료 시간까지 계속해서 입찰이 이루어집니다.</strong>
+        </li>
+        <li>
+          ⭐
+          <strong
+            >경매 종료 후, 가장 높은 입찰가를 제시한 사람이 낙찰자가
+            됩니다!</strong
+          >
+        </li>
+      </ul>
+
+      <button onclick="hidePopup()">닫기</button>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
+
+function goToMain() {
+        window.location.href = "../index.html"; // 메인 페이지로 이동
+      }
+      function showMyPage() {
+        window.location.href = "mypage.html"; // 마이 페이지로 이동
+      }
+
+      function goToRegister() {
+        window.location.href = "registration.html";
+      }
+
+
+      // 팝업 열기
+      function showPopup(content) {
+        document.getElementById("popupText").innerText = content;
+        document.getElementById("popupOverlay").style.display = "block";
+        document.getElementById("popupContent").style.display = "block";
+      }
+
+      // 팝업 닫기
+      function hidePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+        document.getElementById("popupContent").style.display = "none";
+      }
+
       function parseJwt(token) {
         const base64Url = token.split(".")[1]; // JWT의 페이로드 부분
         const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -99,19 +166,31 @@
           const product = await response.json();
 
           document.getElementById("product-info").innerHTML = `
-            <img src="${product.image}" alt="${product.name}" />
-            <h1>${product.name}</h1>
-            <p id="current-price">현재 가격: ${product.currentPrice.toLocaleString()}원</p>
-            <p>설명: ${product.description}</p>
-            <p>카테고리: ${product.category}</p>
-            <p>상태: ${product.status === "new" ? "새상품" : "중고"}</p>
-            <p>경매 종료 시간: ${new Date(product.endTime).toLocaleString()}</p>
-            <p>
-              <span class="like-button" id="like-button">★</span>
-              <span id="like-count">${product.likes}</span>
-            </p>
-            <a href="/category.html?category=${product.category}">뒤로가기</a>
-          `;
+
+    <img src="${product.image}" alt="${product.name}" />
+    <div class="product-title-container">
+      <h1>${product.name}</h1>
+      <div class="like-section">
+        <span class="like-button" id="like-button">★</span>
+        <span id="like-count">${product.likes}</span>
+      </div>
+    </div>
+    <p>${product.description}</p>
+    <p id="current-price">현재 가격: ${product.currentPrice.toLocaleString()}원</p>
+    <p>카테고리: ${product.category}</p>
+    <p>상태: ${product.status === "new" ? "새상품" : "중고"}</p>
+    <p>경매 종료 시간: ${new Date(product.endTime).toLocaleString()}</p>
+    <div class="product-details-bid-section">
+      <input type="number" id="bid-amount" class="product-details-bid-input" placeholder="입찰 금액 입력" />
+      <button id="bid-button" class="product-details-bid-button">입찰하기</button>
+    </div>
+    <div class="back-link-container">
+  <a href="/category.html?category=${product.category}">뒤로가기</a>
+</div>
+  </div>
+`;
+
+
 
           const likeButton = document.getElementById("like-button");
           const likeCount = document.getElementById("like-count");
@@ -166,9 +245,8 @@
           // 서버로부터 실시간 가격 업데이트 수신
           socket.on("priceUpdate", (data) => {
             if (data.productId === productId) {
-              const currentPriceElement = document.getElementById(
-                "current-price"
-              );
+              const currentPriceElement =
+                document.getElementById("current-price");
               currentPriceElement.textContent = `현재 가격: ${data.currentPrice.toLocaleString()}원`;
 
               // 입력 필드 초기화
@@ -180,7 +258,9 @@
           socket.on("auctionEnd", (data) => {
             if (data.productId === productId) {
               alert(
-                `경매 종료! 최종 입찰가: ${data.finalPrice.toLocaleString()}원, 낙찰자: ${data.winner}`
+                `경매 종료! 최종 입찰가: ${data.finalPrice.toLocaleString()}원, 낙찰자: ${
+                  data.winner
+                }`
               );
             }
           });

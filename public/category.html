@@ -58,40 +58,6 @@
 
           productList.appendChild(productItem);
         });
-
-        // 찜 버튼 클릭 이벤트 추가
-        document.querySelectorAll(".like-button").forEach((button) => {
-          button.addEventListener("click", async (event) => {
-            event.preventDefault(); // 기본 링크 동작 방지
-            const productId = button.dataset.productId;
-            const userId = "로그인된사용자ID"; // 여기에 실제 로그인 사용자 ID를 추가
-
-            try {
-              const response = await fetch(`/api/products/${productId}/like`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ userId }),
-              });
-
-              if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.error); // 에러 메시지 출력
-                return;
-              }
-
-              const likeData = await response.json();
-              // 찜 갯수 업데이트
-              const likeCountElement = document.getElementById(
-                `like-count-${productId}`
-              );
-              likeCountElement.textContent = likeData.likes;
-            } catch (error) {
-              console.error("찜 기능 처리 오류:", error);
-            }
-          });
-        });
       }
 
       // URL에서 카테고리 가져오기
@@ -113,9 +79,7 @@
           displayProducts(category || "전체", null); // 카테고리만 있는 경우
         }
       });
-    </script>
 
-    <script>
       function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
       }
@@ -159,6 +123,7 @@
       }
     </script>
   </head>
+
   <body>
     <!-- 상단 헤더 -->
     <div class="header">
@@ -258,5 +223,53 @@
         <div class="product-list" id="product-list"></div>
       </div>
     </div>
+    <!-- 왼쪽 여백에 물음표 버튼 추가 -->
+    <div class="left-sidebar">
+      <img
+        src="./images/물음표.png"
+        alt="Icon 1"
+        onclick="showPopup('🌳상품 카테고리🌳')"
+      />
+      <div class="text-box">
+        <span class="blink-text">물음표를 클릭해보세요!</span>
+      </div>
+    </div>
+
+    <!-- 팝업창 -->
+    <div class="overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popupContent">
+      <h2 id="popupText"></h2>
+      <p>
+        원하는 상품을 더 쉽고 빠르게 찾을 수 있는 상품 카테고리 페이지입니다!
+        <br />
+        카테고리별로 다양한 상품을 둘러보세요!<br />
+      </p>
+      <p><strong>💡 주요 기능</strong></p>
+      <ul>
+        <li>
+          💰<strong>가격 필터:</strong> 원하는 가격대에 맞는 상품을 필터링하여
+          확인
+        </li>
+        <li>❤️<strong>찜 갯수 확인:</strong> 상품의 인기도를 확인</li>
+        <li>📋<strong>상품 설명:</strong> 각 상품의 상세 정보를 확인</li>
+      </ul>
+
+      <button onclick="hidePopup()">닫기</button>
+    </div>
+
+    <script>
+      // 팝업 열기
+      function showPopup(content) {
+        document.getElementById("popupText").innerText = content;
+        document.getElementById("popupOverlay").style.display = "block";
+        document.getElementById("popupContent").style.display = "block";
+      }
+
+      // 팝업 닫기
+      function hidePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+        document.getElementById("popupContent").style.display = "none";
+      }
+    </script>
   </body>
 </html>
