@@ -933,3 +933,74 @@ input {
   margin-left: 20px; /* 경매 종료 시간과의 간격 조정 */
   display: inline-block; /* 오른쪽 배치 */
 }
+
+.quiz-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.quiz-icon {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.quiz-icon:hover {
+  transform: scale(1.1);
+}
+
+/* 팝업 스타일 */
+.quiz-popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.quiz-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+}
+
+.quiz-popup h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.quiz-popup p {
+  margin-bottom: 15px;
+}
+
+.quiz-popup form {
+  margin-bottom: 20px;
+}
+
+.quiz-popup button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.quiz-popup button:hover {
+  background-color: #388e3c;
+}

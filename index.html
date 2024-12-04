@@ -102,6 +102,13 @@
           <h3 class="ranking-title">실시간 랭킹</h3>
           <ul id="ranking-list"></ul>
         </div>
+        <div class="quiz-footer"></div>
+        <img
+          src="./public/images/퀴즈.png"
+          alt="Quiz Icon"
+          class="quiz-icon"
+          onclick="showQuizPopup()"
+        />
       </div>
     </div>
 
@@ -196,7 +203,63 @@
       </div>
     </div>
 
+    <div
+      class="quiz-popup-overlay"
+      id="quizPopupOverlay"
+      onclick="hideQuizPopup()"
+    ></div>
+    <div class="quiz-popup" id="quizPopupContent">
+      <h2>퀴즈 이벤트</h2>
+
+      <form id="quizForm">
+        <div class="quiz-question">
+          <p>Q. 경매의 숲에서 제공하는 서비스는 무엇일까요?</p>
+          <input type="radio" name="quizAnswer" value="1" id="answer1" />
+          <label for="answer1">1. 경매</label><br />
+          <input type="radio" name="quizAnswer" value="2" id="answer2" />
+          <label for="answer2">2. 쇼핑몰</label><br />
+          <input type="radio" name="quizAnswer" value="3" id="answer3" />
+          <label for="answer3">3. 예약 서비스</label>
+        </div>
+        <button type="submit">제출하기</button>
+      </form>
+      <button onclick="hideQuizPopup()">닫기</button>
+    </div>
+
     <script>
+      function showQuizPopup() {
+        document.getElementById("quizPopupOverlay").style.display = "block";
+        document.getElementById("quizPopupContent").style.display = "block";
+      }
+
+      function hideQuizPopup() {
+        document.getElementById("quizPopupOverlay").style.display = "none";
+        document.getElementById("quizPopupContent").style.display = "none";
+      }
+
+      // 퀴즈 제출 처리
+      document
+        .getElementById("quizForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // 기본 폼 제출 방지
+
+          const selectedAnswer = document.querySelector(
+            'input[name="quizAnswer"]:checked'
+          );
+          if (!selectedAnswer) {
+            alert("정답을 선택해주세요!");
+            return;
+          }
+
+          if (selectedAnswer.value === "1") {
+            alert("정답입니다! 참여해주셔서 감사합니다.");
+          } else {
+            alert("틀렸습니다. 다시 시도해보세요!");
+          }
+
+          hideQuizPopup();
+        });
+
       // 팝업 열기
       function showPopup(content) {
         document.getElementById("popupText").innerText = content;
@@ -277,12 +340,14 @@
       }
 
       // Enter 키로 검색
-      document.getElementById("search-bar").addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-          event.preventDefault(); // 기본 동작 방지 (폼 제출 방지)
-          searchProducts(); // 검색 함수 호출
-        }
-      });
+      document
+        .getElementById("search-bar")
+        .addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault(); // 기본 동작 방지 (폼 제출 방지)
+            searchProducts(); // 검색 함수 호출
+          }
+        });
 
       function searchProducts() {
         const query = document.getElementById("search-bar").value.trim();
