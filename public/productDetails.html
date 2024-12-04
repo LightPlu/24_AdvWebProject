@@ -8,36 +8,6 @@
     
   </head>
   <body>
-    <!-- 로그인 팝업 -->
-    <div id="loginPopup" class="login-popup">
-      <div>
-        <span class="close-btn" onclick="closePopup()">✖</span>
-        <form id="loginForm">
-          <div class="form-group">
-            <input type="text" id="email" placeholder="아이디" required />
-          </div>
-          <div class="form-group password-group">
-            <input
-              type="password"
-              id="password"
-              placeholder="비밀번호"
-              required
-            />
-            <span class="password-toggle" onclick="togglePassword()">👁️</span>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="login-btn">로그인</button>
-          </div>
-          <!-- 하단 링크 -->
-          <div class="links">
-            <a href="/find-id">아이디(이메일) 찾기</a> |
-            <a href="/find-password">비밀번호 찾기</a> |
-            <a href="./public/signup.html">회원가입</a>
-          </div>
-        </form>
-      </div>
-    </div>
-
     <div id="product-details" class="product-details-container">
       <div id="product-info"></div>
     </div>
@@ -72,9 +42,7 @@
         <button class="my-page" onclick="showMyPage()">마이페이지</button>
       </div>
     </div>
-    <div id="product-details" class="product-details-container">
-      <div id="product-info"></div>
-    </div>
+
 
 
 
@@ -126,7 +94,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
 
-      function goToMain() {
+function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
       }
       function showMyPage() {
@@ -135,69 +103,6 @@
 
       function goToRegister() {
         window.location.href = "registration.html";
-      }
-
-      // 팝업 열기
-      function goToLogin() {
-        document.getElementById("loginPopup").style.display = "flex";
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        updateAuthButton();
-      });
-
-      function updateAuthButton() {
-        const token = document.cookie.includes("token");
-        const authButton = document.querySelector(".login-button");
-
-        if (token) {
-          authButton.textContent = "로그아웃";
-          authButton.onclick = logout;
-        } else {
-          authButton.textContent = "로그인";
-          authButton.onclick = goToLogin;
-        }
-      }
-
-      // 로그인 폼 제출 처리
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault(); // 기본 제출 방지
-
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-
-          // 로그인 요청 처리 (예: 서버로 데이터 전송)
-          fetch("/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          })
-            .then((response) => {
-              if (response.ok) {
-                alert("로그인 성공!");
-                closePopup(); // 팝업 닫기
-                updateAuthButton();
-              } else {
-                alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");
-              }
-            })
-            .catch((error) => console.error("로그인 중 오류 발생:", error));
-        });
-
-      function logout() {
-        fetch("/api/logout", { method: "POST" })
-          .then((response) => {
-            if (response.ok) {
-              alert("로그아웃 성공");
-              window.location.href = "../index.html";
-              updateAuthButton();
-            } else {
-              throw new Error("로그아웃 실패");
-            }
-          })
-          .catch((error) => console.error("로그아웃 중 오류 발생:", error));
       }
 
 
@@ -228,6 +133,7 @@
 
       document.addEventListener("DOMContentLoaded", async () => {
         const productId = new URLSearchParams(window.location.search).get("id");
+        const from = new URLSearchParams(window.location.search).get("from"); // 'from' 파라미터 확인
         const token = document.cookie
           .split("; ")
           .find((row) => row.startsWith("token="))
@@ -280,7 +186,7 @@
       <button id="bid-button" class="product-details-bid-button">입찰하기</button>
     </div>
     <div class="back-link-container">
-  <a href="/category.html?category=${product.category}">뒤로가기</a>
+   <a href="${from === "mypage" ? "/mypage.html" : `/category.html?category=${product.category}`}">뒤로가기</a>
 </div>
   </div>
 `;
