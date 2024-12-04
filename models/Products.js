@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const ProductSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  registeredMemberId: { type: String, required: true },
   image: { type: String }, // 이미지 경로 또는 URL
   startPrice: { type: Number, required: true },
   currentPrice: { type: Number, required: true }, // 현재 경매 가격 필드 추가

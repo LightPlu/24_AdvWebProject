@@ -5,7 +5,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const loginUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, redirecturl } = req.body;
 
     console.log("요청 데이터:", req.body);
 
@@ -21,7 +21,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const token = jwt.sign({ id: member._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
     res.cookie("token", token);
-    res.redirect("/");
+    res.redirect(redirecturl || "/");
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
