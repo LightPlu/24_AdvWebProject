@@ -35,7 +35,7 @@
         if (contentKey === "interest") {
           loadLikedProducts();
         } else if (contentKey === "participating") {
-          loadMyProducts();
+          loadRegisteredProducts();
         } else {
           contentArea.innerHTML = contentData[contentKey];
         }
@@ -131,6 +131,55 @@
           document.getElementById("content-area").innerHTML =
             "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
         }
+      }
+
+      async function loadRegisteredProducts() {
+
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
+        // 사용자 ID 추출
+      const memberInfo = parseJwt(token);
+      const userId = memberInfo.id;
+
+      try {
+        const response = await fetch(`/api/products/registered?userId=${userId}`);
+        if (!response.ok)
+          throw new Error("등록중인 경매 상품 데이터를 가져오는 데 실패했습니다.");
+        const registeredProducts = await response.json();
+
+        const contentArea = document.getElementById("content-area");
+        if (registeredProducts.length === 0) {
+          contentArea.innerHTML = "<p>등록중인 경매 상품이 없습니다.</p>";
+          return;
+        }
+
+        contentArea.innerHTML =
+          '<div class="product-list" id="registered-products"></div>';
+        const productList = document.getElementById("registered-products");
+
+        registeredProducts.forEach((product) => {
+          const productItem = document.createElement("div");
+          productItem.className = "product-item";
+
+          productItem.innerHTML = `
+            <a href="/productDetails.html?id=${product._id}&from=mypage">
+            <img src="${product.image}" alt="${product.name}" />
+            <h3>${product.name} <span class="like-icon">★</span> ${
+            product.likes
+          }</h3>
+            <p class="price">${product.currentPrice.toLocaleString()}원</p>
+            <p>${product.description}</p>
+          `;
+
+          productList.appendChild(productItem);
+        });
+      } catch (error) {
+        console.error("찜한 상품 목록 로드 중 오류:", error);
+        document.getElementById("content-area").innerHTML =
+          "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
+      }
       }
 
     </script>

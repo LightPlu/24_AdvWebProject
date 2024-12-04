@@ -104,6 +104,7 @@ router.get("/", async (req, res) => {
     });
   }
 });
+
 // 찜한 상품 목록 조회 API
 router.get("/liked", async (req, res) => {
   const userId = req.query.userId; // 사용자 ID를 쿼리에서 받음
@@ -114,6 +115,19 @@ router.get("/liked", async (req, res) => {
     res
       .status(500)
       .json({ error: "찜한 상품 데이터를 가져오는 중 오류가 발생했습니다." });
+  }
+});
+
+// 찜한 상품 목록 조회 API
+router.get("/registered", async (req, res) => {
+  const userId = req.query.userId; // 사용자 ID를 쿼리에서 받음
+  try {
+    const registeredProducts = await Product.find({ registeredMemberId: userId }); // likedBy 필드에 사용자 ID가 포함된 상품만 검색
+    res.status(200).json(registeredProducts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "등록중인 경매 상품 데이터를 가져오는 중 오류가 발생했습니다." });
   }
 });
 
