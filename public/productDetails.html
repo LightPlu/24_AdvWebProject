@@ -8,9 +8,36 @@
     
   </head>
   <body>
-    <div id="product-details" class="product-details-container">
-      <div id="product-info"></div>
+    <!-- 로그인 팝업 -->
+    <div id="loginPopup" class="login-popup">
+      <div>
+        <span class="close-btn" onclick="closePopup()">✖</span>
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="text" id="email" placeholder="아이디" required />
+          </div>
+          <div class="form-group password-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="비밀번호"
+              required
+            />
+            <span class="password-toggle" onclick="togglePassword()">👁️</span>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="login-btn">로그인</button>
+          </div>
+          <!-- 하단 링크 -->
+          <div class="links">
+            <a href="/find-id">아이디(이메일) 찾기</a> |
+            <a href="/find-password">비밀번호 찾기</a> |
+            <a href="./public/signup.html">회원가입</a>
+          </div>
+        </form>
+      </div>
     </div>
+
     <div class="header">
       <div class="logo-container" onclick="goToMain()">
         <img
@@ -42,9 +69,10 @@
         <button class="my-page" onclick="showMyPage()">마이페이지</button>
       </div>
     </div>
-
-
-
+    
+    <div id="product-details" class="product-details-container">
+      <div id="product-info"></div>
+    </div>
 
     <!-- Left Sidebar -->
     <div class="left-sidebar">
@@ -105,6 +133,96 @@ function goToMain() {
         window.location.href = "registration.html";
       }
 
+      // 팝업 열기
+      function goToLogin() {
+        document.getElementById("loginPopup").style.display = "flex";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateAuthButton();
+      });
+
+function updateCountdownTimer(endTime) {
+  const timerElement = document.getElementById("countdown-timer");
+  
+  function calculateTimeLeft() {
+    const now = new Date();
+    const endDate = new Date(endTime);
+    const timeLeft = endDate - now;
+
+    if (timeLeft <= 0) {
+      timerElement.textContent = "경매 종료됨";
+      clearInterval(timerInterval); // 타이머 중지
+      return;
+    }
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    timerElement.textContent = `남은 시간: ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+  }
+
+  calculateTimeLeft(); // 처음 한 번 즉시 실행
+  const timerInterval = setInterval(calculateTimeLeft, 1000); // 1초마다 업데이트
+}
+
+
+
+      function updateAuthButton() {
+        const token = document.cookie.includes("token");
+        const authButton = document.querySelector(".login-button");
+
+        if (token) {
+          authButton.textContent = "로그아웃";
+          authButton.onclick = logout;
+        } else {
+          authButton.textContent = "로그인";
+          authButton.onclick = goToLogin;
+        }
+      }
+
+      // 로그인 폼 제출 처리
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // 기본 제출 방지
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          // 로그인 요청 처리 (예: 서버로 데이터 전송)
+          fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("로그인 성공!");
+                closePopup(); // 팝업 닫기
+                updateAuthButton();
+              } else {
+                alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");
+              }
+            })
+            .catch((error) => console.error("로그인 중 오류 발생:", error));
+        });
+
+      function logout() {
+        fetch("/api/logout", { method: "POST" })
+          .then((response) => {
+            if (response.ok) {
+              alert("로그아웃 성공");
+              window.location.href = "../index.html";
+              updateAuthButton();
+            } else {
+              throw new Error("로그아웃 실패");
+            }
+          })
+          .catch((error) => console.error("로그아웃 중 오류 발생:", error));
+      }
 
       // 팝업 열기
       function showPopup(content) {
@@ -180,7 +298,10 @@ function goToMain() {
     <p id="current-price">현재 가격: ${product.currentPrice.toLocaleString()}원</p>
     <p>카테고리: ${product.category}</p>
     <p>상태: ${product.status === "new" ? "새상품" : "중고"}</p>
-    <p>경매 종료 시간: ${new Date(product.endTime).toLocaleString()}</p>
+    <p>
+  경매 종료 시간: ${new Date(product.endTime).toLocaleString()}
+  <span id="countdown-timer">남은 시간: 계산 중...</span>
+</p>
     <div class="product-details-bid-section">
       <input type="number" id="bid-amount" class="product-details-bid-input" placeholder="입찰 금액 입력" />
       <button id="bid-button" class="product-details-bid-button">입찰하기</button>
@@ -190,6 +311,8 @@ function goToMain() {
 </div>
   </div>
 `;
+
+updateCountdownTimer(product.endTime);
 
 
 
