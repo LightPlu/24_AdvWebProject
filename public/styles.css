@@ -102,7 +102,7 @@ body {
 
 /* 상단 헤더 */
 .header {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -113,6 +113,7 @@ body {
   padding: 10px 20px;
   background-color: #a2d5ab;
   color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .header .button-group {
@@ -163,7 +164,7 @@ body {
   background-color: #f8f9fa;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 header h1 {
@@ -613,7 +614,7 @@ textarea {
   border: 1px solid #ddd;
   border-radius: 15px;
   background-color: #f9f9f9;
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 .mypage-menu h3,
@@ -658,7 +659,7 @@ input[type="checkbox"] {
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #fff;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .content-area h2,
@@ -807,7 +808,7 @@ input {
   background: #fff; /* 하얀색 배경 */
   border-radius: 10px; /* 둥근 모서리 */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-  margin-top: 100px;
+  margin-top: 30px;
 }
 
 /* 이미지 스타일 */
