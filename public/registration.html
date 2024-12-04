@@ -222,12 +222,35 @@
     </script>
 
     <script>
+
+      document.addEventListener("DOMContentLoaded", async () => {
+          const token = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("token="))
+            ?.split("=")[1];
+
+            function parseJwt(token) {
+              const base64Url = token.split(".")[1]; // JWT의 페이로드 부분
+              const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+              const jsonPayload = decodeURIComponent(
+                atob(base64)
+                  .split("")
+                  .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                  .join("")
+              );
+              return JSON.parse(jsonPayload); // JSON 객체로 반환
+            }
+
+      // JWT 토큰에서 사용자 정보 해석
+      const memberInfo = parseJwt(token); // 사용자 정보 추출
+      const memberId = memberInfo.id; // 사용자 ID 가져오기
       document
         .getElementById("productForm")
         .addEventListener("submit", async (event) => {
           event.preventDefault();
 
           const formData = new FormData(document.getElementById("productForm"));
+          formData.append("memberId", memberId);
 
           try {
             const response = await fetch(
@@ -250,6 +273,9 @@
             alert("상품 등록 중 오류가 발생했습니다.");
           }
         });
+      }
+      )
+
     </script>
   </body>
 </html>

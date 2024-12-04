@@ -82,13 +82,28 @@
 
       function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
-      }
-      function showMyPage() {
-        window.location.href = "mypage.html"; // 마이 페이지로 이동
-      }
+      }      
 
       function goToRegister() {
-        window.location.href = "registration.html";
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/products/add", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./registration.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert(
+                "상품 등록 페이지로 이동할 수 없습니다. 로그인이 필요합니다."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
       }
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -108,23 +123,40 @@
         }
       }
 
-      function logout() {
-        fetch("/api/logout", { method: "POST" })
-          .then((response) => {
-            if (response.ok) {
-              alert("로그아웃 성공");
-              window.location.href = "../index.html";
-              updateAuthButton();
-            } else {
-              throw new Error("로그아웃 실패");
-            }
-          })
-          .catch((error) => console.error("로그아웃 중 오류 발생:", error));
-      }
     </script>
   </head>
 
   <body>
+
+    <!-- 로그인 팝업 -->
+    <div id="loginPopup" class="login-popup">
+      <div>
+        <span class="close-btn" onclick="closePopup()">✖</span>
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="text" id="email" placeholder="아이디" required />
+          </div>
+          <div class="form-group password-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="비밀번호"
+              required
+            />
+            <span class="password-toggle" onclick="togglePassword()">👁️</span>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="login-btn">로그인</button>
+          </div>
+          <!-- 하단 링크 -->
+          <div class="links">
+            <a href="/find-id">아이디(이메일) 찾기</a> |
+            <a href="/find-password">비밀번호 찾기</a> |
+            <a href="./public/signup.html">회원가입</a>
+          </div>
+        </form>
+      </div>
+    </div>
     <!-- 상단 헤더 -->
     <div class="header">
       <div class="logo-container" onclick="goToMain()">
@@ -144,10 +176,11 @@
       <div class="search-container">
         <input
           type="text"
+          id="search-bar"
           class="search-bar"
           placeholder="검색어를 입력하세요"
         />
-        <span class="search-icon">🔍</span>
+        <span class="search-icon" onclick="searchProducts()">🔍</span>
       </div>
 
       <!-- 마이페이지,로그인,상품등록 버튼 -->
@@ -269,6 +302,99 @@
       function hidePopup() {
         document.getElementById("popupOverlay").style.display = "none";
         document.getElementById("popupContent").style.display = "none";
+      }
+
+      // 로그인 팝업 닫기
+      function closePopup() {
+        document.getElementById("loginPopup").style.display = "none";
+      }
+
+      // 마이페이지 버튼 클릭 시 리스트 표시
+      function showMyPage() {
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/mypage", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./mypage.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert("마이 페이지로 이동할 수 없습니다. 로그인이 필요합니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
+      }
+
+      function goToLogin() {
+        document.getElementById("loginPopup").style.display = "flex";
+      }
+
+      // 로그인 폼 제출 처리
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // 기본 제출 방지
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const redirectUrl = window.location.href; // 현재 페이지 URL 저장
+          
+
+          // 로그인 요청 처리 (예: 서버로 데이터 전송)
+          fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("로그인 성공!");
+                closePopup(); // 팝업 닫기
+                updateAuthButton();
+              } else {
+                alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");
+              }
+            })
+            .catch((error) => console.error("로그인 중 오류 발생:", error));
+        });
+
+      function logout() {
+        fetch("/api/logout", { method: "POST" })
+          .then((response) => {
+            if (response.ok) {
+              alert("로그아웃 성공");
+              window.location.href = "../index.html";
+              updateAuthButton();
+            } else {
+              throw new Error("로그아웃 실패");
+            }
+          })
+          .catch((error) => console.error("로그아웃 중 오류 발생:", error));
+      }
+
+      // Enter 키로 검색
+      document.getElementById("search-bar").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault(); // 기본 동작 방지 (폼 제출 방지)
+          searchProducts(); // 검색 함수 호출
+        }
+      });
+
+      function searchProducts() {
+        const query = document.getElementById("search-bar").value.trim();
+
+        if (query) {
+          // 검색어를 기반으로 상품 데이터를 다시 로드
+          displayProducts(null, query);
+          history.pushState({}, '', `?search=${encodeURIComponent(query)}`); // URL 업데이트
+        } else {
+          alert("검색어를 입력하세요.");
+        }
       }
     </script>
   </body>

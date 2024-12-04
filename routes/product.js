@@ -15,7 +15,7 @@ router.use(cookieParser());
 // 1. 상품 등록 (POST /api/products/add)
 router.route("/add").post(checkLogin, async (req, res) => {
   try {
-    const { name, startPrice, description, category, status, endTime } =
+    const { name, startPrice, description, category, status, endTime, memberId } =
       req.body;
 
     // 필수 필드 확인
@@ -47,6 +47,7 @@ router.route("/add").post(checkLogin, async (req, res) => {
     // 새로운 상품 생성
     const newProduct = new Product({
       name,
+      registeredMemberId: memberId,
       image: imagePath, // 저장된 이미지 경로
       startPrice,
       currentPrice: startPrice,
