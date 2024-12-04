@@ -10,15 +10,13 @@
   </head>
   <body>
     <!-- 로그인 팝업 -->
-    <div id="loginPopup" class="popup">
-      <div class="popup-content">
+    <div id="loginPopup" class="login-popup">
+      <div>
         <span class="close-btn" onclick="closePopup()">✖</span>
         <form id="loginForm">
-          <!-- 이메일 입력 -->
           <div class="form-group">
             <input type="text" id="email" placeholder="아이디" required />
           </div>
-          <!-- 비밀번호 입력 -->
           <div class="form-group password-group">
             <input
               type="password"
@@ -28,7 +26,6 @@
             />
             <span class="password-toggle" onclick="togglePassword()">👁️</span>
           </div>
-          <!-- 로그인 버튼 -->
           <div class="form-group">
             <button type="submit" class="login-btn">로그인</button>
           </div>
@@ -162,9 +159,57 @@
         <img src="./public/images/기타.jpeg" alt="기타" class="button-image" />
         <span class="button-text">기타</span>
       </button>
+
+      <!-- 왼쪽 여백에 물음표 버튼 추가 -->
+      <div class="left-sidebar">
+        <img
+          src="./public/images/물음표.png"
+          alt="Icon 1"
+          onclick="showPopup('🌳홈 페이지🌳')"
+        />
+        <div class="text-box">
+          <span class="blink-text">물음표를 클릭해보세요!</span>
+        </div>
+      </div>
+
+      <!-- 팝업창 -->
+      <div class="overlay" id="popupOverlay" onclick="hidePopup()"></div>
+      <div class="popup" id="popupContent">
+        <h2 id="popupText"></h2>
+        <p>
+          "거래해요 경매의 숲"에 오신 것을 환영합니다. <br />
+          여기는 다양한 상품을 손쉽게 거래하고, 재미있는 경매를 즐길 수 있는
+          공간입니다! <br />
+          각 페이지마다 물음표 버튼을 클릭해보세요!
+        </p>
+        <p><strong>💡 주요 기능</strong></p>
+        <ul>
+          <li><strong>🛒카테고리 : </strong>다양한 카테고리의 상품 탐색</li>
+          <li><strong>📈실시간 랭킹 : </strong>찜 순위로 인기 상품 확인</li>
+          <li>
+            <strong>🔎상단바 : </strong>상품 등록, 로그인, 마이페이지 이동,
+            검색창 이용
+          </li>
+        </ul>
+        <p>지금 바로 거래의 숲에서 특별한 경험을 시작해보세요! 🌟</p>
+        <button onclick="hidePopup()">닫기</button>
+      </div>
     </div>
 
     <script>
+      // 팝업 열기
+      function showPopup(content) {
+        document.getElementById("popupText").innerText = content;
+        document.getElementById("popupOverlay").style.display = "block";
+        document.getElementById("popupContent").style.display = "block";
+      }
+
+      // 팝업 닫기
+      function hidePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+        document.getElementById("popupContent").style.display = "none";
+      }
+
       async function loadRealTimeRanking() {
         try {
           const response = await fetch("/api/products/top-likes");

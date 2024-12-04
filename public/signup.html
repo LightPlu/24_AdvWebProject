@@ -135,7 +135,51 @@
       </form>
     </div>
 
+    <!-- 왼쪽 여백에 물음표 버튼 추가 -->
+    <div class="left-sidebar">
+      <img
+        src="./images/물음표.png"
+        alt="Icon 1"
+        onclick="showPopup('🌳회원가입🌳')"
+      />
+      <div class="text-box">
+        <span class="blink-text">물음표를 클릭해보세요!</span>
+      </div>
+    </div>
+
+    <!-- 팝업창 -->
+    <div class="overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popupContent">
+      <h2 id="popupText"></h2>
+      <p>
+        "거래해요 경매의 숲"의 회원이 되어 다양한 경매 혜택을 누려보세요! <br />
+        쉽고 빠른 회원 가입으로 새로운 경매의 경험을 시작할 수 있습니다.
+      </p>
+      <p><strong>⚠️주의사항 </strong></p>
+      <ul>
+        <li>⭐<strong>각 항목은 빠짐없이,정확하게 모두 기재</strong></li>
+
+        <li>⭐<strong>안전한 비밀번호 사용</strong></li>
+        <li>⭐<strong>경매 종료 날짜까지 입찰이 계속 이루어집니다.</strong></li>
+      </ul>
+
+      <button onclick="hidePopup()">닫기</button>
+    </div>
+
     <script>
+      // 팝업 열기
+      function showPopup(content) {
+        document.getElementById("popupText").innerText = content;
+        document.getElementById("popupOverlay").style.display = "block";
+        document.getElementById("popupContent").style.display = "block";
+      }
+
+      // 팝업 닫기
+      function hidePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+        document.getElementById("popupContent").style.display = "none";
+      }
+
       document
         .getElementById("memberForm")
         .addEventListener("submit", async (event) => {

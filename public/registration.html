@@ -152,7 +152,51 @@
       </form>
     </div>
 
+    <!-- 왼쪽 여백에 물음표 버튼 추가 -->
+    <div class="left-sidebar">
+      <img
+        src="./images/물음표.png"
+        alt="Icon 1"
+        onclick="showPopup('🌳상품 등록🌳')"
+      />
+      <div class="text-box">
+        <span class="blink-text">물음표를 클릭해보세요!</span>
+      </div>
+    </div>
+
+    <!-- 팝업창 -->
+    <div class="overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popupContent">
+      <h2 id="popupText"></h2>
+      <p>
+        경매에 등록하고 싶은 상품을 쉽고 빠르게 추가할 수 있는 "상품 등록"
+        페이지입니다!<br />
+        지금 바로 상품을 등록하고 경매를 시작해보세요!<br />
+      </p>
+      <p><strong>⚠️주의사항 </strong></p>
+      <ul>
+        <li>⭐<strong>각 항목은 빠짐없이, 정확하게 모두 기재</strong></li>
+
+        <li>⭐<strong>경매 종료 시간은 내일 날짜부터 가능</strong></li>
+      </ul>
+
+      <button onclick="hidePopup()">닫기</button>
+    </div>
+
     <script>
+      // 팝업 열기
+      function showPopup(content) {
+        document.getElementById("popupText").innerText = content;
+        document.getElementById("popupOverlay").style.display = "block";
+        document.getElementById("popupContent").style.display = "block";
+      }
+
+      // 팝업 닫기
+      function hidePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+        document.getElementById("popupContent").style.display = "none";
+      }
+
       // 현재 날짜와 시간을 가져오기
       const now = new Date();
 
