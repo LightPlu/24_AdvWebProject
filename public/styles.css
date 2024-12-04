@@ -924,3 +924,12 @@ input {
   background-color: #3f51b5;
   color: white;
 }
+
+#countdown-timer {
+  font-size: 18px; /* 글자 크기 조정 */
+  color: #ff0000; /* 빨간색 강조 */
+  font-weight: bold; /* 굵은 글씨 */
+
+  margin-left: 20px; /* 경매 종료 시간과의 간격 조정 */
+  display: inline-block; /* 오른쪽 배치 */
+}
