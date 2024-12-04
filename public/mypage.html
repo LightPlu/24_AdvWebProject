@@ -72,8 +72,28 @@
           .catch((error) => console.error("로그아웃 중 오류 발생:", error));
       }
 
+      function parseJwt(token) {
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        const jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split("")
+            .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+        );
+        return JSON.parse(jsonPayload);
+      }
+
       async function loadLikedProducts() {
-        const userId = "현재_사용자_ID"; // 실제 사용자 ID로 변경 필요
+
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="))
+          ?.split("=")[1];
+          // 사용자 ID 추출
+        const memberInfo = parseJwt(token);
+        const userId = memberInfo.id;
+
         try {
           const response = await fetch(`/api/products/liked?userId=${userId}`);
           if (!response.ok)
@@ -95,11 +115,12 @@
             productItem.className = "product-item";
 
             productItem.innerHTML = `
+              <a href="/productDetails.html?id=${product._id}&from=mypage">
               <img src="${product.image}" alt="${product.name}" />
               <h3>${product.name} <span class="like-icon">★</span> ${
               product.likes
             }</h3>
-              <p class="price">${product.startPrice.toLocaleString()}원</p>
+              <p class="price">${product.currentPrice.toLocaleString()}원</p>
               <p>${product.description}</p>
             `;
 
@@ -111,6 +132,7 @@
             "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
         }
       }
+
     </script>
   </head>
   <body>

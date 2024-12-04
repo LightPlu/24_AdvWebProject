@@ -38,7 +38,6 @@
       </div>
     </div>
 
-
     <div class="header">
       <div class="logo-container" onclick="goToMain()">
         <img
@@ -70,8 +69,7 @@
         <button class="my-page" onclick="showMyPage()">마이페이지</button>
       </div>
     </div>
-
-
+    
     <div id="product-details" class="product-details-container">
       <div id="product-info"></div>
     </div>
@@ -124,7 +122,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
 
-      function goToMain() {
+function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
       }
       function showMyPage() {
@@ -226,7 +224,6 @@ function updateCountdownTimer(endTime) {
           .catch((error) => console.error("로그아웃 중 오류 발생:", error));
       }
 
-
       // 팝업 열기
       function showPopup(content) {
         document.getElementById("popupText").innerText = content;
@@ -254,6 +251,7 @@ function updateCountdownTimer(endTime) {
 
       document.addEventListener("DOMContentLoaded", async () => {
         const productId = new URLSearchParams(window.location.search).get("id");
+        const from = new URLSearchParams(window.location.search).get("from"); // 'from' 파라미터 확인
         const token = document.cookie
           .split("; ")
           .find((row) => row.startsWith("token="))
@@ -309,7 +307,7 @@ function updateCountdownTimer(endTime) {
       <button id="bid-button" class="product-details-bid-button">입찰하기</button>
     </div>
     <div class="back-link-container">
-  <a href="/category.html?category=${product.category}">뒤로가기</a>
+   <a href="${from === "mypage" ? "/mypage.html" : `/category.html?category=${product.category}`}">뒤로가기</a>
 </div>
   </div>
 `;
