@@ -256,7 +256,7 @@ textarea {
   max-width: 700px;
   margin-left: 0;
   top: 50%;
-  transform: translateY(20%);
+  transform: translateY(10%);
 }
 
 /* 이미지 컨테이너 스타일 */
@@ -299,7 +299,7 @@ textarea {
   position: fixed; /* 화면 고정 */
   left: 20px; /* 왼쪽 여백 */
   top: 40%; /* 화면에서의 위치 */
-  transform: translateY(0%); /* 정확히 중앙 정렬 */
+  transform: translateY(10%); /* 정확히 중앙 정렬 */
   width: auto; /* 너비는 내용에 맞춤 */
   padding: 10px;
   border-radius: 0 10px 10px 0;
