@@ -102,13 +102,11 @@
           <h3 class="ranking-title">실시간 랭킹</h3>
           <ul id="ranking-list"></ul>
         </div>
-        <div class="quiz-footer"></div>
-        <img
-          src="./public/images/퀴즈.png"
-          alt="Quiz Icon"
-          class="quiz-icon"
-          onclick="showQuizPopup()"
-        />
+      </div>
+
+      <div class="quiz-footer" onclick="showQuizPopup()">
+        <img src="./public/images/퀴즈.png" alt="Quiz Icon" class="quiz-icon" />
+        <div class="quiz-text">경매 상식 퀴즈💯</div>
       </div>
     </div>
 
@@ -187,7 +185,7 @@
           "거래해요 경매의 숲"에 오신 것을 환영합니다. <br />
           여기는 다양한 상품을 손쉽게 거래하고, 재미있는 경매를 즐길 수 있는
           공간입니다! <br />
-          각 페이지마다 물음표 버튼을 클릭해보세요!
+          <strong>각 페이지마다 물음표 버튼을 클릭해보세요!</strong>
         </p>
         <p><strong>💡 주요 기능</strong></p>
         <ul>
@@ -206,45 +204,196 @@
     <div
       class="quiz-popup-overlay"
       id="quizPopupOverlay"
-      onclick="hideQuizPopup()"
+      style="display: none"
     ></div>
-    <div class="quiz-popup" id="quizPopupContent">
-      <h2>퀴즈 이벤트</h2>
 
-      <form id="quizForm">
+    <div class="quiz-popup" id="quizPopupContent" style="display: none">
+      <h2>Quiz 1</h2>
+      <form id="quizForm1">
         <div class="quiz-question">
-          <p>Q. 경매의 숲에서 제공하는 서비스는 무엇일까요?</p>
-          <input type="radio" name="quizAnswer" value="1" id="answer1" />
-          <label for="answer1">1. 경매</label><br />
-          <input type="radio" name="quizAnswer" value="2" id="answer2" />
-          <label for="answer2">2. 쇼핑몰</label><br />
-          <input type="radio" name="quizAnswer" value="3" id="answer3" />
-          <label for="answer3">3. 예약 서비스</label>
+          <p>
+            Q. 다양한 상품들을 쇼핑하고 직접 입찰, 낙찰 기능을 이용하여
+            온라인으로 경매에 참여할 수 있는 사이트는 어디인가요?
+          </p>
+          <div class="quiz-option">
+            <label for="answer1-1"
+              >1.
+              쿠팡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+            >
+            <input type="radio" name="quizAnswer1" value="1" id="answer1-1" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer1-2"
+              >2.
+              당근마켓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+            >
+            <input type="radio" name="quizAnswer1" value="2" id="answer1-2" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer1-3">3. 거래해요 경매의 숲</label>
+            <input type="radio" name="quizAnswer1" value="3" id="answer1-3" />
+          </div>
         </div>
-        <button type="submit">제출하기</button>
+        <div class="quiz-buttons">
+          <button type="submit">제출하기</button>
+          <button type="button" onclick="hideQuizPopup()">닫기</button>
+          <button type="button" onclick="showQuiz2()">다음</button>
+        </div>
       </form>
-      <button onclick="hideQuizPopup()">닫기</button>
+    </div>
+
+    <div class="quiz-popup" id="quizPopupContent2" style="display: none">
+      <h2>Quiz 2</h2>
+      <form id="quizForm2">
+        <div class="quiz-question">
+          <p>
+            Q. 다수의 사람들이 각자 원하는 금액을 제출하는 경쟁 방법을 무엇이라
+            할까요?
+          </p>
+          <div class="quiz-option">
+            <label for="answer2-1">1. 낙찰</label>
+            <input type="radio" name="quizAnswer2" value="1" id="answer2-1" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer2-2">2. 응찰</label>
+            <input type="radio" name="quizAnswer2" value="2" id="answer2-2" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer2-3">3. 입찰</label>
+            <input type="radio" name="quizAnswer2" value="3" id="answer2-3" />
+          </div>
+        </div>
+        <div class="quiz-buttons">
+          <button type="submit">제출하기</button>
+          <button type="button" onclick="hideQuizPopup()">닫기</button>
+          <button type="button" onclick="showQuiz3()">다음</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="quiz-popup" id="quizPopupContent3" style="display: none">
+      <h2>Quiz 3</h2>
+      <form id="quizForm3">
+        <div class="quiz-question">
+          <p>
+            Q. 경매품 희망자 중 최고가를 제시한 사람을 계약자로 결정하는 것을
+            무엇이라 할까요?
+          </p>
+          <div class="quiz-option">
+            <label for="answer3-1">1. 낙찰</label>
+            <input type="radio" name="quizAnswer3" value="1" id="answer3-1" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer3-2">2. 응찰</label>
+            <input type="radio" name="quizAnswer3" value="2" id="answer3-2" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer3-3">3. 입찰</label>
+            <input type="radio" name="quizAnswer3" value="3" id="answer3-3" />
+          </div>
+        </div>
+        <div class="quiz-buttons">
+          <button type="submit">제출하기</button>
+          <button type="button" onclick="hideQuizPopup()">닫기</button>
+          <button type="button" onclick="showQuiz4()">다음</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="quiz-popup" id="quizPopupContent4" style="display: none">
+      <h2>Quiz 4</h2>
+      <form id="quizForm4">
+        <div class="quiz-question">
+          <p>Q. 경매에서 낙찰이 되는 시점은 언제일까요?</p>
+          <div class="quiz-option">
+            <label for="answer4-1"
+              >1. 낙찰자가 경매를 종료할
+              때&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+            >
+            <input type="radio" name="quizAnswer4" value="1" id="answer4-1" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer4-2"
+              >2. 경매 종료시간이 되었을
+              때&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+            >
+            <input type="radio" name="quizAnswer4" value="2" id="answer4-2" />
+          </div>
+          <div class="quiz-option">
+            <label for="answer4-3">3. 상품의 입찰가가 원가와 동일해질 때</label>
+            <input type="radio" name="quizAnswer4" value="3" id="answer4-3" />
+          </div>
+        </div>
+        <div class="quiz-buttons">
+          <button type="submit">제출하기</button>
+          <button type="button" onclick="hideQuizPopup()">닫기</button>
+        </div>
+      </form>
     </div>
 
     <script>
       function showQuizPopup() {
         document.getElementById("quizPopupOverlay").style.display = "block";
         document.getElementById("quizPopupContent").style.display = "block";
+        document.getElementById("quizPopupContent2").style.display = "none"; // 두 번째 팝업 숨기기
       }
 
       function hideQuizPopup() {
         document.getElementById("quizPopupOverlay").style.display = "none";
         document.getElementById("quizPopupContent").style.display = "none";
+        document.getElementById("quizPopupContent2").style.display = "none";
+        document.getElementById("quizPopupContent3").style.display = "none";
+        document.getElementById("quizPopupContent4").style.display = "none";
       }
 
       // 퀴즈 제출 처리
       document
-        .getElementById("quizForm")
+        .getElementById("quizForm1")
         .addEventListener("submit", function (event) {
           event.preventDefault(); // 기본 폼 제출 방지
 
           const selectedAnswer = document.querySelector(
-            'input[name="quizAnswer"]:checked'
+            'input[name="quizAnswer1"]:checked'
+          );
+          if (!selectedAnswer) {
+            alert("정답을 선택해주세요!");
+            return;
+          }
+
+          if (selectedAnswer.value === "3") {
+            alert("정답입니다! 다음 문제로 이동!");
+          } else {
+            alert("틀렸습니다. 다시 시도해보세요!");
+          }
+        });
+
+      // Quiz 2 제출 처리
+      document
+        .getElementById("quizForm2")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const selectedAnswer = document.querySelector(
+            'input[name="quizAnswer2"]:checked'
+          );
+          if (!selectedAnswer) {
+            alert("정답을 선택해주세요!");
+            return;
+          }
+
+          if (selectedAnswer.value === "3") {
+            alert("정답입니다! 다음 문제로 이동!");
+          } else {
+            alert("틀렸습니다. 다시 시도해보세요!");
+          }
+        });
+
+      // Quiz 3 제출 처리
+      document
+        .getElementById("quizForm3")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const selectedAnswer = document.querySelector(
+            'input[name="quizAnswer3"]:checked'
           );
           if (!selectedAnswer) {
             alert("정답을 선택해주세요!");
@@ -252,13 +401,46 @@
           }
 
           if (selectedAnswer.value === "1") {
-            alert("정답입니다! 참여해주셔서 감사합니다.");
+            alert("정답입니다! 다음 문제로 이동!");
           } else {
             alert("틀렸습니다. 다시 시도해보세요!");
           }
-
-          hideQuizPopup();
         });
+
+      // Quiz 4 제출 처리
+      document
+        .getElementById("quizForm4")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const selectedAnswer = document.querySelector(
+            'input[name="quizAnswer4"]:checked'
+          );
+          if (!selectedAnswer) {
+            alert("정답을 선택해주세요!");
+            return;
+          }
+
+          if (selectedAnswer.value === "2") {
+            alert("정답입니다! 이제 경매하러 가볼까요?");
+          } else {
+            alert("틀렸습니다. 다시 시도해보세요!");
+          }
+        });
+
+      function showQuiz2() {
+        document.getElementById("quizPopupContent").style.display = "none"; // 첫 번째 팝업 숨기기
+        document.getElementById("quizPopupContent2").style.display = "block"; // 두 번째 팝업 표시
+      }
+
+      function showQuiz3() {
+        document.getElementById("quizPopupContent").style.display = "none"; // 첫 번째 팝업 숨기기
+        document.getElementById("quizPopupContent3").style.display = "block"; // 두 번째 팝업 표시
+      }
+
+      function showQuiz4() {
+        document.getElementById("quizPopupContent").style.display = "none"; // 첫 번째 팝업 숨기기
+        document.getElementById("quizPopupContent4").style.display = "block"; // 두 번째 팝업 표시
+      }
 
       // 팝업 열기
       function showPopup(content) {
