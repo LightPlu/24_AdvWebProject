@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="admin-container">
+      <h1>문의 관리</h1>
+      <div id="inquiry-list">
+        <p>문의 내역을 불러오는 중...</p>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+
+  <script>
+    async function loadInquiries() {
+      try {
+        const response = await fetch("/api/inquiries", { method: "GET" });
+        if (!response.ok)
+          throw new Error("문의 내역을 불러오는 데 실패했습니다.");
+
+        const inquiries = await response.json();
+        const inquiryList = document.getElementById("inquiry-list");
+
+        if (inquiries.length === 0) {
+          inquiryList.innerHTML = "<p>문의 내역이 없습니다.</p>";
+          return;
+        }
+
+        let inquiryHTML = "";
+        inquiries.forEach((inquiry) => {
+          inquiryHTML += `
+        <div class="inquiry-item">
+          <p><strong>이름:</strong> ${inquiry.name}</p>
+          <p><strong>이메일:</strong> ${inquiry.email}</p>
+          <p><strong>내용:</strong> ${inquiry.message}</p>
+          <p><strong>날짜:</strong> ${new Date(
+            inquiry.date
+          ).toLocaleString()}</p>
+          <textarea placeholder="답변을 입력하세요" data-id="${inquiry._id}">${
+            inquiry.answer || ""
+          }</textarea>
+          <button onclick="submitAnswer('${inquiry._id}')">답변 저장</button>
+        </div>
+      `;
+        });
+
+        inquiryList.innerHTML = inquiryHTML;
+      } catch (error) {
+        console.error("문의 내역 로드 중 오류:", error);
+        document.getElementById("inquiry-list").innerHTML =
+          "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
+      }
+    }
+
+    async function submitAnswer(inquiryId) {
+      const textarea = document.querySelector(
+        `textarea[data-id="${inquiryId}"]`
+      );
+      const answer = textarea.value;
+
+      try {
+        const response = await fetch(`/api/inquiries/${inquiryId}/answer`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answer }),
+        });
+
+        if (!response.ok) throw new Error("답변 저장에 실패했습니다.");
+        alert("답변이 저장되었습니다.");
+      } catch (error) {
+        console.error("답변 저장 중 오류:", error);
+        alert("답변 저장 중 오류가 발생했습니다.");
+      }
+    }
+
+    // 페이지 로드 시 문의 내역 불러오기
+    document.addEventListener("DOMContentLoaded", loadInquiries);
+  </script>
+</html>

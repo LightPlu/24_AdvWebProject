@@ -4,6 +4,7 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const dbConnect = require("./config/dbConnect");
 const http = require("http"); // HTTP 서버 생성
+const inquiryRoutes = require("./routes/inquiry");
 const { Server } = require("socket.io"); // Socket.IO 서버
 const jwt = require("jsonwebtoken");
 const secretKey = process.env.JWT_SECRET;
@@ -22,6 +23,7 @@ app.use(fileUpload()); // 파일 업로드 미들웨어 추가
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // 업로드 폴더 정적 제공
 app.use(express.static(path.join(__dirname))); // 정적 파일 폴더 설정
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/api", inquiryRoutes);
 
 // 라우트 연결
 const productRoutes = require("./routes/product");
@@ -30,6 +32,11 @@ const signupRoutes = require("./routes/signup");
 app.use("/api/members", signupRoutes);
 const loginRoutes = require("./routes/login");
 app.use("/api", loginRoutes);
+
+// 관리자 페이지
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/admin.html"));
+});
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
@@ -63,7 +70,9 @@ io.on("connection", (socket) => {
 
   // 입찰 처리
   socket.on("placeBid", async ({ productId, bidAmount, userId }) => {
-    console.log(`입찰 요청: 상품 ${productId}, 금액 ${bidAmount}, 사용자 ${userId}`);
+    console.log(
+      `입찰 요청: 상품 ${productId}, 금액 ${bidAmount}, 사용자 ${userId}`
+    );
 
     // MongoDB에서 상품을 가져오고 입찰 금액을 업데이트하는 로직 작성
     try {
@@ -83,7 +92,9 @@ io.on("connection", (socket) => {
 
       // 입찰 금액 검증
       if (bidAmount <= product.currentPrice) {
-        socket.emit("error", { message: "입찰 금액은 현재 가격보다 높아야 합니다." });
+        socket.emit("error", {
+          message: "입찰 금액은 현재 가격보다 높아야 합니다.",
+        });
         return;
       }
 

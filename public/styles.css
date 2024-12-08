@@ -51,7 +51,8 @@
   font-size: 28px;
   color: #626262;
   display: inline-block; /* 애니메이션을 위해 inline-block 설정 */
-  position: relative;
+  margin-left: 60px;
+  position: absolute;
   text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
     0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
@@ -105,7 +106,7 @@ body {
   position: relative;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 2000px;
   height: 60px;
   display: flex;
   justify-content: space-between;
@@ -123,14 +124,15 @@ body {
 
 /* 검색 바 */
 .search-container {
-  display: flex;
+  display: fixed;
   align-items: center;
-  width: 50%;
+  width: 1000px;
+  margin-left: 100px;
   justify-content: center;
 }
 
 .search-bar {
-  width: 100%;
+  width: 1000px;
   height: 40px;
   padding: 8px;
   border: none;
@@ -220,7 +222,7 @@ textarea {
 
 /* 메인 박스 스타일 */
 .main-content {
-  display: flex;
+  display: fixed;
   width: 60%;
   margin-top: 20px;
   background-color: #f9f9f9;
@@ -244,7 +246,8 @@ textarea {
 
 /* 메인 이미지 스타일 */
 .main-image {
-  width: 800px;
+  width: auto;
+  max-width: 800px;
   height: auto;
   object-fit: cover;
   margin-left: 0;
@@ -256,7 +259,7 @@ textarea {
   max-width: 700px;
   margin-left: 0;
   top: 50%;
-  transform: translateY(10%);
+  transform: translateY(30%);
 }
 
 /* 이미지 컨테이너 스타일 */
@@ -299,7 +302,7 @@ textarea {
   position: fixed; /* 화면 고정 */
   left: 20px; /* 왼쪽 여백 */
   top: 40%; /* 화면에서의 위치 */
-  transform: translateY(10%); /* 정확히 중앙 정렬 */
+  transform: translateY(70%); /* 정확히 중앙 정렬 */
   width: auto; /* 너비는 내용에 맞춤 */
   padding: 10px;
   border-radius: 0 10px 10px 0;
@@ -423,10 +426,11 @@ textarea {
 
 /* 랭킹 전체 컨테이너 */
 .ranking {
-  position: absolute;
-  right: 30px; /* 오른쪽 여백 */
-  top: 150px; /* 상단에서 떨어진 위치 */
+  position: relative;
+  margin-left: 200px;
+  top: 100px; /* 상단에서 떨어진 위치 */
   width: 300px; /* 컨테이너 너비 */
+  height: 450px;
   text-align: center; /* 중앙 정렬 */
   background-color: #e9f7df; /* 연한 초록색 파스텔톤 배경 */
   border-radius: 20px; /* 둥근 모서리 */
@@ -455,6 +459,7 @@ textarea {
 /* 각 랭킹 물품 항목 */
 .ranking-item {
   display: flex; /* 랭킹 번호와 텍스트 정렬 */
+  width: 250px;
   justify-content: space-between; /* 텍스트와 별+숫자를 양쪽 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
   background-color: #ffffff; /* 흰색 배경 */
@@ -550,8 +555,9 @@ textarea {
 }
 
 .container {
+  position: relative;
   display: flex;
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 20px auto; /* 페이지 가운데 정렬 */
   gap: 20px;
   align-items: flex-start;
@@ -608,6 +614,9 @@ textarea {
 
 .mypage-menu,
 .filter {
+  position: fixed;
+  top: 100px; /* 위에서 100px 떨어진 위치 */
+  left: 180px; /* 왼쪽에서 20px 떨어진 위치 */
   width: 280px;
   margin: 0;
   padding: 10px;
@@ -707,7 +716,7 @@ input[type="checkbox"] {
   background-color: white;
   padding: 30px;
   border-radius: 10px;
-  width: 400px;
+  width: 350px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
@@ -936,19 +945,47 @@ input {
 
 .quiz-footer {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center;
+  margin-top: 50px; /* 실시간 랭킹 아래 여백 추가 */
+  right: 120px;
+  position: absolute; /* 정렬 */
+  top: 700px; /* 랭킹과 적절히 떨어지도록 설정 */
+  background: linear-gradient(135deg, #f3f3f3, #e0e0e0); /* 배경에 그라데이션 */
+  border-radius: 10px; /* 둥근 모서리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+  width: 230px; /* 컨테이너 크기 */
+  height: 100px;
+  transition: transform 0.2s ease-in-out; /* 호버 애니메이션 */
+  cursor: pointer; /* 클릭 가능 표시 */
+}
+
+.quiz-footer:hover {
+  transform: translateY(-3px); /* 호버 시 살짝 위로 이동 */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강화 */
 }
 
 .quiz-icon {
-  width: 50px;
-  height: auto;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  width: 60px;
+  height: 60px;
+  transition: transform 0.3s ease; /* 아이콘 애니메이션 */
 }
 
-.quiz-icon:hover {
-  transform: scale(1.1);
+.quiz-footer:hover .quiz-icon {
+  transform: scale(1.1); /* 호버 시 확대 */
+}
+
+.quiz-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333; /* 텍스트 색상 */
+  padding: 8px 12px;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center; /* 라디오 버튼과 텍스트를 수직으로 정렬 */
+  margin-bottom: 10px;
 }
 
 /* 팝업 스타일 */
@@ -1003,4 +1040,144 @@ input {
 
 .quiz-popup button:hover {
   background-color: #388e3c;
+}
+
+.inquiry-form-container {
+  width: 500px; /* 전체 폼 너비를 늘림 */
+  margin: 20px auto; /* 위쪽 여백 추가 및 중앙 정렬 */
+  padding: 30px; /* 폼 내부 여백 증가 */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 폼에 그림자 추가 */
+}
+
+.inquiry-form-container h2 {
+  text-align: center;
+}
+
+#inquiry-form input,
+#inquiry-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#inquiry-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #88c089;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inquiry-history-container {
+  max-width: 1000px; /* 컨테이너의 너비를 넓혀 가로 배치를 지원 */
+  margin: 20px auto;
+  padding: 20px;
+  display: flex; /* flexbox로 변경 */
+  flex-wrap: wrap; /* 행을 넘으면 새 줄로 이동 */
+  gap: 20px; /* 카드 간 간격 */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inquiry-history-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.answered-inquiries,
+.unanswered-inquiries {
+  margin-bottom: 30px;
+}
+
+.answered-inquiries h3,
+.unanswered-inquiries h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.inquiry-item {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.answer-completed {
+  color: green;
+  font-weight: bold;
+}
+
+.answer-pending {
+  color: red;
+  font-weight: bold;
+}
+
+.admin-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#inquiry-list {
+  display: flex; /* 플렉스 컨테이너로 설정 */
+  flex-wrap: wrap; /* 카드가 화면 너비를 넘으면 다음 줄로 이동 */
+  gap: 20px; /* 카드 간격 설정 */
+  justify-content: center; /* 카드들을 중앙 정렬 */
+}
+
+.inquiry-item {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 0 1 calc(33.333% - 20px); /* 카드 크기: 3개씩 배치 (화면 크기에 따라 자동 조정) */
+  max-width: 300px; /* 카드 최대 너비 설정 */
+  box-sizing: border-box; /* 박스 크기 포함 계산 */
+}
+
+.inquiry-item p {
+  margin: 5px 0;
+}
+
+.inquiry-item strong {
+  color: #333;
+}
+
+.inquiry-item textarea {
+  width: 95%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.inquiry-item button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inquiry-item button:hover {
+  background-color: #45a049;
 }

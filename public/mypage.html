@@ -19,10 +19,23 @@
           "<h2>관심있는 경매 상품</h2><p>여기에서 관심 목록에 등록한 경매 상품을 확인할 수 있습니다.</p>",
         participating:
           "<h2>등록중인 경매 상품</h2><p>현재 등록 중인 경매 상품의 목록을 확인할 수 있습니다.</p>",
-        inquiry:
-          "<h2>문의하기</h2><p>경매 관련 문의를 작성하여 제출할 수 있는 페이지입니다.</p>",
-        "inquiry-history":
-          "<h2>문의내역 확인</h2><p>기존에 문의한 내역을 확인할 수 있습니다.</p>",
+        inquiry: `
+        <div class="inquiry-form-container">
+    <h2>문의하기</h2>
+    <form id="inquiry-form">
+      <label for="name">이름:</label>
+      <input type="text" id="name" placeholder="이름을 입력하세요" required /><br /><br />
+
+      <label for="email">이메일:</label>
+      <input type="email" id="email" placeholder="이메일 주소를 입력하세요" required /><br /><br />
+
+      <label for="message">문의 내용:</label>
+      <textarea id="message" rows="5" placeholder="문의 내용을 입력하세요" required></textarea><br /><br />
+
+      <button type="button" onclick="submitInquiry()">문의하기</button>
+    </form>
+  `,
+        "inquiry-history": "",
         "personal-info":
           "<h2>개인정보확인/수정</h2><p>회원님의 개인정보를 확인하고 수정할 수 있습니다.</p>",
         "address-management":
@@ -36,6 +49,8 @@
           loadLikedProducts();
         } else if (contentKey === "participating") {
           loadRegisteredProducts();
+        } else if (contentKey === "inquiry-history") {
+          loadInquiryHistory(); // 문의 내역 로드 함수 호출
         } else {
           contentArea.innerHTML = contentData[contentKey];
         }
@@ -85,12 +100,11 @@
       }
 
       async function loadLikedProducts() {
-
         const token = document.cookie
           .split("; ")
           .find((row) => row.startsWith("token="))
           ?.split("=")[1];
-          // 사용자 ID 추출
+        // 사용자 ID 추출
         const memberInfo = parseJwt(token);
         const userId = memberInfo.id;
 
@@ -134,54 +148,153 @@
       }
 
       async function loadRegisteredProducts() {
-
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="))
-        ?.split("=")[1];
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="))
+          ?.split("=")[1];
         // 사용자 ID 추출
-      const memberInfo = parseJwt(token);
-      const userId = memberInfo.id;
+        const memberInfo = parseJwt(token);
+        const userId = memberInfo.id;
 
-      try {
-        const response = await fetch(`/api/products/registered?userId=${userId}`);
-        if (!response.ok)
-          throw new Error("등록중인 경매 상품 데이터를 가져오는 데 실패했습니다.");
-        const registeredProducts = await response.json();
+        try {
+          const response = await fetch(
+            `/api/products/registered?userId=${userId}`
+          );
+          if (!response.ok)
+            throw new Error(
+              "등록중인 경매 상품 데이터를 가져오는 데 실패했습니다."
+            );
+          const registeredProducts = await response.json();
 
-        const contentArea = document.getElementById("content-area");
-        if (registeredProducts.length === 0) {
-          contentArea.innerHTML = "<p>등록중인 경매 상품이 없습니다.</p>";
-          return;
-        }
+          const contentArea = document.getElementById("content-area");
+          if (registeredProducts.length === 0) {
+            contentArea.innerHTML = "<p>등록중인 경매 상품이 없습니다.</p>";
+            return;
+          }
 
-        contentArea.innerHTML =
-          '<div class="product-list" id="registered-products"></div>';
-        const productList = document.getElementById("registered-products");
+          contentArea.innerHTML =
+            '<div class="product-list" id="registered-products"></div>';
+          const productList = document.getElementById("registered-products");
 
-        registeredProducts.forEach((product) => {
-          const productItem = document.createElement("div");
-          productItem.className = "product-item";
+          registeredProducts.forEach((product) => {
+            const productItem = document.createElement("div");
+            productItem.className = "product-item";
 
-          productItem.innerHTML = `
+            productItem.innerHTML = `
             <a href="/productDetails.html?id=${product._id}&from=mypage">
             <img src="${product.image}" alt="${product.name}" />
             <h3>${product.name} <span class="like-icon">★</span> ${
-            product.likes
-          }</h3>
+              product.likes
+            }</h3>
             <p class="price">${product.currentPrice.toLocaleString()}원</p>
             <p>${product.description}</p>
           `;
 
-          productList.appendChild(productItem);
-        });
-      } catch (error) {
-        console.error("찜한 상품 목록 로드 중 오류:", error);
-        document.getElementById("content-area").innerHTML =
-          "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
-      }
+            productList.appendChild(productItem);
+          });
+        } catch (error) {
+          console.error("찜한 상품 목록 로드 중 오류:", error);
+          document.getElementById("content-area").innerHTML =
+            "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
+        }
       }
 
+      async function submitInquiry() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const message = document.getElementById("message").value;
+
+        try {
+          const response = await fetch("/api/inquiry", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, message }),
+          });
+
+          if (!response.ok) throw new Error("문의 제출에 실패했습니다.");
+
+          const result = await response.json();
+          alert(result.message);
+
+          // 폼 초기화
+          document.getElementById("inquiry-form").reset();
+        } catch (error) {
+          console.error(error);
+          alert("문의 제출 중 오류가 발생했습니다.");
+        }
+      }
+
+      async function loadInquiryHistory() {
+        try {
+          const response = await fetch("/api/inquiries", { method: "GET" });
+          if (!response.ok)
+            throw new Error("문의 내역을 가져오는 데 실패했습니다.");
+
+          const inquiries = await response.json();
+          const contentArea = document.getElementById("content-area");
+
+          // 답변 완료 및 미답변 데이터 분리
+          const answeredInquiries = inquiries.filter(
+            (inquiry) => inquiry.answer
+          );
+          const unansweredInquiries = inquiries.filter(
+            (inquiry) => !inquiry.answer
+          );
+
+          // HTML 생성
+          let inquiryHTML = `<div class="inquiry-history-container">
+      <h2>문의 내역</h2>`;
+
+          // 답변 완료 섹션
+          inquiryHTML += `<div class="answered-inquiries">
+      <h3>답변 완료된 문의</h3>`;
+          if (answeredInquiries.length === 0) {
+            inquiryHTML += `<p>답변 완료된 문의가 없습니다.</p>`;
+          } else {
+            answeredInquiries.forEach((inquiry) => {
+              inquiryHTML += `
+          <div class="inquiry-item">
+            <p><strong>이름:</strong> ${inquiry.name}</p>
+            <p><strong>이메일:</strong> ${inquiry.email}</p>
+            <p><strong>내용:</strong> ${inquiry.message}</p>
+            <p><strong>날짜:</strong> ${new Date(
+              inquiry.date
+            ).toLocaleString()}</p>
+            <p><strong>답변 상태:</strong> <span class="answer-completed">답변 완료</span></p>
+            <p><strong>관리자 답변:</strong> ${inquiry.answer}</p>
+          </div>`;
+            });
+          }
+          inquiryHTML += `</div>`;
+
+          // 미답변 섹션
+          inquiryHTML += `<div class="unanswered-inquiries">
+      <h3>답변되지 않은 문의</h3>`;
+          if (unansweredInquiries.length === 0) {
+            inquiryHTML += `<p>답변되지 않은 문의가 없습니다.</p>`;
+          } else {
+            unansweredInquiries.forEach((inquiry) => {
+              inquiryHTML += `
+          <div class="inquiry-item">
+            <p><strong>이름:</strong> ${inquiry.name}</p>
+            <p><strong>이메일:</strong> ${inquiry.email}</p>
+            <p><strong>내용:</strong> ${inquiry.message}</p>
+            <p><strong>날짜:</strong> ${new Date(
+              inquiry.date
+            ).toLocaleString()}</p>
+            <p><strong>답변 상태:</strong> <span class="answer-pending">미답변</span></p>
+          </div>`;
+            });
+          }
+          inquiryHTML += `</div></div>`;
+
+          contentArea.innerHTML = inquiryHTML;
+        } catch (error) {
+          console.error("문의 내역 로드 중 오류:", error);
+          document.getElementById("content-area").innerHTML =
+            "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
+        }
+      }
     </script>
   </head>
   <body>
