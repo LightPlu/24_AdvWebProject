@@ -94,6 +94,21 @@ router.get("/info", async (req, res) => {
   }
 });
 
+// 관리자용 모든 회원 정보 조회 API
+router.get("/allMemberInfo", async (req, res) => {
+  try {
+    // 데이터베이스에서 모든 회원 정보 조회
+    const members = await Member.find({}, { password: 0 }); // 비밀번호 제외하고 가져오기
+    res.status(200).json(members); // 성공적으로 데이터를 반환
+  } catch (error) {
+    console.error("회원 정보 조회 오류:", error);
+    res.status(500).json({
+      message: "회원 정보를 가져오는 중 오류가 발생했습니다.",
+      error: error.message,
+    });
+  }
+});
+
 router.put("/update", async (req, res) => {
   const { userId, mobile_number, sample6_postcode, sample6_address, sample6_detailAddress } = req.body;
 
