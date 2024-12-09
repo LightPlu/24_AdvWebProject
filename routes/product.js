@@ -134,7 +134,8 @@ router.get("/registered", async (req, res) => {
 // 찜 수 기준 상위 5개 상품 API
 router.get("/top-likes", async (req, res) => {
   try {
-    const topProducts = await Product.find({})
+    const currentTime = new Date();
+    const topProducts = await Product.find({endTime : { $gt: currentTime}})
       .sort({ likes: -1 }) // 찜 수 내림차순 정렬
       .limit(5); // 상위 5개만 가져오기
 
