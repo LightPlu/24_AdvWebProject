@@ -34,7 +34,12 @@
 
         // 상품 데이터로 목록 생성
         products.forEach((product) => {
-          const productItem = document.createElement("div");
+
+          const currentDateTime = new Date();
+          const productEndTime = new Date(product.endTime);
+
+          if(productEndTime > currentDateTime){
+            const productItem = document.createElement("div");
           productItem.className = "product-item";
 
           // 상품 HTML 구조
@@ -57,6 +62,7 @@
           `;
 
           productList.appendChild(productItem);
+          }
         });
       }
 
