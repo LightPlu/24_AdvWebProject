@@ -10,16 +10,37 @@
 
     <!-- JavaScript 파일 로드 -->
     <script src="../controllers/address.js" defer></script>
-    <script>
-      function goToMain() {
-        window.location.href = "../index.html"; // 메인 페이지로 이동
-      }
-      function showMyPage() {
-        window.location.href = "mypage.html"; // 마이 페이지로 이동
-      }
-    </script>
   </head>
   <body>
+    <!-- 로그인 팝업 -->
+    <div id="loginPopup" class="login-popup">
+      <div>
+        <span class="close-btn" onclick="closePopup()">✖</span>
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="text" id="email" placeholder="아이디" required />
+          </div>
+          <div class="form-group password-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="비밀번호"
+              required
+            />
+            <span class="password-toggle" onclick="togglePassword()">👁️</span>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="login-btn">로그인</button>
+          </div>
+          <!-- 하단 링크 -->
+          <div class="links">
+            <a href="/find-id">아이디(이메일) 찾기</a> |
+            <a href="/find-password">비밀번호 찾기</a> |
+            <a href="./public/signup.html">회원가입</a>
+          </div>
+        </form>
+      </div>
+    </div>
     <!-- 상단 헤더 -->
     <div class="header">
       <div class="logo-container" onclick="goToMain()">
@@ -208,6 +229,64 @@
             alert("회원 등록 중 오류가 발생했습니다.");
           }
         });
+
+        // 마이페이지 버튼 클릭 시 리스트 표시
+      function showMyPage() {
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/mypage", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/mypage.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert("마이 페이지로 이동할 수 없습니다. 로그인이 필요합니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
+      }
+
+      function goToLogin() {
+        document.getElementById("loginPopup").style.display = "flex";
+      }
+
+      // 팝업 닫기
+      function closePopup() {
+        document.getElementById("loginPopup").style.display = "none";
+      }
+
+      // 메인 화면으로 돌아가는 함수
+      function goToMain() {
+        window.location.href = "../index.html"; // 메인 페이지로 이동
+      }
+
+      function goToRegister() {
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/products/add", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/registration.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert(
+                "상품 등록 페이지로 이동할 수 없습니다. 로그인이 필요합니다."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
+      }
+
     </script>
   </body>
 </html>

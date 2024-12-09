@@ -4,11 +4,9 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const dbConnect = require("./config/dbConnect");
 const http = require("http"); // HTTP 서버 생성
-const inquiryRoutes = require("./routes/inquiry");
 const { Server } = require("socket.io"); // Socket.IO 서버
 const jwt = require("jsonwebtoken");
 const secretKey = process.env.JWT_SECRET;
-
 const app = express();
 const server = http.createServer(app); // HTTP 서버로 Express 앱 감싸기
 const io = new Server(server); // Socket.IO 서버 초기화
@@ -23,7 +21,7 @@ app.use(fileUpload()); // 파일 업로드 미들웨어 추가
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // 업로드 폴더 정적 제공
 app.use(express.static(path.join(__dirname))); // 정적 파일 폴더 설정
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/api", inquiryRoutes);
+
 
 // 라우트 연결
 const productRoutes = require("./routes/product");
@@ -32,6 +30,8 @@ const signupRoutes = require("./routes/signup");
 app.use("/api/members", signupRoutes);
 const loginRoutes = require("./routes/login");
 app.use("/api", loginRoutes);
+const inquiryRoutes = require("./routes/inquiry");
+app.use("/api", inquiryRoutes);
 
 // 관리자 페이지
 app.get("/admin", (req, res) => {

@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>마이페이지</title>
     <link rel="stylesheet" href="styles.css" />
+    <!-- Daum Postcode API 로드 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <!-- JavaScript 파일 로드 -->
+    <script src="../controllers/address.js" defer></script>
     <script>
       function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
@@ -23,11 +28,8 @@
         <div class="inquiry-form-container">
     <h2>문의하기</h2>
     <form id="inquiry-form">
-      <label for="name">이름:</label>
-      <input type="text" id="name" placeholder="이름을 입력하세요" required /><br /><br />
-
-      <label for="email">이메일:</label>
-      <input type="email" id="email" placeholder="이메일 주소를 입력하세요" required /><br /><br />
+      <label for="title">제목:</label>
+      <input type="text" id="title" placeholder="제목을 입력하세요" required /><br /><br />
 
       <label for="message">문의 내용:</label>
       <textarea id="message" rows="5" placeholder="문의 내용을 입력하세요" required></textarea><br /><br />
@@ -51,6 +53,8 @@
           loadRegisteredProducts();
         } else if (contentKey === "inquiry-history") {
           loadInquiryHistory(); // 문의 내역 로드 함수 호출
+        } else if (contentKey === "personal-info") {
+          loadUpdateInfo(); // 회원 정보 수정
         } else {
           contentArea.innerHTML = contentData[contentKey];
         }
@@ -200,15 +204,22 @@
       }
 
       async function submitInquiry() {
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="))
+          ?.split("=")[1];
+          // 사용자 ID 추출
+          const memberInfo = parseJwt(token);
+          const userId = memberInfo.id;
+
+        const title = document.getElementById("title").value;
         const message = document.getElementById("message").value;
 
         try {
-          const response = await fetch("/api/inquiry", {
+          const response = await fetch(`/api/inquiry/${userId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, message }),
+            body: JSON.stringify({ title, message }),
           });
 
           if (!response.ok) throw new Error("문의 제출에 실패했습니다.");
@@ -225,74 +236,212 @@
       }
 
       async function loadInquiryHistory() {
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="))
+          ?.split("=")[1];
+        // 사용자 ID 추출
+        const memberInfo = parseJwt(token);
+        const userId = memberInfo.id;
+
         try {
-          const response = await fetch("/api/inquiries", { method: "GET" });
+          const response = await fetch(`/api/inquiries/${userId}`, { method: "GET" });
           if (!response.ok)
             throw new Error("문의 내역을 가져오는 데 실패했습니다.");
 
-          const inquiries = await response.json();
+          const inquiryData = await response.json();
+          const inquiries = inquiryData.flatMap((data) => data.inquiries);
           const contentArea = document.getElementById("content-area");
-
-          // 답변 완료 및 미답변 데이터 분리
-          const answeredInquiries = inquiries.filter(
-            (inquiry) => inquiry.answer
-          );
-          const unansweredInquiries = inquiries.filter(
-            (inquiry) => !inquiry.answer
-          );
 
           // HTML 생성
           let inquiryHTML = `<div class="inquiry-history-container">
-      <h2>문의 내역</h2>`;
-
-          // 답변 완료 섹션
-          inquiryHTML += `<div class="answered-inquiries">
-      <h3>답변 완료된 문의</h3>`;
+            <h2>문의 내역</h2>
+            <div class="answered-inquiries">
+              <h3>답변 완료된 문의</h3>`;
+          
+          // 답변 완료된 문의
+          const answeredInquiries = inquiries.filter((inquiry) => inquiry.answer);
           if (answeredInquiries.length === 0) {
             inquiryHTML += `<p>답변 완료된 문의가 없습니다.</p>`;
           } else {
             answeredInquiries.forEach((inquiry) => {
               inquiryHTML += `
-          <div class="inquiry-item">
-            <p><strong>이름:</strong> ${inquiry.name}</p>
-            <p><strong>이메일:</strong> ${inquiry.email}</p>
-            <p><strong>내용:</strong> ${inquiry.message}</p>
-            <p><strong>날짜:</strong> ${new Date(
-              inquiry.date
-            ).toLocaleString()}</p>
-            <p><strong>답변 상태:</strong> <span class="answer-completed">답변 완료</span></p>
-            <p><strong>관리자 답변:</strong> ${inquiry.answer}</p>
-          </div>`;
+                <div class="inquiry-item">
+                  <p><strong>제목:</strong> ${inquiry.title || "제목 없음"}</p>
+                  <p><strong>내용:</strong> ${inquiry.message || "내용 없음"}</p>
+                  <p><strong>날짜:</strong> ${new Date(inquiry.date).toLocaleString() || "날짜 없음"}</p>
+                  <p><strong>답변 상태:</strong> <span class="answer-completed">답변 완료</span></p>
+                  <p><strong>관리자 답변:</strong> ${inquiry.answer || "답변 없음"}</p>
+                </div>`;
             });
           }
-          inquiryHTML += `</div>`;
 
-          // 미답변 섹션
-          inquiryHTML += `<div class="unanswered-inquiries">
-      <h3>답변되지 않은 문의</h3>`;
+          inquiryHTML += `</div><div class="unanswered-inquiries">
+            <h3>답변되지 않은 문의</h3>`;
+          
+          // 답변되지 않은 문의
+          const unansweredInquiries = inquiries.filter((inquiry) => !inquiry.answer);
           if (unansweredInquiries.length === 0) {
             inquiryHTML += `<p>답변되지 않은 문의가 없습니다.</p>`;
           } else {
             unansweredInquiries.forEach((inquiry) => {
               inquiryHTML += `
-          <div class="inquiry-item">
-            <p><strong>이름:</strong> ${inquiry.name}</p>
-            <p><strong>이메일:</strong> ${inquiry.email}</p>
-            <p><strong>내용:</strong> ${inquiry.message}</p>
-            <p><strong>날짜:</strong> ${new Date(
-              inquiry.date
-            ).toLocaleString()}</p>
-            <p><strong>답변 상태:</strong> <span class="answer-pending">미답변</span></p>
-          </div>`;
+                <div class="inquiry-item">
+                  <p><strong>제목:</strong> ${inquiry.title || "제목 없음"}</p>
+                  <p><strong>내용:</strong> ${inquiry.message || "내용 없음"}</p>
+                  <p><strong>날짜:</strong> ${inquiry.date ? new Date(inquiry.date).toLocaleString() : "날짜 없음"}</p>
+                  <p><strong>답변 상태:</strong> <span class="answer-pending">미답변</span></p>
+                </div>`;
             });
           }
-          inquiryHTML += `</div></div>`;
 
+          inquiryHTML += `</div></div>`;
           contentArea.innerHTML = inquiryHTML;
         } catch (error) {
           console.error("문의 내역 로드 중 오류:", error);
           document.getElementById("content-area").innerHTML =
             "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
+        }
+      }
+
+      async function loadUpdateInfo() {
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="))
+          ?.split("=")[1];
+          // 사용자 ID 추출
+          const memberInfo = parseJwt(token);
+          const userId = memberInfo.id;
+
+        try {
+          const response = await fetch(`/api/members/info?userId=${userId}`);
+          if (!response.ok)
+            throw new Error("회원 정보를 가져오는 데 실패했습니다.");
+
+          const { member } = await response.json();
+          console.log(member);
+          // 개인정보 수정 UI 생성
+          const contentArea = document.getElementById("content-area");
+          contentArea.innerHTML = `
+            <div class="personal-info-container">
+              <h2>개인정보 확인/수정</h2>
+
+              <!-- 이메일은 수정 불가 -->
+              <div class="info-item">
+                <label>이메일:</label>
+                <span>${member.email}</span>
+              </div>
+
+              <!-- 휴대전화 -->
+              <div class="info-item">
+                <label>휴대전화:</label>
+                <input type="text" id="mobile_number" value="${member.mobile_number}" disabled />
+                <div class="custom-button-group">
+                  <button onclick="enableEdit('mobile_number')">수정</button>
+                  <button onclick="saveEdit('mobile_number', '${userId}')">저장</button>
+                </div>
+              </div>
+
+              <!-- 주소 -->
+              <h3>주소</h3>
+              <div class="info-item">
+                <label>우편번호:</label>
+                <input type="text" id="sample6_postcode" value="${member.sample6_postcode}" disabled />
+              </div>
+              <div class="info-item">
+                <label>기본 주소:</label>
+                <input type="text" id="sample6_address" value="${member.sample6_address}" disabled />
+              </div>
+              <div class="info-item">
+                <label>상세 주소:</label>
+                <input type="text" id="sample6_detailAddress" value="${member.sample6_detailAddress}" disabled />
+              </div>
+              <div class="custom-button-group">
+                <button onclick="enableAddressEdit()">주소 수정</button>
+                <button onclick="saveAddressEdit('${userId}')">주소 저장</button>
+                <button type="button" onclick="sample6_execDaumPostcode()">주소찾기</button>
+              </div>
+            </div>
+          `;
+        } catch (error) {
+          console.error("회원 정보 로드 중 오류:", error);
+          alert("회원 정보를 불러오는 데 실패했습니다.");
+        }
+      }
+
+      function enableEdit(fieldId) {
+        const inputField = document.getElementById(fieldId);
+        inputField.disabled = false;
+        inputField.focus(); // 입력 필드에 포커스 설정
+      }
+
+      async function saveEdit(fieldId, userId) {
+        const newValue = document.getElementById(fieldId).value;
+
+        try {
+          const response = await fetch(`/api/members/update`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+              [fieldId]: newValue,
+            }),
+          });
+
+          if (!response.ok) throw new Error("정보 수정에 실패했습니다.");
+
+          const result = await response.json();
+          alert(result.message);
+
+          // 수정 후 입력 필드를 비활성화
+          document.getElementById(fieldId).disabled = true;
+        } catch (error) {
+          console.error("수정 중 오류:", error);
+          alert("정보 수정 중 오류가 발생했습니다.");
+        }
+      }
+
+      function enableAddressEdit() {
+        document.getElementById("sample6_postcode").disabled = false;
+        document.getElementById("sample6_address").disabled = false;
+        document.getElementById("sample6_detailAddress").disabled = false;
+
+        document.getElementById("sample6_postcode").focus(); // 우편번호 필드에 포커스
+      }
+
+      async function saveAddressEdit(userId) {
+        const sample6_postcode = document.getElementById("sample6_postcode").value;
+        const sample6_address = document.getElementById("sample6_address").value;
+        const sample6_detailAddress = document.getElementById("sample6_detailAddress").value;
+
+        try {
+          const response = await fetch(`/api/members/update`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+              sample6_postcode,
+              sample6_address,
+              sample6_detailAddress,
+            }),
+          });
+
+          if (!response.ok) throw new Error("주소 수정에 실패했습니다.");
+
+          const result = await response.json();
+          alert(result.message);
+
+          // 수정 후 입력 필드를 비활성화
+          document.getElementById("sample6_postcode").disabled = true;
+          document.getElementById("sample6_address").disabled = true;
+          document.getElementById("sample6_detailAddress").disabled = true;
+        } catch (error) {
+          console.error("주소 수정 중 오류:", error);
+          alert("주소 수정 중 오류가 발생했습니다.");
         }
       }
     </script>
