@@ -208,9 +208,9 @@
           .split("; ")
           .find((row) => row.startsWith("token="))
           ?.split("=")[1];
-          // 사용자 ID 추출
-          const memberInfo = parseJwt(token);
-          const userId = memberInfo.id;
+        // 사용자 ID 추출
+        const memberInfo = parseJwt(token);
+        const userId = memberInfo.id;
 
         const title = document.getElementById("title").value;
         const message = document.getElementById("message").value;
@@ -245,7 +245,9 @@
         const userId = memberInfo.id;
 
         try {
-          const response = await fetch(`/api/inquiries/${userId}`, { method: "GET" });
+          const response = await fetch(`/api/inquiries/${userId}`, {
+            method: "GET",
+          });
           if (!response.ok)
             throw new Error("문의 내역을 가져오는 데 실패했습니다.");
 
@@ -255,12 +257,14 @@
 
           // HTML 생성
           let inquiryHTML = `<div class="inquiry-history-container">
-            <h2>문의 내역</h2>
+
             <div class="answered-inquiries">
               <h3>답변 완료된 문의</h3>`;
-          
+
           // 답변 완료된 문의
-          const answeredInquiries = inquiries.filter((inquiry) => inquiry.answer);
+          const answeredInquiries = inquiries.filter(
+            (inquiry) => inquiry.answer
+          );
           if (answeredInquiries.length === 0) {
             inquiryHTML += `<p>답변 완료된 문의가 없습니다.</p>`;
           } else {
@@ -268,19 +272,27 @@
               inquiryHTML += `
                 <div class="inquiry-item">
                   <p><strong>제목:</strong> ${inquiry.title || "제목 없음"}</p>
-                  <p><strong>내용:</strong> ${inquiry.message || "내용 없음"}</p>
-                  <p><strong>날짜:</strong> ${new Date(inquiry.date).toLocaleString() || "날짜 없음"}</p>
+                  <p><strong>내용:</strong> ${
+                    inquiry.message || "내용 없음"
+                  }</p>
+                  <p><strong>날짜:</strong> ${
+                    new Date(inquiry.date).toLocaleString() || "날짜 없음"
+                  }</p>
                   <p><strong>답변 상태:</strong> <span class="answer-completed">답변 완료</span></p>
-                  <p><strong>관리자 답변:</strong> ${inquiry.answer || "답변 없음"}</p>
+                  <p><strong>관리자 답변:</strong> ${
+                    inquiry.answer || "답변 없음"
+                  }</p>
                 </div>`;
             });
           }
 
           inquiryHTML += `</div><div class="unanswered-inquiries">
             <h3>답변되지 않은 문의</h3>`;
-          
+
           // 답변되지 않은 문의
-          const unansweredInquiries = inquiries.filter((inquiry) => !inquiry.answer);
+          const unansweredInquiries = inquiries.filter(
+            (inquiry) => !inquiry.answer
+          );
           if (unansweredInquiries.length === 0) {
             inquiryHTML += `<p>답변되지 않은 문의가 없습니다.</p>`;
           } else {
@@ -288,8 +300,14 @@
               inquiryHTML += `
                 <div class="inquiry-item">
                   <p><strong>제목:</strong> ${inquiry.title || "제목 없음"}</p>
-                  <p><strong>내용:</strong> ${inquiry.message || "내용 없음"}</p>
-                  <p><strong>날짜:</strong> ${inquiry.date ? new Date(inquiry.date).toLocaleString() : "날짜 없음"}</p>
+                  <p><strong>내용:</strong> ${
+                    inquiry.message || "내용 없음"
+                  }</p>
+                  <p><strong>날짜:</strong> ${
+                    inquiry.date
+                      ? new Date(inquiry.date).toLocaleString()
+                      : "날짜 없음"
+                  }</p>
                   <p><strong>답변 상태:</strong> <span class="answer-pending">미답변</span></p>
                 </div>`;
             });
@@ -309,9 +327,9 @@
           .split("; ")
           .find((row) => row.startsWith("token="))
           ?.split("=")[1];
-          // 사용자 ID 추출
-          const memberInfo = parseJwt(token);
-          const userId = memberInfo.id;
+        // 사용자 ID 추출
+        const memberInfo = parseJwt(token);
+        const userId = memberInfo.id;
 
         try {
           const response = await fetch(`/api/members/info?userId=${userId}`);
@@ -412,9 +430,13 @@
       }
 
       async function saveAddressEdit(userId) {
-        const sample6_postcode = document.getElementById("sample6_postcode").value;
-        const sample6_address = document.getElementById("sample6_address").value;
-        const sample6_detailAddress = document.getElementById("sample6_detailAddress").value;
+        const sample6_postcode =
+          document.getElementById("sample6_postcode").value;
+        const sample6_address =
+          document.getElementById("sample6_address").value;
+        const sample6_detailAddress = document.getElementById(
+          "sample6_detailAddress"
+        ).value;
 
         try {
           const response = await fetch(`/api/members/update`, {
