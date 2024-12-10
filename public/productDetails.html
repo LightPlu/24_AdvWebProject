@@ -372,6 +372,7 @@ updateCountdownTimer(product.endTime);
               const currentPriceElement =
                 document.getElementById("current-price");
               currentPriceElement.textContent = `현재 가격: ${data.currentPrice.toLocaleString()}원`;
+              alert(`${data.currentPrice.toLocaleString()}에 입찰 성공하였습니다!`);
 
               // 입력 필드 초기화
               bidInput.value = "";

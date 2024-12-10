@@ -109,7 +109,7 @@ io.on("connection", (socket) => {
         currentPrice: product.currentPrice,
         highestBidder: userId,
       });
-
+      
       console.log(`입찰 성공: 상품 ${productId}, 금액 ${bidAmount}`);
     } catch (error) {
       console.error("입찰 처리 중 오류:", error);
