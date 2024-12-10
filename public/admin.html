@@ -45,16 +45,17 @@
       const memberEmail = member ? member.email : "알 수 없음"; // 이메일 가져오기
       const userInquiries = inquiry.inquiries; // inquiries 배열 가져오기
 
-      userInquiries.forEach((item) => {
+      // **필터링: 답변이 없는 문의만 가져오기**
+      const unansweredInquiries = userInquiries.filter((item) => !item.answer);
+
+      unansweredInquiries.forEach((item) => {
         inquiryHTML += `
           <div class="inquiry-item">
             <p><strong>유저 ID:</strong> ${memberEmail}</p>
             <p><strong>제목:</strong> ${item.title}</p>
             <p><strong>내용:</strong> ${item.message}</p>
             <p><strong>날짜:</strong> ${new Date(item.date).toLocaleString()}</p>
-            <textarea placeholder="답변을 입력하세요" data-id="${item._id}">
-              ${item.answer || ""}
-            </textarea>
+            <textarea placeholder="답변을 입력하세요" data-id="${item._id}">${item.answer || ""}</textarea>
             <button onclick="submitAnswer('${item._id}')">답변 저장</button>
           </div>
         `;
