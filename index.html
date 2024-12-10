@@ -332,21 +332,17 @@
     </div>
 
     <script>
-      function showQuizPopup() {
-        document.getElementById("quizPopupOverlay").style.display = "block";
-        document.getElementById("quizPopupContent").style.display = "block";
-        document.getElementById("quizPopupContent2").style.display = "none"; // 두 번째 팝업 숨기기
-      }
-
-      function hideQuizPopup() {
-        document.getElementById("quizPopupOverlay").style.display = "none";
-        document.getElementById("quizPopupContent").style.display = "none";
-        document.getElementById("quizPopupContent2").style.display = "none";
-        document.getElementById("quizPopupContent3").style.display = "none";
-        document.getElementById("quizPopupContent4").style.display = "none";
-      }
-
       // 퀴즈 제출 처리
+      let quiz1Submitted = false;
+      let quiz2Submitted = false;
+      let quiz3Submitted = false;
+
+      function resetQuizState() {
+        quiz1Submitted = false;
+        quiz2Submitted = false;
+        quiz3Submitted = false;
+      }
+
       document
         .getElementById("quizForm1")
         .addEventListener("submit", function (event) {
@@ -362,12 +358,14 @@
 
           if (selectedAnswer.value === "3") {
             alert("정답입니다! 다음 문제로 이동!");
+            quiz1Submitted = true; // 제출 상태를 true로 설정
           } else {
             alert("틀렸습니다. 다시 시도해보세요!");
           }
         });
 
       // Quiz 2 제출 처리
+
       document
         .getElementById("quizForm2")
         .addEventListener("submit", function (event) {
@@ -375,6 +373,7 @@
           const selectedAnswer = document.querySelector(
             'input[name="quizAnswer2"]:checked'
           );
+
           if (!selectedAnswer) {
             alert("정답을 선택해주세요!");
             return;
@@ -382,6 +381,7 @@
 
           if (selectedAnswer.value === "3") {
             alert("정답입니다! 다음 문제로 이동!");
+            quiz2Submitted = true; // 제출 상태를 true로 설정
           } else {
             alert("틀렸습니다. 다시 시도해보세요!");
           }
@@ -395,6 +395,7 @@
           const selectedAnswer = document.querySelector(
             'input[name="quizAnswer3"]:checked'
           );
+          let quiz3Submitted = false;
           if (!selectedAnswer) {
             alert("정답을 선택해주세요!");
             return;
@@ -402,6 +403,7 @@
 
           if (selectedAnswer.value === "1") {
             alert("정답입니다! 다음 문제로 이동!");
+            quizSubmitted = true; // 제출 상태를 true로 설정
           } else {
             alert("틀렸습니다. 다시 시도해보세요!");
           }
@@ -427,18 +429,46 @@
           }
         });
 
+      function showQuizPopup() {
+        resetQuizState();
+        document.getElementById("quizPopupOverlay").style.display = "block";
+        document.getElementById("quizPopupContent").style.display = "block";
+        document.getElementById("quizPopupContent2").style.display = "none"; // 두 번째 팝업 숨기기
+        document.querySelectorAll("input[type='radio']").forEach((radio) => {
+          radio.checked = false;
+        });
+      }
+
+      function hideQuizPopup() {
+        document.getElementById("quizPopupOverlay").style.display = "none";
+        document.getElementById("quizPopupContent").style.display = "none";
+        document.getElementById("quizPopupContent2").style.display = "none";
+        document.getElementById("quizPopupContent3").style.display = "none";
+        document.getElementById("quizPopupContent4").style.display = "none";
+      }
+
       function showQuiz2() {
+        if (!quiz1Submitted) {
+          alert("현재 퀴즈를 제출한 후에만 다음 문제로 이동할 수 있습니다.");
+          return;
+        }
         document.getElementById("quizPopupContent").style.display = "none"; // 첫 번째 팝업 숨기기
         document.getElementById("quizPopupContent2").style.display = "block"; // 두 번째 팝업 표시
       }
 
       function showQuiz3() {
-        document.getElementById("quizPopupContent").style.display = "none"; // 첫 번째 팝업 숨기기
+        if (!quiz2Submitted) {
+          alert("현재 퀴즈를 제출한 후에만 다음 문제로 이동할 수 있습니다.");
+          return;
+        }
+        document.getElementById("quizPopupContent2").style.display = "none"; // 첫 번째 팝업 숨기기
         document.getElementById("quizPopupContent3").style.display = "block"; // 두 번째 팝업 표시
       }
 
       function showQuiz4() {
-        document.getElementById("quizPopupContent").style.display = "none"; // 첫 번째 팝업 숨기기
+        if (!quiz3Submitted) {
+        }
+        document.getElementById("quizPopupContent3").style.display = "none"; // 첫 번째 팝업 숨기기
         document.getElementById("quizPopupContent4").style.display = "block"; // 두 번째 팝업 표시
       }
 
