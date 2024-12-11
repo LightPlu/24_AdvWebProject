@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>관리자 페이지</title>
     <link rel="stylesheet" href="styles.css" />
+    <script>
+      function goMain(){
+        window.location.href = "../index.html";
+      };
+    </script>
   </head>
   <body>
+    <button onclick="goMain()">메인으로</button>
     <div class="admin-container">
       <h1>문의 관리</h1>
       <div id="inquiry-list">

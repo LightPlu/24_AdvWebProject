@@ -64,14 +64,69 @@
         updateAuthButton();
       });
 
-      function updateAuthButton() {
-        const token = document.cookie.includes("token");
+      async function updateAuthButton() {
         const authButton = document.querySelector(".login-button");
+        const buttonGroup = document.querySelector(".button-group"); // 버튼 그룹
 
-        if (token) {
+        // 기존 관리자 버튼이 있으면 제거
+        const existingAdminButton = document.querySelector(".admin-button");
+        if (existingAdminButton) {
+          existingAdminButton.remove();
+        }
+
+        // 쿠키에서 토큰 추출
+        const cookieToken = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="));
+        if (!cookieToken) {
+          // 토큰이 없으면 로그인 버튼으로 처리
+          authButton.textContent = "로그인";
+          authButton.onclick = goToLogin;
+          return;
+        }
+
+        const token = cookieToken.split("=")[1]; // 토큰 값만 추출
+
+        // 토큰에서 사용자 정보 추출
+        const userInfo = parseJwt(token); // JWT 디코딩
+        const userId = userInfo?.id; // id 값 추출
+
+        if (userId) {
           authButton.textContent = "로그아웃";
           authButton.onclick = logout;
+
+          try {
+            // 서버에서 사용자 정보를 요청
+            const response = await fetch(`/api/members/info?userId=${userId}`, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            });
+
+            if (response.ok) {
+              const userData = await response.json();
+              console.log(userData);
+
+              if (userData.member.is_admin) {
+                // is_admin이 true일 때 관리자 버튼 추가
+                if(!document.querySelector(".admin-button")){
+                  const adminButton = document.createElement("button");
+                adminButton.textContent = "관리자 페이지";
+                adminButton.classList.add("admin-button");
+                adminButton.onclick = () => {
+                  window.location.href = "/admin.html"; // 관리자 페이지로 이동
+                };
+                const registerButton = document.getElementById("register");
+                buttonGroup.insertBefore(adminButton, registerButton);
+                }
+              }
+            } else {
+              console.error("사용자 정보를 가져오는 데 실패했습니다.");
+            }
+          } catch (error) {
+            console.error("사용자 정보 요청 중 오류 발생:", error);
+          }
         } else {
+          // 로그아웃 상태
           authButton.textContent = "로그인";
           authButton.onclick = goToLogin;
         }

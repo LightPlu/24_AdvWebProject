@@ -119,6 +119,7 @@ body {
 
 .header .button-group {
   display: flex;
+  justify-content: flex-start; /* 버튼들을 왼쪽 정렬 */
   gap: 10px;
 }
 
@@ -147,7 +148,8 @@ body {
 /* 마이페이지, 로그인, 상품등록 버튼 */
 .my-page,
 .login-button,
-.register {
+.register,
+.admin-button {
   font-size: 16px;
   background-color: #626262;
   color: white;
@@ -156,6 +158,23 @@ body {
   cursor: pointer;
   font-family: "SUITE-Regular";
   margin-right: 30px;
+}
+
+/* 버튼 순서 지정 */
+.admin-button {
+  order: 1; /* 관리자 페이지 버튼 */
+}
+
+.register {
+  order: 2; /* 상품 등록 버튼 */
+}
+
+.login-button {
+  order: 3; /* 로그인 버튼 */
+}
+
+.my-page {
+  order: 4; /* 마이페이지 버튼 */
 }
 
 /* 폼 컨테이너 */
