@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <script>
       // 상품 목록을 동적으로 표시
-      async function displayProducts(categoryName, searchQuery) {
+      async function displayProducts(categoryName, searchQuery, priceFilter = "") {
         const productList = document.getElementById("product-list");
         const categoryTitle = document.getElementById("category-title");
 
@@ -18,6 +18,11 @@
           url += `?category=${encodeURIComponent(categoryName)}`;
         } else if (searchQuery) {
           url += `?search=${encodeURIComponent(searchQuery)}`;
+        }
+
+        // 가격 필터 추가
+        if (priceFilter) {
+          url += (url.includes("?") ? "&" : "?") + priceFilter;
         }
 
         // 서버에서 상품 데이터 가져오기
@@ -65,6 +70,81 @@
           }
         });
       }
+
+      // 가격 필터 적용 함수
+      function applyFilter() {
+        const checkedRanges = Array.from(document.querySelectorAll('input[name="price-range"]:checked'))
+          .map((checkbox) => checkbox.value);
+
+        if (checkedRanges.length === 0) {
+          alert("적용할 가격 범위를 선택하세요.");
+          return;
+        }
+
+        // 선택된 가격 범위를 URL 파라미터로 전달
+        const urlParams = new URLSearchParams(window.location.search);
+        checkedRanges.forEach((range, index) => {
+          urlParams.append(`priceRange[${index}]`, range);
+        });
+        const category = urlParams.get("category");
+        const search = urlParams.get("search");
+
+        // 상품 다시 로드
+        displayProducts(category, search, urlParams.toString());
+      }
+
+      // 직접 입력 가격 필터 적용 함수
+      function applyManualFilter() {
+        const minPrice = document.getElementById("min-price").value;
+        const maxPrice = document.getElementById("max-price").value;
+
+        // 입력값 검증
+        if (!minPrice || !maxPrice) {
+          alert("최소 가격과 최대 가격을 모두 입력하세요.");
+          return;
+        }
+        if (parseInt(minPrice) > parseInt(maxPrice)) {
+          alert("최소 가격은 최대 가격보다 작아야 합니다.");
+          return;
+        }
+
+        // URL 파라미터 생성
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.append("minPrice", minPrice);
+        urlParams.append("maxPrice", maxPrice);
+
+        const category = urlParams.get("category");
+        const search = urlParams.get("search");
+
+        // 상품 다시 로드
+        displayProducts(category, search, urlParams.toString());
+      }
+
+      function resetFilter() {
+        // 체크박스 초기화
+        document.querySelectorAll('input[name="price-range"]').forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+
+        // 직접 입력 필드 초기화
+        document.getElementById("min-price").value = "";
+        document.getElementById("max-price").value = "";
+
+        // URL 파라미터 초기화
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete("minPrice");
+        urlParams.delete("maxPrice");
+        urlParams.delete("priceRange[0]");
+        urlParams.delete("priceRange[1]"); // 추가된 모든 가격 필터 삭제
+
+        // 현재 카테고리 또는 검색어 유지
+        const category = urlParams.get("category");
+        const search = urlParams.get("search");
+
+        // 상품 다시 로드
+        displayProducts(category, search, urlParams.toString());
+      }
+
 
       // URL에서 카테고리 가져오기
       function getCategoryFromURL() {
@@ -203,36 +283,11 @@
         <h3>가격 필터</h3>
           <form id="price-filter-form">
             <p>
-              <label
-              >0 - 1,000원<input
-                type="checkbox"
-                name="price-range"
-                value="0-1000" /></label
-            ><br />
-            <label
-              >1,000 - 5,000원<input
-                type="checkbox"
-                name="price-range"
-                value="1000-5000" /></label
-            ><br />
-            <label
-              >5,000 - 10,000원<input
-                type="checkbox"
-                name="price-range"
-                value="5000-10000" /></label
-            ><br />
-            <label
-              >10,000 - 100,000원<input
-                type="checkbox"
-                name="price-range"
-                value="10000-100000" /></label
-            ><br />
-            <label
-              >100,000 - 300,000원<input
-                type="checkbox"
-                name="price-range"
-                value="100000-300000" /></label
-            ><br />
+              <label>0 - 1,000원<input type="checkbox" name="price-range" value="0-1000" /></label><br />
+            <label>1,000 - 5,000원<input type="checkbox" name="price-range" value="1000-5000" /></label><br />
+            <label>5,000 - 10,000원<input type="checkbox" name="price-range" value="5000-10000" /></label><br />
+            <label>10,000 - 100,000원<input type="checkbox" name="price-range" value="10000-100000" /></label><br />
+            <label>100,000 - 300,000원<input type="checkbox" name="price-range" value="100000-300000" /></label><br />
             <button type="button" onclick="applyFilter()" class="link-button">
               적용하기
             </button>            
@@ -253,6 +308,8 @@
             placeholder="최대가격(원)"
             style="width: 120px"
           /><br />
+          <button type="button" onclick="applyManualFilter()">적용하기</button>
+          <button type="button" onclick="resetFilter()">초기화</button>
           </div>
       </div>
 
@@ -297,6 +354,7 @@
     </div>
 
     <script>
+      
       // 팝업 열기
       function showPopup(content) {
         document.getElementById("popupText").innerText = content;

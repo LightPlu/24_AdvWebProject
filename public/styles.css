@@ -320,7 +320,7 @@ textarea {
   position: fixed; /* 화면 고정 */
   left: 20px; /* 왼쪽 여백 */
   top: 65%; /* 화면에서의 위치 */
-  transform: translateY(70%); /* 정확히 중앙 정렬 */
+  transform: translateY(90%); /* 정확히 중앙 정렬 */
   width: auto; /* 너비는 내용에 맞춤 */
   padding: 10px;
   border-radius: 0 10px 10px 0;
@@ -650,6 +650,15 @@ textarea {
   font-size: 18px;
   margin-bottom: 10px;
   color: #333;
+}
+
+.manual-price-filter {
+  position: relative; /* 버튼 위치를 상대적으로 제어하기 위함 */
+}
+
+.manual-price-filter button:last-child {
+  float: right; /* 마지막 버튼(초기화 버튼)을 오른쪽으로 정렬 */
+  margin-top: 10px; /* 간격 추가 */
 }
 
 label {
