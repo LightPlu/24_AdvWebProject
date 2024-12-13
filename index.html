@@ -35,7 +35,7 @@
             <a href="./public/findid.html">비밀번호 찾기</a> |
             <a href="./public/signup.html">회원가입</a>
           </div>
-          <strong>관리자아이디: test@test.com</strong><br>
+          <strong>관리자아이디: test@test.com</strong><br />
           <strong>관리자비밀번호: test</strong>
         </form>
       </div>
@@ -397,7 +397,7 @@
           const selectedAnswer = document.querySelector(
             'input[name="quizAnswer3"]:checked'
           );
-          let quiz3Submitted = false;
+
           if (!selectedAnswer) {
             alert("정답을 선택해주세요!");
             return;
@@ -405,7 +405,7 @@
 
           if (selectedAnswer.value === "1") {
             alert("정답입니다! 다음 문제로 이동!");
-            quizSubmitted = true; // 제출 상태를 true로 설정
+            quiz3Submitted = true; // 제출 상태를 true로 설정
           } else {
             alert("틀렸습니다. 다시 시도해보세요!");
           }
@@ -469,6 +469,8 @@
 
       function showQuiz4() {
         if (!quiz3Submitted) {
+          alert("현재 퀴즈를 제출한 후에만 다음 문제로 이동할 수 있습니다.");
+          return;
         }
         document.getElementById("quizPopupContent3").style.display = "none"; // 첫 번째 팝업 숨기기
         document.getElementById("quizPopupContent4").style.display = "block"; // 두 번째 팝업 표시
@@ -638,14 +640,17 @@
 
               if (userData.member.is_admin) {
                 // is_admin이 true일 때 관리자 버튼 추가
-                if(!document.querySelector(".admin-button")){
+                if (!document.querySelector(".admin-button")) {
                   const adminButton = document.createElement("button");
-                adminButton.textContent = "관리자 페이지";
-                adminButton.classList.add("admin-button");
-                adminButton.onclick = () => {
-                  window.location.href = "/admin.html"; // 관리자 페이지로 이동
-                };
-                buttonGroup.insertBefore(adminButton, document.getElementById("register")); // 상품등록 버튼 왼쪽에 삽입
+                  adminButton.textContent = "관리자 페이지";
+                  adminButton.classList.add("admin-button");
+                  adminButton.onclick = () => {
+                    window.location.href = "/admin.html"; // 관리자 페이지로 이동
+                  };
+                  buttonGroup.insertBefore(
+                    adminButton,
+                    document.getElementById("register")
+                  ); // 상품등록 버튼 왼쪽에 삽입
                 }
               }
             } else {
