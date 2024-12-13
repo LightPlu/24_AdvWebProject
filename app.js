@@ -124,6 +124,6 @@ io.on("connection", (socket) => {
 });
 
 // 서버 실행
-server.listen(3000, () => {
-  console.log("3000번 포트에서 서버 실행 중");
+server.listen(8080, () => {
+  console.log("8080번 포트에서 서버 실행 중");
 });
