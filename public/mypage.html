@@ -104,7 +104,6 @@
 
             if (response.ok) {
               const userData = await response.json();
-              console.log(userData);
 
               if (userData.member.is_admin) {
                 // is_admin이 true일 때 관리자 버튼 추가
@@ -236,10 +235,16 @@
           const productList = document.getElementById("registered-products");
 
           registeredProducts.forEach((product) => {
+            
             const productItem = document.createElement("div");
             productItem.className = "product-item";
 
-            productItem.innerHTML = `
+            // 경매 상태 텍스트 설정
+            const auctionStatus =
+              product.status === "new" ? "진행 중" : "종료됨";
+
+            if(auctionStatus === "진행 중"){
+              productItem.innerHTML = `
             <a href="/productDetails.html?id=${product._id}&from=mypage">
             <img src="${product.image}" alt="${product.name}" />
             <h3>${product.name} <span class="like-icon">★</span> ${
@@ -247,14 +252,61 @@
             }</h3>
             <p class="price">${product.currentPrice.toLocaleString()}원</p>
             <p>${product.description}</p>
+            <p class="auction-status">경매 상태 :${auctionStatus}</p>
           `;
-
+            }else{
+              productItem.innerHTML = `
+              <img src="${product.image}" alt="${product.name}" />
+            <h3>${product.name} <span class="like-icon">★</span> ${
+              product.likes
+            }</h3>
+            <p class="price">${product.currentPrice.toLocaleString()}원</p>
+            <p>최종 낙찰자 : ${product.winnerEmail}</p>
+            `;
+            if (product.winnerId) {
+              const button = document.createElement("button");
+              button.type = "button";
+              button.textContent = "배송지 확인";
+              button.onclick = () => loadAddress(product.winnerId);
+              productItem.appendChild(button);
+            }
+            }
             productList.appendChild(productItem);
           });
         } catch (error) {
-          console.error("찜한 상품 목록 로드 중 오류:", error);
+          console.error("등록중인 상품 목록 로드 중 오류:", error);
           document.getElementById("content-area").innerHTML =
             "<p>데이터를 가져오는 중 오류가 발생했습니다.</p>";
+        }
+      }
+
+      async function loadAddress(winnerId) {
+        try {
+          const response = await fetch(`/api/products/winnerAddress?userId=${winnerId}`);
+          if (!response.ok) {
+            throw new Error("배송지 정보를 가져오는 데 실패했습니다.");
+          }
+
+          const addressData = await response.json();
+          console.log(addressData);
+
+          // 팝업창 요소 가져오기
+          const popup = document.getElementById("address-popup");
+
+          // 배송지 정보를 팝업창에 표시
+          document.getElementById("recipient-name").textContent = addressData.name || "정보 없음";
+          document.getElementById("recipient-phone").textContent = addressData.phone || "정보 없음";
+          document.getElementById("recipient-postcode").textContent = addressData.sample6_postcode
+          || "정보 없음";
+          document.getElementById("recipient-address").textContent = addressData.sample6_address || "정보 없음";
+          document.getElementById("recipient-detailAddress").textContent = addressData.sample6_detailAddress
+          || "정보 없음";
+
+          // 팝업창 표시
+          popup.style.display = "flex";
+        } catch (error) {
+          console.error("배송지 정보 로드 중 오류:", error);
+          alert("배송지 정보를 가져오는 데 실패했습니다.");
         }
       }
 
@@ -524,6 +576,19 @@
     </script>
   </head>
   <body>
+    <!-- 배송지 팝업창 -->
+    <div id="address-popup" class="popup" style="display: none;">
+      <div class="popup-content">
+        <span class="close-btn" onclick="closePopup()">✖</span>
+        <h3>배송지 정보</h3>
+        <p><strong>수령인:</strong> <span id="recipient-name"></span></p>
+        <p><strong>전화번호:</strong> <span id="recipient-phone"></span></p>
+        <p><strong>우편번호:</strong> <span id="recipient-postcode"></span></p>
+        <p><strong>주소:</strong> <span id="recipient-address"></span></p>
+        <p><strong>상세주소:</strong> <span id="recipient-detailAddress"></span></p>
+      </div>
+    </div>
+
     <div class="header">
       <div class="logo-container" onclick="goToMain()">
         <img
@@ -630,6 +695,11 @@
       function hidePopup() {
         document.getElementById("popupOverlay").style.display = "none";
         document.getElementById("popupContent").style.display = "none";
+      }
+
+      function closePopup() {
+        const popup = document.getElementById("address-popup");
+        popup.style.display = "none";
       }
     </script>
   </body>

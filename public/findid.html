@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>아이디 비밀번호 찾기</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- 로그인 팝업 -->
+    <div id="loginPopup" class="login-popup">
+      <div>
+        <span class="close-btn" onclick="closePopup()">✖</span>
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="text" id="email" placeholder="아이디" required />
+          </div>
+          <div class="form-group password-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="비밀번호"
+              required
+            />
+            <span class="password-toggle" onclick="togglePassword()">👁️</span>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="login-btn">로그인</button>
+          </div>
+          <!-- 하단 링크 -->
+          <div class="links">
+            <a href="/find-id">아이디(이메일) 찾기</a> |
+            <a href="/find-password">비밀번호 찾기</a> |
+            <a href="./public/signup.html">회원가입</a>
+          </div>
+          <strong>관리자아이디: test@test.com</strong><br>
+          <strong>관리자비밀번호: test</strong>
+        </form>
+      </div>
+    </div>
+    <!-- 상단 헤더 -->
+    <div class="header">
+      <div class="logo-container" onclick="goToMain()">
+        <img
+          src="./images/free-icon-auction-3211435.png"
+          alt="Bid Icon"
+          class="icon-small"
+        />
+        <span class="site-title">
+          <span>거</span><span>래</span><span>해</span><span>요</span>
+          <span>&nbsp;</span>
+          <span>경</span><span>매</span><span>의</span><span>숲</span>
+        </span>
+      </div>
+
+      <!-- 가운데 검색창 -->
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="검색어를 입력하세요"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- 마이페이지,로그인,상품등록 버튼 -->
+      <div class="button-group">
+        <button class="register" onclick="goToRegister()">상품 등록</button>
+        <button class="login-button" onclick="goToLogin()">로그인</button>
+        <button class="my-page" onclick="showMyPage()">마이페이지</button>
+      </div>
+    </div>
+
+
+    <!-- 왼쪽 여백에 물음표 버튼 추가 -->
+    <div class="left-sidebar">
+      <img
+        src="./images/물음표.png"
+        alt="Icon 1"
+        onclick="showPopup('🌳회원가입🌳')"
+      />
+      <div class="text-box">
+        <span class="blink-text">물음표를 클릭해보세요!</span>
+      </div>
+    </div>
+
+    <!-- 팝업창 -->
+    <div class="overlay" id="popupOverlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popupContent">
+      <h2 id="popupText"></h2>
+      <p>
+        "거래해요 경매의 숲"의 회원이 되어 다양한 경매 혜택을 누려보세요! <br />
+        쉽고 빠른 회원 가입으로 새로운 경매의 경험을 시작할 수 있습니다.
+      </p>
+      <p><strong>⚠️주의사항 </strong></p>
+      <ul>
+        <li>⭐<strong>각 항목은 빠짐없이,정확하게 모두 기재</strong></li>
+
+        <li>⭐<strong>안전한 비밀번호 사용</strong></li>
+        <li>⭐<strong>경매 종료 날짜까지 입찰이 계속 이루어집니다.</strong></li>
+      </ul>
+
+      <button onclick="hidePopup()">닫기</button>
+    </div>
+
+    <div class="find-section">
+        <!-- 아이디 찾기 섹션 -->
+        <div class="find-id">
+          <h2>아이디(이메일) 찾기</h2>
+          <form id="findIdForm">
+            <div class="form-group">
+              <label for="findName">이름:</label>
+              <input type="text" id="findName" name="name" placeholder="이름을 입력하세요" required />
+            </div>
+            <div class="form-group">
+              <label for="findPhone">전화번호:</label>
+              <input type="text" id="findPhone" name="phone" placeholder="전화번호를 입력하세요" required />
+            </div>
+            <button type="submit" class="find-btn">아이디 찾기</button>
+          </form>
+        </div>
+      
+        <!-- 비밀번호 찾기 섹션 -->
+        <div class="find-password">
+          <h2>비밀번호 변경</h2>
+          <form id="findPasswordForm" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="findPasswordEmail">이메일:</label>
+              <input type="email" id="findPasswordEmail" placeholder="이메일을 입력하세요" required />
+            </div>
+            <div class="form-group">
+              <label for="findPasswordPhone">전화번호:</label>
+              <input type="text" id="findPasswordPhone" placeholder="전화번호를 입력하세요" required />
+            </div>
+            <div class="form-group">
+                <label for="newPassword">새로운 비밀번호:</label>
+                <input type="text" id="newPassword" placeholder="새로운 비밀번호를 입력하세요" required />
+              </div>
+            <button type="submit" class="find-btn">비밀번호 변경</button>
+          </form>
+        </div>
+      </div>
+
+    <script>
+      // 팝업 열기
+      function showPopup(content) {
+        document.getElementById("popupText").innerText = content;
+        document.getElementById("popupOverlay").style.display = "block";
+        document.getElementById("popupContent").style.display = "block";
+      }
+
+      // 팝업 닫기
+      function hidePopup() {
+        document.getElementById("popupOverlay").style.display = "none";
+        document.getElementById("popupContent").style.display = "none";
+      }
+
+        // 마이페이지 버튼 클릭 시 리스트 표시
+      function showMyPage() {
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/mypage", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/mypage.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert("마이 페이지로 이동할 수 없습니다. 로그인이 필요합니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
+      }
+
+      function goToLogin() {
+        document.getElementById("loginPopup").style.display = "flex";
+      }
+
+      // 팝업 닫기
+      function closePopup() {
+        document.getElementById("loginPopup").style.display = "none";
+      }
+
+      // 메인 화면으로 돌아가는 함수
+      function goToMain() {
+        window.location.href = "../index.html"; // 메인 페이지로 이동
+      }
+
+      function goToRegister() {
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/products/add", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/registration.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert(
+                "상품 등록 페이지로 이동할 수 없습니다. 로그인이 필요합니다."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
+      }
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // 기본 제출 방지
+
+          const email = document.getElementById("login-email").value;
+          const password = document.getElementById("login-password").value;
+
+          // 로그인 요청 처리 (예: 서버로 데이터 전송)
+          fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("로그인 성공!");
+                closePopup(); // 팝업 닫기
+                window.location.href = "/"; // '/경로'로 리다이렉트
+              } else {
+                alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");
+              }
+            })
+            .catch((error) => console.error("로그인 중 오류 발생:", error));
+        });
+
+        // 아이디 찾기 폼 제출 처리
+        document
+            .getElementById("findIdForm")
+            .addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(document.getElementById("findIdForm"));
+
+            try {
+                const response = await fetch("http://localhost:3000/api/find-id", {
+                method: "POST",
+                body: formData,
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                alert(`아이디(이메일): ${result.email}`);
+                } else {
+                alert(`오류: ${result.message}`);
+                }
+            } catch (error) {
+                console.error("아이디 찾기 오류:", error);
+                alert("아이디 찾기 중 오류가 발생했습니다.");
+            }
+            });
+
+            // 비밀번호 찾기 폼 제출 처리
+            document
+                .getElementById("findPasswordForm")
+                .addEventListener("submit", async (event) => {
+                    event.preventDefault();
+
+                    const email = document.getElementById("findPasswordEmail").value;
+                    const phone = document.getElementById("findPasswordPhone").value;
+                    const newPassword = document.getElementById("newPassword").value;
+
+                    if (!newPassword) {
+                    alert("비밀번호를 입력해야 합니다.");
+                    return;
+                    }
+
+                    try {
+                    const response = await fetch("http://localhost:3000/api/change-password", {
+                        method: "POST",
+                        headers: {
+                        "Content-Type": "application/json", // JSON 데이터 전송
+                        },
+                        body: JSON.stringify({ email, phone, newPassword }), // JSON 형식으로 데이터 전송
+                    });
+
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert("비밀번호가 성공적으로 변경되었습니다.");
+                    } else {
+                        alert(`오류: ${result.message}`);
+                    }
+                    } catch (error) {
+                    console.error("비밀번호 변경 오류:", error);
+                    alert("비밀번호 변경 중 오류가 발생했습니다.");
+                    }
+                });
+    </script>
+  </body>
+</html>

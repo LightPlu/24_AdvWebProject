@@ -18,12 +18,12 @@
         <span class="close-btn" onclick="closePopup()">✖</span>
         <form id="loginForm">
           <div class="form-group">
-            <input type="text" id="login-email" placeholder="아이디" required />
+            <input type="text" id="email" placeholder="아이디" required />
           </div>
           <div class="form-group password-group">
             <input
               type="password"
-              id="login-password"
+              id="password"
               placeholder="비밀번호"
               required
             />
@@ -34,10 +34,12 @@
           </div>
           <!-- 하단 링크 -->
           <div class="links">
-            <a href="/find-id">아이디(이메일) 찾기</a> |
-            <a href="/find-password">비밀번호 찾기</a> |
+            <a href="./public/findid.html">아이디(이메일) 찾기</a> |
+            <a href="./public/findid.html">비밀번호 찾기</a> |
             <a href="./public/signup.html">회원가입</a>
           </div>
+          <strong>관리자아이디: test@test.com</strong><br>
+          <strong>관리자비밀번호: test</strong>
         </form>
       </div>
     </div>

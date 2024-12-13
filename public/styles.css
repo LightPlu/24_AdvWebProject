@@ -120,7 +120,7 @@ body {
 .header .button-group {
   display: flex;
   justify-content: flex-start; /* 버튼들을 왼쪽 정렬 */
-  gap: 10px;
+  gap: 0px;
 }
 
 /* 검색 바 */
@@ -1290,4 +1290,65 @@ input {
 .custom-button-group button:nth-child(3) {
   background-color: #ffc107;
   color: #fff;
+}
+
+/* 전체 섹션 스타일 */
+.find-section {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+  justify-content: center;
+}
+
+/* 아이디 찾기와 비밀번호 찾기 박스 스타일 */
+.find-id, .find-password {
+  width: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.find-id h2, .find-password h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* 입력 필드 스타일 */
+.find-id input, .find-password input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* 버튼 스타일 */
+.find-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.find-btn:hover {
+  background-color: #388e3c;
+}
+
+/* 라벨 스타일 */
+.find-id label, .find-password label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
 }
