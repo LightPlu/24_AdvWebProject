@@ -119,7 +119,8 @@ body {
 
 .header .button-group {
   display: flex;
-  gap: 10px;
+  justify-content: flex-start; /* 버튼들을 왼쪽 정렬 */
+  gap: 0px;
 }
 
 /* 검색 바 */
@@ -147,7 +148,8 @@ body {
 /* 마이페이지, 로그인, 상품등록 버튼 */
 .my-page,
 .login-button,
-.register {
+.register,
+.admin-button {
   font-size: 16px;
   background-color: #626262;
   color: white;
@@ -156,6 +158,23 @@ body {
   cursor: pointer;
   font-family: "SUITE-Regular";
   margin-right: 30px;
+}
+
+/* 버튼 순서 지정 */
+.admin-button {
+  order: 1; /* 관리자 페이지 버튼 */
+}
+
+.register {
+  order: 2; /* 상품 등록 버튼 */
+}
+
+.login-button {
+  order: 3; /* 로그인 버튼 */
+}
+
+.my-page {
+  order: 4; /* 마이페이지 버튼 */
 }
 
 /* 폼 컨테이너 */
@@ -301,7 +320,7 @@ textarea {
   position: fixed; /* 화면 고정 */
   left: 20px; /* 왼쪽 여백 */
   top: 65%; /* 화면에서의 위치 */
-  transform: translateY(70%); /* 정확히 중앙 정렬 */
+  transform: translateY(90%); /* 정확히 중앙 정렬 */
   width: auto; /* 너비는 내용에 맞춤 */
   padding: 10px;
   border-radius: 0 10px 10px 0;
@@ -631,6 +650,15 @@ textarea {
   font-size: 18px;
   margin-bottom: 10px;
   color: #333;
+}
+
+.manual-price-filter {
+  position: relative; /* 버튼 위치를 상대적으로 제어하기 위함 */
+}
+
+.manual-price-filter button:last-child {
+  float: right; /* 마지막 버튼(초기화 버튼)을 오른쪽으로 정렬 */
+  margin-top: 10px; /* 간격 추가 */
 }
 
 label {
@@ -1262,4 +1290,65 @@ input {
 .custom-button-group button:nth-child(3) {
   background-color: #ffc107;
   color: #fff;
+}
+
+/* 전체 섹션 스타일 */
+.find-section {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+  justify-content: center;
+}
+
+/* 아이디 찾기와 비밀번호 찾기 박스 스타일 */
+.find-id, .find-password {
+  width: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.find-id h2, .find-password h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* 입력 필드 스타일 */
+.find-id input, .find-password input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* 버튼 스타일 */
+.find-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.find-btn:hover {
+  background-color: #388e3c;
+}
+
+/* 라벨 스타일 */
+.find-id label, .find-password label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
 }

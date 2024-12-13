@@ -8,7 +8,7 @@ const ProductSchema = new mongoose.Schema({
   currentPrice: { type: Number, required: true }, // 현재 경매 가격 필드 추가
   description: { type: String },
   category: { type: String, required: true },
-  status: { type: String, enum: ["new", "used"], required: true },
+  status: { type: String, enum: ["new", "end"], required: true },
   endTime: { type: Date, required: true },
   likes: { type: Number, default: 0 }, // 찜 수 필드 추가
   likedBy: [{ type: String }], // 찜한 사용자 ID 리스트
@@ -19,6 +19,8 @@ const ProductSchema = new mongoose.Schema({
       bidTime: { type: Date, default: Date.now },
     },
   ], // 입찰 기록 저장
+  winnerId: { type: String, default: null }, // 낙찰 받은 회원의 ID
+  winnerEmail: { type: String, default: null}, // 낙찰 받은 회원의 email
 });
 
 module.exports = mongoose.model("Product", ProductSchema);

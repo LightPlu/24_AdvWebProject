@@ -122,15 +122,51 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
 
-function goToMain() {
+      function goToMain() {
         window.location.href = "../index.html"; // 메인 페이지로 이동
       }
+
+      // 마이페이지 버튼 클릭 시 리스트 표시
       function showMyPage() {
-        window.location.href = "mypage.html"; // 마이 페이지로 이동
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/mypage", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/mypage.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert("마이 페이지로 이동할 수 없습니다. 로그인이 필요합니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
       }
 
       function goToRegister() {
-        window.location.href = "registration.html";
+        // /api/products/add 경로로 GET 요청
+        fetch("/api/products/add", {
+          method: "GET",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 요청 성공 시 registration.html로 이동
+              window.location.href = "./public/registration.html";
+            } else {
+              // 요청 실패 시 에러 메시지 처리
+              alert(
+                "상품 등록 페이지로 이동할 수 없습니다. 로그인이 필요합니다."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("요청 중 오류 발생:", error);
+            alert("요청 중 오류가 발생했습니다.");
+          });
       }
 
       // 팝업 열기
@@ -142,31 +178,31 @@ function goToMain() {
         updateAuthButton();
       });
 
-function updateCountdownTimer(endTime) {
-  const timerElement = document.getElementById("countdown-timer");
-  
-  function calculateTimeLeft() {
-    const now = new Date();
-    const endDate = new Date(endTime);
-    const timeLeft = endDate - now;
+      function updateCountdownTimer(endTime) {
+        const timerElement = document.getElementById("countdown-timer");
+        
+        function calculateTimeLeft() {
+          const now = new Date();
+          const endDate = new Date(endTime);
+          const timeLeft = endDate - now;
 
-    if (timeLeft <= 0) {
-      timerElement.textContent = "경매 종료됨";
-      clearInterval(timerInterval); // 타이머 중지
-      return;
-    }
+          if (timeLeft <= 0) {
+            timerElement.textContent = "경매 종료됨";
+            clearInterval(timerInterval); // 타이머 중지
+            return;
+          }
 
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-    timerElement.textContent = `남은 시간: ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
-  }
+          timerElement.textContent = `남은 시간: ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+        }
 
-  calculateTimeLeft(); // 처음 한 번 즉시 실행
-  const timerInterval = setInterval(calculateTimeLeft, 1000); // 1초마다 업데이트
-}
+        calculateTimeLeft(); // 처음 한 번 즉시 실행
+        const timerInterval = setInterval(calculateTimeLeft, 1000); // 1초마다 업데이트
+      }
 
 
 
@@ -235,6 +271,11 @@ function updateCountdownTimer(endTime) {
       function hidePopup() {
         document.getElementById("popupOverlay").style.display = "none";
         document.getElementById("popupContent").style.display = "none";
+      }
+
+      // 팝업 닫기
+      function closePopup() {
+        document.getElementById("loginPopup").style.display = "none";
       }
 
       function parseJwt(token) {

@@ -31,10 +31,12 @@
           </div>
           <!-- 하단 링크 -->
           <div class="links">
-            <a href="/find-id">아이디(이메일) 찾기</a> |
-            <a href="/find-password">비밀번호 찾기</a> |
+            <a href="./public/findid.html">아이디(이메일) 찾기</a> |
+            <a href="./public/findid.html">비밀번호 찾기</a> |
             <a href="./public/signup.html">회원가입</a>
           </div>
+          <strong>관리자아이디: test@test.com</strong><br>
+          <strong>관리자비밀번호: test</strong>
         </form>
       </div>
     </div>
@@ -592,16 +594,92 @@
         document.getElementById("loginPopup").style.display = "none";
       }
 
-      function updateAuthButton() {
-        const token = document.cookie.includes("token");
+      async function updateAuthButton() {
         const authButton = document.querySelector(".login-button");
+        const buttonGroup = document.querySelector(".button-group"); // 버튼 그룹
 
-        if (token) {
-          authButton.textContent = "로그아웃";
-          authButton.onclick = logout;
-        } else {
+        // 기존 관리자 버튼이 있으면 제거
+        const existingAdminButton = document.querySelector(".admin-button");
+        if (existingAdminButton) {
+          existingAdminButton.remove();
+        }
+
+        // 쿠키에서 토큰 추출
+        const cookieToken = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="));
+        if (!cookieToken) {
+          // 토큰이 없으면 로그인 버튼으로 처리
           authButton.textContent = "로그인";
           authButton.onclick = goToLogin;
+          return;
+        }
+
+        const token = cookieToken.split("=")[1]; // 토큰 값만 추출
+
+        // 토큰에서 사용자 정보 추출
+        const userInfo = parseJwt(token); // JWT 디코딩
+        const userId = userInfo?.id; // id 값 추출
+
+        if (userId) {
+          authButton.textContent = "로그아웃";
+          authButton.onclick = logout;
+
+          try {
+            // 서버에서 사용자 정보를 요청
+            const response = await fetch(`/api/members/info?userId=${userId}`, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            });
+
+            if (response.ok) {
+              const userData = await response.json();
+              console.log(userData);
+
+              if (userData.member.is_admin) {
+                // is_admin이 true일 때 관리자 버튼 추가
+                if(!document.querySelector(".admin-button")){
+                  const adminButton = document.createElement("button");
+                adminButton.textContent = "관리자 페이지";
+                adminButton.classList.add("admin-button");
+                adminButton.onclick = () => {
+                  window.location.href = "/admin.html"; // 관리자 페이지로 이동
+                };
+                buttonGroup.insertBefore(adminButton, document.getElementById("register")); // 상품등록 버튼 왼쪽에 삽입
+                }
+              }
+            } else {
+              console.error("사용자 정보를 가져오는 데 실패했습니다.");
+            }
+          } catch (error) {
+            console.error("사용자 정보 요청 중 오류 발생:", error);
+          }
+        } else {
+          // 로그아웃 상태
+          authButton.textContent = "로그인";
+          authButton.onclick = goToLogin;
+        }
+      }
+
+      // JWT 디코딩 함수
+      function parseJwt(token) {
+        if (!token) {
+          console.error("토큰이 비어 있습니다.");
+          return null;
+        }
+        try {
+          const base64Url = token.split(".")[1];
+          const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+          const jsonPayload = decodeURIComponent(
+            atob(base64)
+              .split("")
+              .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+              .join("")
+          );
+          return JSON.parse(jsonPayload);
+        } catch (error) {
+          console.error("JWT 파싱 중 오류 발생:", error);
+          return null;
         }
       }
 

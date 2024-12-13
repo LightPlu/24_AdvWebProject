@@ -5,9 +5,10 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const checkLogin = require("../middlewares/checkLogin");
 const Product = require("../models/Products"); // Product 모델 가져오기
+const Member = require("../models/members"); // Member 모델 가져오기
 const cookieParser = require("cookie-parser");
 const productController = require("../controllers/productController");
-const scheduleAuctionEnd = require("../middlewares/auctionScheduler");
+const {addProductToSchedule} = require("../middlewares/auctionScheduler");
 
 
 router.use(cookieParser());
@@ -55,11 +56,21 @@ router.route("/add").post(checkLogin, async (req, res) => {
       category,
       status,
       endTime,
+      winnerId: null,
+      winnerEmail: null,
     });
 
     // MongoDB에 저장
     const savedProduct = await newProduct.save();
 
+    try {
+      await addProductToSchedule(savedProduct);
+      console.log("스케줄러 등록 완료");
+    } catch (error) {
+      console.error("스케줄러 등록 중 오류:", error.message);
+    }
+
+   
     res.status(201).json({
       message: "상품이 성공적으로 등록되었습니다.",
       product: savedProduct,
@@ -81,29 +92,46 @@ router.route("/add").get(checkLogin, async (req, res) => {
   }
 });
 
-// 2. 모든 상품 조회 (GET /api/products)
+
 router.get("/", async (req, res) => {
-  const { category, search } = req.query;
+  const { category, search, minPrice, maxPrice, priceRange } = req.query;
+
+  const query = {};
+
+  // 카테고리 필터
+  if (category) {
+    query.category = category;
+  }
+
+  // 검색어 필터
+  if (search) {
+    query.name = { $regex: search, $options: "i" }; // 대소문자 무시
+  }
+
+  // 가격 필터
+  if (priceRange) {
+    const ranges = Array.isArray(priceRange) ? priceRange : [priceRange];
+    const priceConditions = ranges.map((range) => {
+      const [min, max] = range.split("-").map(Number);
+      return { currentPrice: { $gte: min, $lte: max } };
+    });
+
+    query.$or = priceConditions; // 여러 가격 범위를 OR 조건으로 추가
+  }
+
+  // 직접 입력된 가격 필터 처리
+  if (minPrice && maxPrice) {
+    query.currentPrice = { $gte: parseInt(minPrice), $lte: parseInt(maxPrice) };
+  }
 
   try {
-    const query = {};
-    // 카테고리가 있을 경우
-    if (category) {
-      query.category = category;
-    }
-    // 검색어가 있을 경우
-    if (search) {
-      query.name = { $regex: search, $options: "i" }; // 상품 이름에서 검색
-    }
-    const products = await Product.find(query); // MongoDB에서 검색
-    res.status(200).json(products);
-  } catch (err) {
-    res.status(500).json({
-      message: "상품 목록을 가져오는 중 오류가 발생했습니다.",
-      error: err.message,
-    });
+    const products = await Product.find(query);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: "상품 데이터를 가져오는 데 실패했습니다." });
   }
 });
+
 
 // 찜한 상품 목록 조회 API
 router.get("/liked", async (req, res) => {
@@ -173,6 +201,29 @@ router.post("/:id/like", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+router.get("/winnerAddress", async (req, res) => {
+  console.log(req.query.userId);
+
+  try {
+    const member = await Member.findById(req.query.userId);
+    if (!member) {
+      return res.status(404).json({ message: "회원 정보를 찾을 수 없습니다." });
+    }
+
+    res.status(200).json({
+      name: member.membername,
+      phone: member.mobile_number,
+      sample6_postcode: member.sample6_postcode,
+      sample6_address: member.sample6_address,
+      sample6_detailAddress: member.sample6_detailAddress,
+    });
+  } catch (error) {
+    console.error("배송지 정보 로드 중 오류:", error);
+    res.status(500).json({ message: "서버 오류가 발생했습니다." });
+  }
+});
+
 
 router.get("/:id", productController.getProductDetails);
 
