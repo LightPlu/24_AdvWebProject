@@ -146,7 +146,7 @@ router.get("/liked", async (req, res) => {
   }
 });
 
-// 찜한 상품 목록 조회 API
+// 등록중인 상품 목록 조회 API
 router.get("/registered", async (req, res) => {
   const userId = req.query.userId; // 사용자 ID를 쿼리에서 받음
   try {
