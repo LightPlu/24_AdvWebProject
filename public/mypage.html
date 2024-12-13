@@ -239,7 +239,7 @@
 
             // 경매 상태 텍스트 설정
             const auctionStatus =
-              product.status === "new" ? "진행 중" : "종료됨";
+              product.status === "new" || "used" ? "진행 중" : "종료됨";
 
             if(auctionStatus === "진행 중"){
               productItem.innerHTML = `

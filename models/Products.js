@@ -8,7 +8,7 @@ const ProductSchema = new mongoose.Schema({
   currentPrice: { type: Number, required: true }, // 현재 경매 가격 필드 추가
   description: { type: String },
   category: { type: String, required: true },
-  status: { type: String, enum: ["new", "end"], required: true },
+  status: { type: String, enum: ["new", "used", "end"], required: true },
   endTime: { type: Date, required: true },
   likes: { type: Number, default: 0 }, // 찜 수 필드 추가
   likedBy: [{ type: String }], // 찜한 사용자 ID 리스트
