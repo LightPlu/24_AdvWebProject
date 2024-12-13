@@ -246,7 +246,7 @@
             const formData = new FormData(document.getElementById("findIdForm"));
 
             try {
-                const response = await fetch("http://localhost:8080/api/find-id", {
+                const response = await fetch("https://24-advwebproject.fly.dev/api/find-id", {
                 method: "POST",
                 body: formData,
                 });
@@ -279,7 +279,7 @@
                     }
 
                     try {
-                    const response = await fetch("http://localhost:8080/api/change-password", {
+                    const response = await fetch("https://24-advwebproject.fly.dev/api/change-password", {
                         method: "POST",
                         headers: {
                         "Content-Type": "application/json", // JSON 데이터 전송
